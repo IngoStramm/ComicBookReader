@@ -4,14 +4,16 @@ Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imag
 
 ## Baixar e compartilhar
 
-Os dois formatos para Windows x64 estão em `artifacts/distribution`:
+Baixe a [versão 0.1.0](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.1.0) para Windows x64:
 
-- `ComicBookReader-0.1.0-Portable.exe`: abra diretamente. Basta compartilhar esse único arquivo.
-- `ComicBookReader-0.1.0-Setup.exe`: instalador em português do Brasil e inglês. Instala para o usuário atual, cria um atalho no menu Iniciar, oferece atalho na área de trabalho e permite desinstalar pelas configurações do Windows.
+- [Portátil — ComicBookReader-0.1.0-Portable.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.1.0/ComicBookReader-0.1.0-Portable.exe): abra diretamente. Basta compartilhar esse único arquivo.
+- [Instalador — ComicBookReader-0.1.0-Setup.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.1.0/ComicBookReader-0.1.0-Setup.exe): instalador em português do Brasil e inglês. Instala para o usuário atual, cria um atalho no menu Iniciar, oferece atalho na área de trabalho e permite desinstalar pelas configurações do Windows.
+
+Todas as versões ficam em [Releases](https://github.com/IngoStramm/ComicBookReader/releases), cada uma associada à sua tag. Abra a versão desejada e escolha o arquivo em **Assets**. As mudanças são registradas no [CHANGELOG.md](CHANGELOG.md).
 
 Ambos incluem o .NET e o decoder de imagens; a pessoa não precisa instalar o SDK, baixar bibliotecas nem receber a pasta do projeto. As licenças completas estão no botão **Sobre**. Preferências e progresso ficam em `%LOCALAPPDATA%\ComicBookReader`, são compartilhados entre os dois formatos e permanecem após desinstalar. A versão portátil dispensa instalação, mas usa esse diretório de dados e extrai bibliotecas nativas para o cache temporário do .NET.
 
-A distribuição anterior em `artifacts/win-x64-drag` permanece disponível. É uma versão para avaliação, com validação visual de suavidade e de outros monitores/DPI pendente.
+Esta é a primeira versão pública. A validação visual de suavidade e de outros monitores/DPI continua no roteiro de avaliação. Builds locais ficam em `artifacts/distribution`; a distribuição local anterior em `artifacts/win-x64-drag` foi preservada.
 
 Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou passar seu caminho como argumento ao executável. A primeira execução começa em tela cheia. F12 mostra/esconde a barra; o botão ☰ também a reabre. Mover o mouse sobre a imagem não revela os controles. Tab/Alt permitem acesso pelo teclado sem mudar o tamanho da página.
 
@@ -48,7 +50,7 @@ O leitor abre as HQs somente para leitura. Não modifica o CDisplayEx, seu Regis
 
 ## Construir e verificar
 
-Na raiz, usar o SDK fixado por `global.json` (10.0.401 x64). Os comandos exatos com o SDK privado estão em [tasks/plan.md](tasks/plan.md#verificação-e-comandos). Com um SDK 10 x64 acessível como `dotnet`:
+Na raiz, usar o SDK fixado por `global.json` (10.0.401 x64). Os comandos exatos com o SDK privado estão em [tasks/plan.md](tasks/plan.md#verificação-e-comandos). `rtk proxy` é apenas o proxy usado no ambiente de desenvolvimento; sem RTK, execute o comando que aparece depois desse prefixo. Com um SDK 10 x64 acessível como `dotnet`:
 
 ```powershell
 rtk proxy dotnet restore ComicBookReader.slnx --locked-mode
@@ -74,3 +76,5 @@ O primeiro comando gera os executáveis, instruções em pt-BR/en e `SHA256SUMS-
 O smoke test usa HQ sintética e fixtures redistribuíveis, preferências isoladas e janela fora da tela. Testa input roteado, renderização, leitura, retomada entre processos e hashes. Não substitui a avaliação visual nem a pressão física de teclas; o roteiro e a evidência estão em [docs/manual-validation.md](docs/manual-validation.md) e [docs/acceptance.md](docs/acceptance.md).
 
 Os avisos de dependências ficam em [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md), no diretório `licenses` da versão instalada e incorporados ao botão Sobre dos dois executáveis. Artefatos e caches não são versionados.
+
+O procedimento de tags, validação e publicação de novas versões está em [docs/releases.md](docs/releases.md).
