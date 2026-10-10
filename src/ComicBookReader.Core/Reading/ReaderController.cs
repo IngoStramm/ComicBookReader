@@ -131,6 +131,7 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
     {
         // Validate even when no page is open.
         calculator.CalculateReading(new PixelSize(1, 1), value, PageKind.Single, WidthRatio);
+        EndDrag();
         var previousViewport = viewport;
         viewport = value;
         if (State.Image is null) return;

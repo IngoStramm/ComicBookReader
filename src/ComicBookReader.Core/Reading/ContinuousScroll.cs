@@ -21,7 +21,7 @@ public sealed partial class ReaderController
     }
 
     public void ReleaseDirection(ScrollDirection direction) => directions.Remove(direction);
-    public void Deactivate() => directions.Clear();
+    public void Deactivate() { directions.Clear(); EndDrag(); }
 
     public Task ScrollForwardAsync(CancellationToken cancellationToken = default)
     {

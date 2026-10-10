@@ -19,6 +19,7 @@ public partial class MainWindow : Window
     private PageImage? presented;
     private bool fullscreen;
     private readonly ReaderInput input;
+    internal ReaderDrag PageDrag { get; }
     private bool updatingControls;
     private readonly PreferencesSaveCoordinator saves;
     private bool closing;
@@ -47,6 +48,7 @@ public partial class MainWindow : Window
         Viewport.SizeChanged += (_, _) => UpdateViewport();
         input = new ReaderInput(this, Reader, RunCommand);
         input.Bindings = (preferences ?? new ReaderPreferences()).KeyBindings;
+        PageDrag = new ReaderDrag(this, Viewport, Reader, input.Stop);
         ApplyLanguage((preferences ?? new ReaderPreferences()).Language);
         Reader.ApplyPreferences(preferences ?? new ReaderPreferences());
         Toolbar.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ToolbarButtonClicked));
@@ -78,6 +80,7 @@ public partial class MainWindow : Window
         input.Stop();
         snapshotTimer.Stop();
         overlay.Dispose();
+        PageDrag.Dispose();
         PersistProgress();
         await saves.FlushAsync();
         saves.SaveStatusChanged -= SaveStatusChanged;

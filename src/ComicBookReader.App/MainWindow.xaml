@@ -15,7 +15,7 @@
   </Window.Resources>
   <Grid x:Name="Root">
     <Canvas x:Name="Viewport" Margin="12" ClipToBounds="True" Focusable="True"
-            Background="#151719" MouseLeftButtonDown="ViewportClicked" AutomationProperties.Name="{DynamicResource ReadingArea}">
+            Background="#151719" AutomationProperties.Name="{DynamicResource ReadingArea}">
       <Image x:Name="Page" Stretch="Fill" IsHitTestVisible="False"
              RenderOptions.BitmapScalingMode="HighQuality" />
     </Canvas>

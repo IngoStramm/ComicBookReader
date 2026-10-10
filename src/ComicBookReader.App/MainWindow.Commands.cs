@@ -60,7 +60,6 @@ public partial class MainWindow
             Reader.SetClassification((PageClassificationOverride)ClassificationChoice.SelectedIndex);
     }
     private void ClassificationClosed(object? sender, EventArgs e) => ReturnToReading();
-    private void ViewportClicked(object sender, MouseButtonEventArgs e) => Viewport.Focus();
     private void ResetWidthClicked(object sender, RoutedEventArgs e) { Reader.ResetBookWidth(); Viewport.Focus(); }
     private void PreferencesClicked(object sender, RoutedEventArgs e)
     {
