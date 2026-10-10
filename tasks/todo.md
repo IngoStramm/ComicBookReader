@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 4/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 5/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -119,15 +119,15 @@ Roteamento: gpt-6-luna/high — raiz — Motivo: scaffold WPF pequeno e verific�
 
 <a id="t05"></a>
 
-## [ ] T05: Estabelecer contratos e posse de imagem
+## [x] T05: Estabelecer contratos e posse de imagem
 
 **Descrição:** Materializar os contratos da spec usados pela primeira fatia: erros, metadados, sessão, buffer descartável e enum de classificação. Definir a propriedade do buffer sem tipos de terceiros. Incluir um contrato opcional para relatar progresso da abertura, independente de WPF, preservando a operação mínima da spec.
 
 **Critérios de aceitação:**
 
-- [ ] BookId/PageKey têm identidade determinística; imagem valida dimensões, stride e validade de acesso.
-- [ ] Dispose idempotente e referências independentes permitem liberar uma imagem sem invalidar outra; cancelamento não é ReaderException.
-- [ ] Core não expõe tipos WPF, SkiaSharp ou SharpCompress.
+- [x] BookId/PageKey têm identidade determinística; imagem valida dimensões, stride e validade de acesso.
+- [x] Dispose idempotente e referências independentes permitem liberar uma imagem sem invalidar outra; cancelamento não é ReaderException.
+- [x] Core não expõe tipos WPF, SkiaSharp ou SharpCompress.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-BUILD](plan.md#v-build); revisar contratos contra SPEC-comic-files.
 

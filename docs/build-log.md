@@ -17,3 +17,7 @@ Restore dos quatro projetos e build Release com warnings como erros passaram. xU
 ## T04
 
 Aplicativo net10.0-windows configurado para win-x64. Restore/build Release passaram; aplicação WPF mínima iniciou e encerrou com código zero.
+
+## T05
+
+RED observado por namespace de contratos ausente; GREEN: três testes reais de identidade, validade do buffer e lease independente passaram. Build Release sem avisos. Core sem bibliotecas de terceiros.
