@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 1/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 2/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -31,14 +31,14 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: decidir a base técnica uma ve
 
 <a id="t02"></a>
 
-## [ ] T02: Fixar as configurações da solução
+## [x] T02: Fixar as configurações da solução
 
 **Descrição:** Criar as configurações comuns e uma solução inicialmente vazia, com o patch validado em T01.
 
 **Critérios de aceitação:**
 
-- [ ] global.json fixa o SDK; nullable, estilo e warnings como erros ficam definidos.
-- [ ] As versões da spec são centralizadas; a solução vazia é válida, sem projetos fictícios.
+- [x] global.json fixa o SDK; nullable, estilo e warnings como erros ficam definidos.
+- [x] As versões da spec são centralizadas; a solução vazia é válida, sem projetos fictícios.
 
 **Verificação:** [V-SDK](plan.md#v-sdk); [V-RESTORE](plan.md#v-restore) na solução; inspecionar os cinco arquivos.
 

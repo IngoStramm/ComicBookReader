@@ -5,3 +5,7 @@ Plano autorizado pelo comando `$build`. Registros abaixo contêm verificações 
 ## T01
 
 SDK oficial 10.0.401 x64 instalado em pasta privada, SHA512 conferido e --info executado. Caminhos dos comandos atualizados. Pacotes permanecem fixados; integração será comprovada por T03/T07/T09.
+
+## T02
+
+global.json fixa 10.0.401; configurações centrais e solução vazia criadas. --info resolveu o global.json; restore executado com aviso esperado de solução ainda sem projetos.
