@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" fill="none">
+  <title>ComicBookReader</title>
+  <desc>A warm paper comic book with a bold panel layout and a speech bubble.</desc>
+
+  <g stroke="#1E2935" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M50 16h156a18 18 0 0 1 18 18v188a18 18 0 0 1-18 18H50a18 18 0 0 1-18-18V34a18 18 0 0 1 18-18Z" fill="#FFF3DD" stroke-width="9"/>
+
+    <path d="M58 31h16a9 9 0 0 1 9 9v176a9 9 0 0 1-9 9H58a9 9 0 0 1-9-9V40a9 9 0 0 1 9-9Z" fill="#E95F38" stroke="none"/>
+    <path d="M85 36v184" stroke-width="5"/>
+
+    <path d="M100 38h101a9 9 0 0 1 9 9v56a9 9 0 0 1-9 9H100a9 9 0 0 1-9-9V47a9 9 0 0 1 9-9Z" fill="#FFFBF1" stroke-width="5.5"/>
+    <path d="M100 122h38a9 9 0 0 1 9 9v80a9 9 0 0 1-9 9h-38a9 9 0 0 1-9-9v-80a9 9 0 0 1 9-9Z" fill="#E3ECE7" stroke-width="5.5"/>
+    <path d="M163 122h38a9 9 0 0 1 9 9v80a9 9 0 0 1-9 9h-38a9 9 0 0 1-9-9v-80a9 9 0 0 1 9-9Z" fill="#F7DEA7" stroke-width="5.5"/>
+
+    <path d="M119 51h62c7 0 12 5 12 12v10c0 7-5 12-12 12h-40l-18 10 4-10h-8c-7 0-12-5-12-12V63c0-7 5-12 12-12Z" fill="#FFFEFA" stroke-width="4.5"/>
+    <path d="M127 65h43M127 75h28" stroke-width="3.5"/>
+
+    <path d="m171 149 17 0-10 20h15l-25 32 7-23-13 0Z" fill="#EA623A" stroke-width="3.5"/>
+
+    <path d="M50 16h156a18 18 0 0 1 18 18v188a18 18 0 0 1-18 18H50a18 18 0 0 1-18-18V34a18 18 0 0 1 18-18Z" fill="none" stroke-width="9"/>
+  </g>
+</svg>

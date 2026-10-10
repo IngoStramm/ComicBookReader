@@ -4,8 +4,10 @@
     <OutputType>WinExe</OutputType>
     <UseWPF>true</UseWPF>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <ApplicationIcon>Assets/comic-reader.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Resource Include="Assets/comic-reader.ico" />
     <ProjectReference Include="../ComicBookReader.Infrastructure/ComicBookReader.Infrastructure.csproj" />
   </ItemGroup>
 </Project>
