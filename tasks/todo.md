@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 3/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 4/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -93,14 +93,14 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t04"></a>
 
-## [ ] T04: Criar a entrada WPF
+## [x] T04: Criar a entrada WPF
 
 **Descrição:** Adicionar o aplicativo Windows à solução e iniciar/encerrar uma aplicação WPF mínima. A janela de leitura será entregue em T08.
 
 **Critérios de aceitação:**
 
-- [ ] App usa net10.0-windows, alvo win-x64 para publicação e referências aos projetos corretos.
-- [ ] O processo inicia e encerra limpo, sem código de leitura provisório nem implementações que lançam NotImplementedException.
+- [x] App usa net10.0-windows, alvo win-x64 para publicação e referências aos projetos corretos.
+- [x] O processo inicia e encerra limpo, sem código de leitura provisório nem implementações que lançam NotImplementedException.
 
 **Verificação:** [V-RESTORE](plan.md#v-restore); [V-BUILD](plan.md#v-build); [V-APP](plan.md#v-app) para verificar o ciclo de inicialização/encerramento.
 

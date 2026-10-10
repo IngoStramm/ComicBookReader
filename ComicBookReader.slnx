@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="src/ComicBookReader.App/ComicBookReader.App.csproj" />
   <Project Path="src/ComicBookReader.Core/ComicBookReader.Core.csproj" />
   <Project Path="src/ComicBookReader.Infrastructure/ComicBookReader.Infrastructure.csproj" />
   <Project Path="tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj" />

@@ -13,3 +13,7 @@ global.json fixa 10.0.401; configurações centrais e solução vazia criadas. -
 ## T03
 
 Restore dos quatro projetos e build Release com warnings como erros passaram. xUnit 4 requer UseAppHost=true, corrigido conforme erro explícito do pacote. Nenhum runner vazio foi contado como teste.
+
+## T04
+
+Aplicativo net10.0-windows configurado para win-x64. Restore/build Release passaram; aplicação WPF mínima iniciou e encerrou com código zero.
