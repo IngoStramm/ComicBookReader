@@ -19,7 +19,8 @@ public sealed record ReaderPreferences
         ["ZoomIn"] = "OemPlus",
         ["ZoomOut"] = "OemMinus",
         ["ToggleToolbar"] = "F12",
-        ["Preferences"] = "Ctrl+P"
+        ["Preferences"] = "Ctrl+P",
+        ["ResetWidth"] = "R"
     };
     public Dictionary<string, BookPreferences> Books { get; init; } = new(StringComparer.Ordinal);
 }

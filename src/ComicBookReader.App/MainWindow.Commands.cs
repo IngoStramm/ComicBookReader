@@ -40,6 +40,7 @@ public partial class MainWindow
             case "Overview": Reader.ToggleOverview(); break;
             case "ZoomIn": ChangeWidth(.05); break;
             case "ZoomOut": ChangeWidth(-.05); break;
+            case "ResetWidth": Reader.ResetBookWidth(); break;
             case "ToggleToolbar": overlay.Toggle(); ReturnToReading(); break;
             case "Preferences": PreferencesClicked(this, new RoutedEventArgs()); break;
         }

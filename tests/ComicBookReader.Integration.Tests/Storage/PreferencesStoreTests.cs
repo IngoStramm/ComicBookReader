@@ -35,7 +35,7 @@ public sealed class PreferencesStoreTests
             Language = "en",
             PageClassification = PageClassificationOverride.Single,
             LastFullscreen = false,
-            KeyBindings = new() { ["NextPage"] = "Ctrl+N" },
+            KeyBindings = new() { ["NextPage"] = "Ctrl+N", ["ResetWidth"] = "Ctrl+R", ["ZoomIn"] = "Add", ["ZoomOut"] = "Subtract" },
             Books = new()
             {
                 ["book"] = new BookPreferences
@@ -56,6 +56,9 @@ public sealed class PreferencesStoreTests
         Assert.False(actual.LastFullscreen);
         Assert.Equal("Ctrl+N", actual.KeyBindings["NextPage"]);
         Assert.Equal("PageUp", actual.KeyBindings["PreviousPage"]);
+        Assert.Equal("Ctrl+R", actual.KeyBindings["ResetWidth"]);
+        Assert.Equal("Add", actual.KeyBindings["ZoomIn"]);
+        Assert.Equal("Subtract", actual.KeyBindings["ZoomOut"]);
         Assert.Equal(.9, actual.Books["book"].WidthRatio);
         Assert.Equal(PageClassificationOverride.Spread, actual.Books["book"].Classifications["page"]);
         Assert.Equal(expected.Books["book"].Position, actual.Books["book"].Position);
@@ -72,7 +75,8 @@ public sealed class PreferencesStoreTests
         Assert.Equal(1, preferences.PreferredPageWidthRatio);
         Assert.Equal(.6, preferences.ScrollSpeed);
         Assert.True(preferences.LastFullscreen);
-        Assert.Equal(9, preferences.KeyBindings.Count);
+        Assert.Equal(10, preferences.KeyBindings.Count);
+        Assert.Equal("R", preferences.KeyBindings["ResetWidth"]);
         Assert.Equal(90, preferences.SpaceScrollPercent);
         Assert.Equal("pt-BR", preferences.Language);
         Assert.Equal(PageClassificationOverride.Auto, preferences.PageClassification);
@@ -85,12 +89,14 @@ public sealed class PreferencesStoreTests
     {
         using var directory = new TemporaryPreferencesDirectory();
         await File.WriteAllTextAsync(directory.PreferencesPath,
-            """{"SchemaVersion":1,"KeyBindings":{"NextPage":"F12","Open":"Ctrl+P"},"Books":{"book":{"WidthRatio":1.2,"Classifications":{"page":2},"Position":{"PageKey":"page","PageIndex":4,"RelativeX":0.2,"RelativeY":0.8}}}}""", Token);
+            """{"SchemaVersion":1,"KeyBindings":{"NextPage":"F12","Open":"Ctrl+P","Overview":"R"},"Books":{"book":{"WidthRatio":1.2,"Classifications":{"page":2},"Position":{"PageKey":"page","PageIndex":4,"RelativeX":0.2,"RelativeY":0.8}}}}""", Token);
         var store = new JsonReadingPreferencesStore(directory.Path);
         var loaded = await store.LoadAsync(Token);
         Assert.Null(store.LastWarning);
         Assert.Equal("F12", loaded.KeyBindings["NextPage"]);
         Assert.Equal("Ctrl+P", loaded.KeyBindings["Open"]);
+        Assert.Equal("R", loaded.KeyBindings["Overview"]);
+        Assert.NotEqual("R", loaded.KeyBindings["ResetWidth"]);
         Assert.Equal(4, loaded.Books["book"].Position!.PageIndex);
         Assert.Equal(1.2, loaded.Books["book"].WidthRatio);
         Assert.Equal(PageClassificationOverride.Spread, loaded.Books["book"].Classifications["page"]);

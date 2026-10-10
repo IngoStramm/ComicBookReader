@@ -14,6 +14,7 @@ public sealed class ReaderOptionsTests
         Assert.Equal(PageClassificationOverride.Auto, profile.PageClassification);
         Assert.Equal("F12", profile.KeyBindings["ToggleToolbar"]);
         Assert.Equal("Ctrl+P", profile.KeyBindings["Preferences"]);
+        Assert.Equal("R", profile.KeyBindings["ResetWidth"]);
     }
 
     [Theory]
@@ -50,6 +51,20 @@ public sealed class ReaderOptionsTests
         Assert.Equal("Ctrl+P", profile.KeyBindings["Open"]);
         Assert.NotEqual("F12", profile.KeyBindings["ToggleToolbar"]);
         Assert.NotEqual("Ctrl+P", profile.KeyBindings["Preferences"]);
+        Assert.Equal(profile.KeyBindings.Count, profile.KeyBindings.Values.Distinct().Count());
+    }
+
+    [Fact]
+    public void DefaultWidthShortcutDoesNotReplaceAnOlderCustomBinding()
+    {
+        var profile = PreferencesResolver.Validate(new ReaderPreferences
+        {
+            KeyBindings = new() { ["Overview"] = "R", ["ZoomIn"] = "Add", ["ZoomOut"] = "Subtract" }
+        });
+        Assert.Equal("R", profile.KeyBindings["Overview"]);
+        Assert.Equal("Add", profile.KeyBindings["ZoomIn"]);
+        Assert.Equal("Subtract", profile.KeyBindings["ZoomOut"]);
+        Assert.NotEqual("R", profile.KeyBindings["ResetWidth"]);
         Assert.Equal(profile.KeyBindings.Count, profile.KeyBindings.Values.Distinct().Count());
     }
 }

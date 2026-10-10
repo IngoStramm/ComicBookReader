@@ -33,9 +33,9 @@
         <TextBlock x:Name="PageLabel" Text="Nenhuma HQ aberta" VerticalAlignment="Center" Margin="12,0" />
         <Button Content="›" Click="NextClicked" ToolTip="{DynamicResource NextPageTip}" AutomationProperties.Name="{DynamicResource NextPage}" />
         <Button Content="{DynamicResource OverviewButton}" Click="OverviewClicked" ToolTip="{DynamicResource OverviewTip}" />
-        <Button Content="−" Click="SmallerClicked" AutomationProperties.Name="{DynamicResource ZoomOut}" />
+        <Button Content="−" Click="SmallerClicked" ToolTip="{DynamicResource ZoomOutTip}" AutomationProperties.Name="{DynamicResource ZoomOut}" />
         <TextBlock x:Name="WidthLabel" Text="Largura: 100%" VerticalAlignment="Center" Margin="6,0" />
-        <Button Content="+" Click="LargerClicked" AutomationProperties.Name="{DynamicResource ZoomIn}" />
+        <Button Content="+" Click="LargerClicked" ToolTip="{DynamicResource ZoomInTip}" AutomationProperties.Name="{DynamicResource ZoomIn}" />
         <ComboBox x:Name="ClassificationChoice" SelectedIndex="0" SelectionChanged="ClassificationChanged"
                   DropDownClosed="ClassificationClosed"
                   Margin="8,0" MinWidth="110" VerticalContentAlignment="Center" Foreground="#151719" AutomationProperties.Name="{DynamicResource Classification}" ToolTip="{DynamicResource Classification}">
@@ -45,7 +45,7 @@
         </ComboBox>
         <Button Content="{DynamicResource FullscreenButton}" Click="FullscreenClicked" ToolTip="{DynamicResource FullscreenTip}" />
         <Button Content="{DynamicResource PreferencesButton}" Click="PreferencesClicked" ToolTip="{DynamicResource PreferencesTip}" />
-        <Button x:Name="DefaultWidthButton" Content="{DynamicResource ResetWidthButton}" Click="ResetWidthClicked" ToolTip="{DynamicResource ResetWidth}" />
+        <Button x:Name="DefaultWidthButton" Content="{DynamicResource ResetWidthButton}" Click="ResetWidthClicked" ToolTip="{DynamicResource ResetWidthTip}" />
         <Button Content="{DynamicResource ToolbarButton}" Click="HideToolbarClicked" ToolTip="{DynamicResource ToggleToolbarTip}" />
       </WrapPanel>
     </Border>

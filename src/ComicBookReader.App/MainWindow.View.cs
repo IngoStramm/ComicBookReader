@@ -48,7 +48,11 @@ public partial class MainWindow
         text = new UiText(language);
         Language = System.Windows.Markup.XmlLanguage.GetLanguage(language);
         foreach (string key in text.Keys) Resources[key] = text[key];
-        foreach (var binding in input.Bindings) Resources[binding.Key + "Tip"] = $"{text[binding.Key]} ({binding.Value})";
+        foreach (var binding in input.Bindings)
+        {
+            string shortcut = binding.Value switch { "OemPlus" => "+", "OemMinus" => "−", _ => binding.Value };
+            Resources[binding.Key + "Tip"] = $"{text[binding.Key]} ({shortcut})";
+        }
         Resources["ToolbarHint"] = $"{input.Bindings["ToggleToolbar"]} · {text["ToggleToolbar"]}    {input.Bindings["Preferences"]} · {text["Preferences"]}";
     }
 }

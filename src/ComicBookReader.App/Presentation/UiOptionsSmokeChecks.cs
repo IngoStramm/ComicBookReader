@@ -37,6 +37,35 @@ internal static class UiOptionsSmokeChecks
         ReadingSmokeChecks.RaiseKey((UIElement)FocusManager.GetFocusedElement(window), Key.V, true);
         Require(window.Reader.State.Mode == Core.Reading.ReaderMode.Overview, "Keyboard shortcut failed after default width.");
         ReadingSmokeChecks.RaiseKey(window, Key.V, true);
+        window.Reader.SetWidthRatio(1.3);
+        ReadingSmokeChecks.RaiseKey(window, Key.R, true);
+        Require(window.Reader.WidthRatio == profile.PreferredPageWidthRatio &&
+            window.Reader.CapturePreferences().Books[window.Reader.State.Book!.BookId].WidthRatio is null,
+            "Default width shortcut did not remove the book override.");
+        foreach (var pair in new[] { (Key.OemPlus, Key.OemMinus), (Key.Add, Key.Subtract) })
+        {
+            ReadingSmokeChecks.RaiseKey(window, pair.Item1, true);
+            Require(Math.Abs(window.Reader.WidthRatio - profile.PreferredPageWidthRatio - .05) < .0001,
+                "Increase width shortcut did not change width by five percentage points.");
+            ReadingSmokeChecks.RaiseKey(window, pair.Item2, true);
+            Require(Math.Abs(window.Reader.WidthRatio - profile.PreferredPageWidthRatio) < .0001,
+                "Decrease width shortcut did not restore width.");
+        }
+        var customWidthBindings = new Dictionary<string, string>(profile.KeyBindings)
+        { ["ZoomIn"] = "F6", ["ZoomOut"] = "F7", ["ResetWidth"] = "F8" };
+        window.ApplyUserPreferences(window.Reader.CapturePreferences() with { KeyBindings = customWidthBindings });
+        ReadingSmokeChecks.RaiseKey(window, Key.Add, true);
+        Require(window.Reader.WidthRatio == profile.PreferredPageWidthRatio, "Numpad alias ignored a custom width shortcut.");
+        ReadingSmokeChecks.RaiseKey(window, Key.F6, true);
+        Require(Math.Abs(window.Reader.WidthRatio - profile.PreferredPageWidthRatio - .05) < .0001, "Custom increase width shortcut failed.");
+        ReadingSmokeChecks.RaiseKey(window, Key.F7, true);
+        Require(Math.Abs(window.Reader.WidthRatio - profile.PreferredPageWidthRatio) < .0001, "Custom decrease width shortcut failed.");
+        window.Reader.SetWidthRatio(1.3);
+        ReadingSmokeChecks.RaiseKey(window, Key.R, true);
+        Require(window.Reader.WidthRatio == 1.3, "Reset shortcut ignored the user's customization.");
+        ReadingSmokeChecks.RaiseKey(window, Key.F8, true);
+        Require(window.Reader.WidthRatio == profile.PreferredPageWidthRatio, "Custom default width shortcut failed.");
+        window.ApplyUserPreferences(window.Reader.CapturePreferences() with { KeyBindings = profile.KeyBindings });
         var activation = ReadingSmokeChecks.RaiseKey(window.DefaultWidthButton, Key.Space, true);
         Require(!activation.Handled, "Space did not remain available to activate a focused button.");
 

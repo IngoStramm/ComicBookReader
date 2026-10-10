@@ -67,13 +67,13 @@ public sealed class ReaderInput : IDisposable
         string chord = (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) ? "Ctrl+" : "") +
             (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) ? "Shift+" : "") +
             (Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) ? "Alt+" : "") + keyName;
-        foreach (var binding in Bindings)
+        string? selectedCommand = FindCommand(chord);
+        if (selectedCommand is not null)
         {
-            if (!string.Equals(binding.Value, chord, StringComparison.OrdinalIgnoreCase)) continue;
-            if (editing && binding.Key is not ("ToggleToolbar" or "Preferences" or "Open" or "Fullscreen"))
+            if (editing && selectedCommand is not ("ToggleToolbar" or "Preferences" or "Open" or "Fullscreen"))
             { Stop(); return; }
             e.Handled = true;
-            if (!e.IsRepeat) { Stop(); command(binding.Key); }
+            if (!e.IsRepeat) { Stop(); command(selectedCommand); }
             return;
         }
         if (key == Key.Space && Keyboard.Modifiers == ModifierKeys.None)
@@ -82,6 +82,20 @@ public sealed class ReaderInput : IDisposable
             e.Handled = true;
             if (!e.IsRepeat) { Stop(); command("ScrollForward"); }
         }
+    }
+
+    internal string? FindCommand(string chord)
+    {
+        string? exact = Bindings.FirstOrDefault(binding => string.Equals(binding.Value, chord, StringComparison.OrdinalIgnoreCase)).Key;
+        if (exact is not null) return exact;
+        string? alias = chord switch
+        {
+            "Add" or "Shift+OemPlus" => "ZoomIn",
+            "Subtract" => "ZoomOut",
+            _ => null
+        };
+        string defaultKey = alias == "ZoomIn" ? "OemPlus" : "OemMinus";
+        return alias is not null && Bindings.TryGetValue(alias, out string? binding) && binding == defaultKey ? alias : null;
     }
 
     private static bool IsButton(DependencyObject? source)
