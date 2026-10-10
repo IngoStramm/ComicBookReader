@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -39,7 +40,7 @@ public sealed class ReaderInput : IDisposable
 
     private void KeyDown(object sender, KeyEventArgs e)
     {
-        if (e.OriginalSource is TextBoxBase or Selector) { Stop(); return; }
+        if (IsEditingControl(e.OriginalSource as DependencyObject)) { Stop(); return; }
         Key key = e.Key == Key.System ? e.SystemKey : e.Key;
         if (Direction(key) is { } direction)
         {
@@ -63,8 +64,24 @@ public sealed class ReaderInput : IDisposable
             if (!string.Equals(binding.Value, chord, StringComparison.OrdinalIgnoreCase)) continue;
             e.Handled = true;
             if (!e.IsRepeat) { Stop(); command(binding.Key); }
-            break;
+            return;
         }
+        if (key == Key.Space && Keyboard.Modifiers == ModifierKeys.None)
+        {
+            e.Handled = true;
+            if (!e.IsRepeat) { Stop(); command("ScrollForward"); }
+        }
+    }
+
+    private static bool IsEditingControl(DependencyObject? source)
+    {
+        while (source is not null)
+        {
+            if (source is TextBoxBase or Selector or ComboBoxItem) return true;
+            source = LogicalTreeHelper.GetParent(source) ??
+                (source is Visual ? VisualTreeHelper.GetParent(source) : null);
+        }
+        return false;
     }
 
     private void KeyUp(object sender, KeyEventArgs e)

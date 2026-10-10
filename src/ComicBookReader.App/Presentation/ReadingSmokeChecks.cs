@@ -24,10 +24,62 @@ internal static class ReadingSmokeChecks
                 restored.Classifications.SequenceEqual(expected.Classifications), "Restart lost reading preferences.");
         }
         await reader.NavigateAsync(-100);
-        RaiseKey(window, Key.PageDown, true);
-        await WaitForPageAsync(window, 1, "Page Down did not advance the page.");
+        var pageKey = RaiseKey(window, Key.PageDown, true);
+        await WaitForPageAsync(window, 1,
+            $"Page Down did not advance the page (handled={pageKey.Handled}, source={pageKey.OriginalSource?.GetType().Name}, modifiers={Keyboard.Modifiers}, mode={reader.State.Mode}).");
         RaiseKey(window, Key.PageUp, true);
         await WaitForPageAsync(window, 0, "Page Up did not return to the previous page.");
+        reader.SetWidthRatio(1);
+        reader.ScrollBy(0, -double.MaxValue);
+        RaiseKey(window, Key.Space, true);
+        await WaitForAsync(() => reader.State.OffsetYDip > 0, "Space did not scroll down.");
+        Require(reader.State.PresentedIndex == 0 &&
+            Math.Abs(reader.State.OffsetYDip - .9 * window.Viewport.ActualHeight) < .001,
+            "Space skipped a page or lost viewport overlap.");
+        reader.ScrollBy(0, reader.State.Layout!.MaxOffsetYDip - reader.State.OffsetYDip - 10);
+        RaiseKey(window, Key.Space, true);
+        await WaitForAsync(() => reader.State.OffsetYDip == reader.State.Layout!.MaxOffsetYDip,
+            "Space did not show the bottom of the page.");
+        Require(reader.State.PresentedIndex == 0, "Space skipped the bottom of the current page.");
+        RaiseKey(window, Key.Space, true);
+        await WaitForPageAsync(window, 1, "Space at the bottom did not advance the page.");
+        await reader.NavigateAsync(-1);
+        reader.ScrollBy(0, -double.MaxValue);
+
+        reader.SetWidthRatio(1.5);
+        reader.ScrollBy(-double.MaxValue, 0);
+        window.ClassificationChoice.IsDropDownOpen = true;
+        await Task.Delay(50);
+        RaiseKey((UIElement)window.ClassificationChoice.Items[0], Key.Right, true);
+        Require(!reader.HasActiveDirections, "An arrow inside the classification control scrolled the page.");
+        window.ClassificationChoice.IsDropDownOpen = false;
+        await WaitForAsync(() => FocusManager.GetFocusedElement(window) == window.Viewport,
+            "Closing the classification selector did not restore reading focus.");
+        RaiseKey(window.Viewport, Key.Right, true);
+        await Task.Delay(150);
+        RaiseKey(window.Viewport, Key.Right, false);
+        Require(reader.State.OffsetXDip > 0, "Right arrow did not scroll a wide page.");
+        RaiseKey(window.Viewport, Key.Left, true);
+        await Task.Delay(300);
+        RaiseKey(window.Viewport, Key.Left, false);
+        Require(reader.State.OffsetXDip == 0 && reader.State.PresentedIndex == 0,
+            "Left arrow did not return to the edge of the same page.");
+
+        FocusManager.SetFocusedElement(window, window.ClassificationChoice);
+        window.ClassificationChoice.IsDropDownOpen = true;
+        window.ClassificationChoice.IsDropDownOpen = false;
+        await WaitForAsync(() => FocusManager.GetFocusedElement(window) == window.Viewport,
+            "Closing the classification selector did not restore reading focus.");
+        RaiseKey((UIElement)FocusManager.GetFocusedElement(window), Key.Right, true);
+        await Task.Delay(150);
+        RaiseKey(window, Key.Right, false);
+        Require(reader.State.OffsetXDip > 0, "Right arrow stopped working after closing the selector.");
+        reader.ScrollBy(double.MaxValue, 0);
+        RaiseKey(window.Viewport, Key.Right, true);
+        await Task.Delay(100);
+        RaiseKey(window.Viewport, Key.Right, false);
+        Require(reader.State.PresentedIndex == 0 && reader.State.OffsetXDip == reader.State.Layout!.MaxOffsetXDip,
+            "Right arrow at the page edge changed the page.");
         reader.SetWidthRatio(1);
         reader.ScrollBy(0, -double.MaxValue);
         var originalLayout = reader.State.Layout;
@@ -75,8 +127,9 @@ internal static class ReadingSmokeChecks
         reader.SetClassification(PageClassificationOverride.Spread);
         reader.ScrollBy(220, 180);
         var before = reader.State;
-        RaiseKey(window, Key.V, true);
-        Require(reader.State.Mode == ReaderMode.Overview, "V did not show the full image.");
+        var overviewKey = RaiseKey(window, Key.V, true);
+        Require(reader.State.Mode == ReaderMode.Overview,
+            $"V did not show the full image (handled={overviewKey.Handled}, source={overviewKey.OriginalSource?.GetType().Name}, modifiers={Keyboard.Modifiers}, mode={reader.State.Mode}).");
         RaiseKey(window, Key.V, true);
         Require(reader.State.Layout == before.Layout && reader.State.OffsetXDip == before.OffsetXDip &&
             reader.State.OffsetYDip == before.OffsetYDip, "Overview did not restore exact reading geometry.");
@@ -103,6 +156,8 @@ internal static class ReadingSmokeChecks
             OverlayHiddenWithoutReframe = true,
             RoutedArrowScrollAndRelease = true,
             PageNavigationKeysPassed = true,
+            SpaceScrollAndAdvancePassed = true,
+            HorizontalArrowsAndSelectorFocusPassed = true,
             FocusLossStopsScroll = true,
             EdgeKeepsPage = true,
             SpreadResolutionsMatch = true,
@@ -121,10 +176,12 @@ internal static class ReadingSmokeChecks
         };
     }
 
-    internal static void RaiseKey(MainWindow window, Key key, bool down)
+    internal static KeyEventArgs RaiseKey(UIElement source, Key key, bool down)
     {
-        window.RaiseEvent(new KeyEventArgs(Keyboard.PrimaryDevice, PresentationSource.FromVisual(window), 0, key)
-        { RoutedEvent = down ? Keyboard.PreviewKeyDownEvent : Keyboard.PreviewKeyUpEvent });
+        var args = new KeyEventArgs(Keyboard.PrimaryDevice, PresentationSource.FromVisual(source), 0, key)
+        { RoutedEvent = down ? Keyboard.PreviewKeyDownEvent : Keyboard.PreviewKeyUpEvent };
+        source.RaiseEvent(args);
+        return args;
     }
 
     private static void Require(bool condition, string message)
@@ -132,12 +189,15 @@ internal static class ReadingSmokeChecks
         if (!condition) throw new InvalidOperationException(message);
     }
 
-    private static async Task WaitForPageAsync(MainWindow window, int index, string message)
+    private static Task WaitForPageAsync(MainWindow window, int index, string message) =>
+        WaitForAsync(() => window.Reader.State.Mode == ReaderMode.Reading && window.Reader.State.PresentedIndex == index, message);
+
+    private static async Task WaitForAsync(Func<bool> condition, string message)
     {
         var timer = Stopwatch.StartNew();
         while (timer.Elapsed < TimeSpan.FromSeconds(3))
         {
-            if (window.Reader.State.Mode == ReaderMode.Reading && window.Reader.State.PresentedIndex == index) return;
+            if (condition()) return;
             await Task.Delay(10);
         }
         throw new InvalidOperationException(message);

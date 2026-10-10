@@ -23,6 +23,16 @@ public sealed partial class ReaderController
     public void ReleaseDirection(ScrollDirection direction) => directions.Remove(direction);
     public void Deactivate() => directions.Clear();
 
+    public Task ScrollForwardAsync(CancellationToken cancellationToken = default)
+    {
+        Deactivate();
+        if (State.Mode == ReaderMode.Overview) return NavigateAsync(1, cancellationToken);
+        if (State.Mode != ReaderMode.Reading || State.Layout is not { } layout) return Task.CompletedTask;
+        if (State.OffsetYDip >= layout.MaxOffsetYDip) return NavigateAsync(1, cancellationToken);
+        ScrollBy(0, viewport.HeightDip * .9);
+        return Task.CompletedTask;
+    }
+
     public void AdvanceFrame(double elapsedSeconds)
     {
         if (!double.IsFinite(elapsedSeconds) || elapsedSeconds < 0)

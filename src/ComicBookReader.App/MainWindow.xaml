@@ -15,7 +15,7 @@
   </Window.Resources>
   <Grid x:Name="Root">
     <Canvas x:Name="Viewport" Margin="12" ClipToBounds="True" Focusable="True"
-            Background="#151719" AutomationProperties.Name="Área de leitura">
+            Background="#151719" MouseLeftButtonDown="ViewportClicked" AutomationProperties.Name="Área de leitura">
       <Image x:Name="Page" Stretch="Fill" IsHitTestVisible="False"
              RenderOptions.BitmapScalingMode="HighQuality" />
     </Canvas>
@@ -36,6 +36,7 @@
         <TextBlock x:Name="WidthLabel" Text="Largura: 100%" VerticalAlignment="Center" Margin="6,0" />
         <Button Content="+" Click="LargerClicked" AutomationProperties.Name="Aumentar largura de leitura" />
         <ComboBox x:Name="ClassificationChoice" SelectedIndex="0" SelectionChanged="ClassificationChanged"
+                  DropDownClosed="ClassificationClosed"
                   Margin="8,0" MinWidth="110" VerticalContentAlignment="Center" AutomationProperties.Name="Tipo de página">
           <ComboBoxItem Content="Automática" />
           <ComboBoxItem Content="Simples" />

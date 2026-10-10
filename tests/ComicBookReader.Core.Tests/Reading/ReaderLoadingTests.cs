@@ -67,6 +67,9 @@ public sealed class ReaderLoadingTests
         Assert.Equal(ReaderMode.Loading, reader.State.Mode);
         reader.PressDirection(ScrollDirection.Down);
         Assert.False(reader.HasActiveDirections);
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(ReaderMode.Loading, reader.State.Mode);
+        Assert.Equal(0, reader.State.PresentedIndex);
         pending.SetResult(new FakeSession("second"));
         await opening;
     }

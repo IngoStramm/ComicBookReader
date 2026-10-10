@@ -110,6 +110,11 @@ public partial class MainWindow : Window
         {
             case "NextPage": await NavigateAsync(1); break;
             case "PreviousPage": await NavigateAsync(-1); break;
+            case "ScrollForward":
+                PersistProgress();
+                await saves.FlushAsync();
+                await Reader.ScrollForwardAsync();
+                break;
             case "Fullscreen": ToggleFullscreen(); break;
             case "Escape": if (fullscreen) SetFullscreen(false); break;
             case "Open": OpenClicked(this, new RoutedEventArgs()); break;
@@ -132,6 +137,8 @@ public partial class MainWindow : Window
         if (!updatingControls && ClassificationChoice is not null)
             Reader.SetClassification((PageClassificationOverride)ClassificationChoice.SelectedIndex);
     }
+    private void ClassificationClosed(object? sender, EventArgs e) => Viewport.Focus();
+    private void ViewportClicked(object sender, MouseButtonEventArgs e) => Viewport.Focus();
     private void ResetWidthClicked(object sender, RoutedEventArgs e) { Reader.ResetBookWidth(); Viewport.Focus(); }
     private void PreferencesClicked(object sender, RoutedEventArgs e)
     {

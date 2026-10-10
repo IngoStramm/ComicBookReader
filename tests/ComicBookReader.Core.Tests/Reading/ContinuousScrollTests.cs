@@ -52,6 +52,32 @@ public sealed class ContinuousScrollTests
         Assert.Equal(30, reader.State.OffsetYDip);
     }
 
+    [Theory]
+    [InlineData(.5, 0)]
+    [InlineData(1, 0)]
+    [InlineData(1.5, 30)]
+    public async Task HorizontalArrowsMoveOnlyWithWidthOverflowAndNeverNavigate(double width, double movement)
+    {
+        await using var reader = await CreateReader();
+        reader.SetWidthRatio(width);
+        reader.ScrollBy(-double.MaxValue, 0);
+        double y = reader.State.OffsetYDip;
+        reader.PressDirection(ScrollDirection.Right);
+        reader.AdvanceFrame(.05);
+        Assert.Equal(movement, reader.State.OffsetXDip);
+        Assert.Equal(y, reader.State.OffsetYDip);
+        reader.ScrollBy(double.MaxValue, 0);
+        reader.AdvanceFrame(.05);
+        Assert.Equal(reader.State.Layout!.MaxOffsetXDip, reader.State.OffsetXDip);
+        Assert.Equal(0, reader.State.PresentedIndex);
+        reader.ReleaseDirection(ScrollDirection.Right);
+        reader.ScrollBy(-double.MaxValue, 0);
+        reader.PressDirection(ScrollDirection.Left);
+        reader.AdvanceFrame(.05);
+        Assert.Equal(0, reader.State.OffsetXDip);
+        Assert.Equal(0, reader.State.PresentedIndex);
+    }
+
     private static async Task<ReaderController> CreateReader()
     {
         var reader = new ReaderController(new Opener());
