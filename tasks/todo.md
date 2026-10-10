@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 30 tarefas planejadas; nenhuma implementada. Criado em 2026-10-09.
+Status: 1/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -8,14 +8,14 @@ Os modelos indicados são recomendações para a execução. A raiz concentra de
 
 <a id="t01"></a>
 
-## [ ] T01: Preparar o SDK x64
+## [x] T01: Preparar o SDK x64
 
 **Descrição:** Disponibilizar o SDK .NET 10 x64 necessário para a implementação e confirmar a base de pacotes da spec. Esta tarefa só será executada na fase de construção.
 
 **Critérios de aceitação:**
 
-- [ ] O executável x64 lista um SDK 10 estável; o host x86 do PATH não é usado.
-- [ ] Patch do SDK, arquitetura e versões escolhidas ficam registrados; qualquer incompatibilidade é resolvida antes do scaffold.
+- [x] O executável x64 lista um SDK 10 estável; o host x86 do PATH não é usado.
+- [x] Patch do SDK, arquitetura e versões escolhidas ficam registrados; qualquer incompatibilidade é resolvida antes do scaffold.
 
 **Verificação:** [V-SDK](plan.md#v-sdk); conferir as fontes oficiais ao obter o SDK e registrar sua versão.
 

@@ -59,9 +59,9 @@ Modelos/validação em `src/ComicBookReader.Core/Preferences`; store em `src/Com
 Na raiz, após preparar os projetos:
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" build ComicBookReader.slnx --configuration Release -warnaserror
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj --configuration Release
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project tests/ComicBookReader.Integration.Tests/ComicBookReader.Integration.Tests.csproj --configuration Release
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" build ComicBookReader.slnx --configuration Release -warnaserror
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj --configuration Release
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project tests/ComicBookReader.Integration.Tests/ComicBookReader.Integration.Tests.csproj --configuration Release
 ```
 
 ## Estratégia de testes e critérios de aceitação

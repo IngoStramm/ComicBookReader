@@ -96,14 +96,14 @@ Os quatro módulos lógicos não exigem quatro assemblies separados. Core concen
 Comandos previstos para executar na raiz do projeto, após disponibilizar o SDK x64 e criar os projetos. O caminho explícito evita usar o host x86 encontrado no PATH.
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" --list-sdks
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" restore ComicBookReader.slnx
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" build ComicBookReader.slnx --configuration Release --no-restore -warnaserror
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" format ComicBookReader.slnx --verify-no-changes --no-restore
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj --configuration Release
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project tests/ComicBookReader.Integration.Tests/ComicBookReader.Integration.Tests.csproj --configuration Release
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Debug
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" publish src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/win-x64
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" --list-sdks
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" restore ComicBookReader.slnx
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" build ComicBookReader.slnx --configuration Release --no-restore -warnaserror
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" format ComicBookReader.slnx --verify-no-changes --no-restore
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj --configuration Release
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project tests/ComicBookReader.Integration.Tests/ComicBookReader.Integration.Tests.csproj --configuration Release
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Debug
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" publish src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/win-x64
 ```
 
 Executar projetos de teste pela CLI é documentado pelo [xUnit](https://xunit.net/docs/getting-started/v3/getting-started). Validar esses comandos na preparação dos projetos; não foram executados aqui porque há somente documentos.

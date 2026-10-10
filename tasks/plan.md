@@ -97,61 +97,61 @@ Executar da raiz `C:\Users\ingos\Documents\LeitorHQ`. Os identificadores V-* de 
 ### V-SDK
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" --list-sdks
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" --list-sdks
 ```
 
 ### V-RESTORE
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" restore ComicBookReader.slnx
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" restore ComicBookReader.slnx
 ```
 
 ### V-BUILD
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" build ComicBookReader.slnx --configuration Release --no-restore -warnaserror
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" build ComicBookReader.slnx --configuration Release --no-restore -warnaserror
 ```
 
 ### V-FORMAT
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" format ComicBookReader.slnx --verify-no-changes --no-restore
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" format ComicBookReader.slnx --verify-no-changes --no-restore
 ```
 
 ### V-CORE
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj --configuration Release
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj --configuration Release
 ```
 
 ### V-INTEGRATION
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project tests/ComicBookReader.Integration.Tests/ComicBookReader.Integration.Tests.csproj --configuration Release
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project tests/ComicBookReader.Integration.Tests/ComicBookReader.Integration.Tests.csproj --configuration Release
 ```
 
 ### V-APP
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Debug
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Debug
 ```
 
 ### V-LOCK-GENERATE
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" restore ComicBookReader.slnx -p:RestorePackagesWithLockFile=true
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" restore ComicBookReader.slnx -p:RestorePackagesWithLockFile=true
 ```
 
 ### V-LOCK-CHECK
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" restore ComicBookReader.slnx --locked-mode -p:RestorePackagesWithLockFile=true
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" restore ComicBookReader.slnx --locked-mode -p:RestorePackagesWithLockFile=true
 ```
 
 ### V-PUBLISH
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" publish src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/win-x64 -p:RestoreLockedMode=true -p:RestorePackagesWithLockFile=true
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" publish src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/win-x64 -p:RestoreLockedMode=true -p:RestorePackagesWithLockFile=true
 ```
 
 Antes de T03, a solução ainda não contém projetos; um restore vazio valida somente o arquivo da solução. Não executar runners vazios como evidência de testes. V-CORE começa em T05 e V-INTEGRATION em T06/T07, quando existirem casos reais.

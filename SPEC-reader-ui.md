@@ -67,9 +67,9 @@ Estado geométrico usa tipos fornecidos por layout; dados/recursos de imagem usa
 Janela/controles em `src/ComicBookReader.App`; estado testável em `src/ComicBookReader.Core/Reading`; seguir o [estilo comum](SPEC.md#estilo-de-código). Nomes de comandos expressam intenção, e rótulos não expõem detalhes internos de arquivos ou geometria.
 
 ```powershell
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" build ComicBookReader.slnx --configuration Release -warnaserror
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj --configuration Release
-rtk proxy "C:\Program Files\dotnet\dotnet.exe" run --project src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Debug
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" build ComicBookReader.slnx --configuration Release -warnaserror
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project tests/ComicBookReader.Core.Tests/ComicBookReader.Core.Tests.csproj --configuration Release
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Debug
 ```
 
 ## Estratégia de testes e critérios de aceitação
