@@ -21,6 +21,7 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
 
     public async Task OpenAsync(string path, CancellationToken cancellationToken = default)
     {
+        Deactivate();
         CancellationTokenSource request;
         int current;
         lock (gate)
@@ -47,6 +48,7 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
                 previous = session;
                 previousImage = State.Image;
                 session = candidate;
+                overview = null;
                 State = new ReaderState
                 {
                     Mode = ReaderMode.Reading, Book = candidate.Book, Pages = candidate.Pages,
@@ -94,16 +96,18 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
     {
         // Validate even when no page is open.
         calculator.CalculateReading(new PixelSize(1, 1), value, PageKind.Single, WidthRatio);
+        var previousViewport = viewport;
         viewport = value;
         if (State.Image is null) return;
-        var layout = ReadingLayout(State.Image);
-        State = State with { Layout = layout, OffsetXDip = Math.Clamp(State.OffsetXDip, 0, layout.MaxOffsetXDip),
-            OffsetYDip = Math.Clamp(State.OffsetYDip, 0, layout.MaxOffsetYDip) };
+        if (State.Mode == ReaderMode.Overview)
+            State = State with { Layout = calculator.CalculateOverview(State.Image.Size, viewport), OffsetXDip = 0, OffsetYDip = 0 };
+        else Reframe(State.Layout!, State.OffsetXDip, State.OffsetYDip, previousViewport, null, null);
         Changed?.Invoke();
     }
 
     public async ValueTask DisposeAsync()
     {
+        Deactivate();
         IComicSession? previous;
         lock (gate)
         {

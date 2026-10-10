@@ -45,3 +45,7 @@ RED observado por Storage/AtomicFileWriter ausentes. GREEN: 41 testes Integratio
 ## T09
 
 Três casos reais RAR passaram dentro de 41 Integration: RAR4/RAR5 não sólidos e RAR5 sólido via Reader sequencial. SHA e cinco pixels JPEG independentes conferidos, arquivo liberado/imutável, JPEG materializado lido duas vezes. Fixtures MIT e limites do caso documentados.
+
+## T13
+
+RED API ausente; GREEN 107 testes Core. Deslocamento 600 DIPs em 30/60/120Hz; oposição, diagonal, pausa 50ms, liberação e bordas verificados. App build Release sem warnings.

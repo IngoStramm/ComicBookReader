@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 11/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 12/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -363,15 +363,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t13"></a>
 
-## [ ] T13: Calcular rolagem contínua no Core
+## [x] T13: Calcular rolagem contínua no Core
 
 **Descrição:** Adicionar direção pressionada e avanço temporal independente de eventos de repetição do teclado. Implementar clamp, diagonal, oposição e pausa.
 
 **Critérios de aceitação:**
 
-- [ ] 30/60/120 Hz por 1 s produzem deslocamento equivalente até 1 DIP, sem borda.
-- [ ] Direções opostas anulam movimento; diagonal normalizada; intervalos são limitados a 50 ms.
-- [ ] Soltar/desativar limpa estado e bordas nunca alteram o índice, inclusive após nova pressão.
+- [x] 30/60/120 Hz por 1 s produzem deslocamento equivalente até 1 DIP, sem borda.
+- [x] Direções opostas anulam movimento; diagonal normalizada; intervalos são limitados a 50 ms.
+- [x] Soltar/desativar limpa estado e bordas nunca alteram o índice, inclusive após nova pressão.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-BUILD](plan.md#v-build); verificar UI-01/02/03 com relógio simulado.
 
