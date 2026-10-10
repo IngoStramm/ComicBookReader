@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 9/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 10/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -516,15 +516,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: defaults e validação são co
 
 <a id="t18"></a>
 
-## [ ] T18: Persistir JSON com recuperação
+## [x] T18: Persistir JSON com recuperação
 
 **Descrição:** Implementar o store em LOCALAPPDATA com DTO versionado, temporário no mesmo diretório, substituição e último backup válido.
 
 **Critérios de aceitação:**
 
-- [ ] Salvar/carregar recupera todos os dados de leitura sem escrever no Registro ou na HQ.
-- [ ] Falha antes da substituição preserva a última versão válida; JSON corrompido é preservado e tenta backup/default.
-- [ ] Versão futura incompatível não é sobrescrita; IO vira StorageUnavailable e cancelamento continua cancelamento.
+- [x] Salvar/carregar recupera todos os dados de leitura sem escrever no Registro ou na HQ.
+- [x] Falha antes da substituição preserva a última versão válida; JSON corrompido é preservado e tenta backup/default.
+- [x] Versão futura incompatível não é sobrescrita; IO vira StorageUnavailable e cancelamento continua cancelamento.
 
 **Verificação:** [V-INTEGRATION](plan.md#v-integration) em diretórios temporários; [V-BUILD](plan.md#v-build); simular escrita interrompida e versão futura.
 
