@@ -4,7 +4,7 @@ Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imag
 
 ## Usar a versão local
 
-Abra `artifacts/win-x64-options/ComicBookReader.App.exe` para avaliar a atualização de preferências e interface. Mantenha os demais arquivos dessa pasta juntos. O pacote inclui o runtime .NET e o decoder nativo; não exige instalar o SDK. É uma versão para avaliação local, com validação visual de suavidade e de outros monitores/DPI pendente.
+Abra `artifacts/win-x64-drag/ComicBookReader.App.exe` para avaliar os atalhos de largura e o arraste da página. Mantenha os demais arquivos dessa pasta juntos. O pacote inclui o runtime .NET e o decoder nativo; não exige instalar o SDK. É uma versão para avaliação local, com validação visual de suavidade e de outros monitores/DPI pendente.
 
 Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou passar seu caminho como argumento ao executável. A primeira execução começa em tela cheia. F12 mostra/esconde a barra; o botão ☰ também a reabre. Mover o mouse sobre a imagem não revela os controles. Tab/Alt permitem acesso pelo teclado sem mudar o tamanho da página.
 
@@ -16,15 +16,18 @@ Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou pa
 | F12 / Ctrl+P | Mostrar/esconder a barra / abrir preferências. |
 | V | Página inteira; repetir restaura o ponto de leitura. |
 | F11 / Esc | Alternar tela cheia / sair da tela cheia. |
-| +/− na barra, teclas da linha superior ou Ctrl+roda | Ajustar a largura de leitura do livro. |
+| +/− na barra, teclas da linha superior ou numérico; Ctrl+roda | Ajustar a largura do livro em passos de 5 pontos percentuais. |
+| Segurar o botão esquerdo e mover o mouse | Arrastar a página em qualquer direção, respeitando suas bordas. |
 | Roda / Shift+roda | Rolar verticalmente / horizontalmente. |
 | Automática / Simples / Dupla | Escolher a classificação global, aplicada a todas as páginas/livros. |
 | Preferências | Largura, velocidade, passo do Espaço, classificação global, idioma e atalhos. |
-| Largura padrão | Remover o ajuste de largura do livro e usar o padrão global. |
+| R / Largura padrão | Remover o ajuste de largura do livro e usar o padrão global. |
 
 A largura é relativa à área de leitura, independentemente da resolução do scan. Paisagem sugere dupla; o ajuste manual corrige ilustrações horizontais. A imagem inteira é preservada. O atalho de visão completa não sobrescreve o progresso de leitura guardado.
 
 As setas laterais rolam quando a imagem ultrapassa a largura disponível. Fechar o seletor de classificação ou clicar na imagem devolve o foco à leitura. Espaço ignora repetição automática; se já estiver atribuído a um atalho personalizado, essa configuração tem prioridade. Na visão completa, Espaço avança à página seguinte.
+
+Os três atalhos de largura são configuráveis em Preferências. O padrão de aumento aceita a tecla `+` com Shift e o `+` numérico; o padrão de diminuição aceita `−` na linha superior e no numérico. Atalhos explícitos têm prioridade e os aliases numéricos só são usados enquanto o comando conserva seu padrão. Se um perfil antigo já usa R, o novo comando recebe uma combinação livre. Durante o arraste, a imagem acompanha o cursor mesmo fora da área de leitura até soltar o botão. Perder foco/captura, mudar tamanho/página ou usar um comando encerra o arraste; ele não troca de página nas bordas. Eixos sem overflow ficam imóveis.
 
 Os botões da barra devolvem o foco à leitura após suas ações. Quando um botão é selecionado pelo teclado, Espaço mantém sua ativação normal. Os campos numéricos aceitam inteiros, com controles de incremento e bloqueio de texto/colagem inválidos. Velocidade é exibida como porcentagem da altura por segundo; passo do Espaço vai de 10% a 100%. Português (Brasil) e English são aplicados ao salvar, sem reiniciar, e persistidos. A classificação antiga por imagem fica preservada no JSON para recuperação, mas o leitor usa a escolha global.
 
@@ -46,8 +49,8 @@ rtk proxy dotnet build ComicBookReader.slnx --configuration Release --no-restore
 rtk proxy dotnet run --project tests/ComicBookReader.Core.Tests --configuration Release --no-build
 rtk proxy dotnet run --project tests/ComicBookReader.Integration.Tests --configuration Release --no-build
 rtk proxy dotnet format ComicBookReader.slnx --verify-no-changes --no-restore
-rtk proxy powershell -NoProfile -File scripts/publish.ps1 -OutputDirectory artifacts/win-x64-options
-rtk proxy powershell -NoProfile -File scripts/verify-app.ps1 -Executable artifacts/win-x64-options/ComicBookReader.App.exe -EvidenceDirectory artifacts/reader-options-package-validation
+rtk proxy powershell -NoProfile -File scripts/publish.ps1 -OutputDirectory artifacts/win-x64-drag
+rtk proxy powershell -NoProfile -File scripts/verify-app.ps1 -Executable artifacts/win-x64-drag/ComicBookReader.App.exe -EvidenceDirectory artifacts/drag-package-validation
 ```
 
 `publish.ps1` aceita `-DotNet` para outro caminho do SDK e `-OutputDirectory` para uma pasta local (padrão `artifacts/win-x64`). Usa restore bloqueado e copia as licenças dos pacotes efetivamente resolvidos. O modo self-contained segue a [documentação oficial do .NET](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-publish).

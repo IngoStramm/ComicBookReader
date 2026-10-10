@@ -1,6 +1,6 @@
 # Validação da janela
 
-Data: 10/10/2026. Esta página distingue execução automatizada de avaliação humana. A atualização de interface/preferências está disponível em `artifacts/win-x64-options/ComicBookReader.App.exe`.
+Data: 10/10/2026. Esta página distingue execução automatizada de avaliação humana. A atualização de atalhos/arraste está disponível em `artifacts/win-x64-drag/ComicBookReader.App.exe`.
 
 ## Ambiente observado
 
@@ -38,8 +38,12 @@ Após feedback do usuário sobre Espaço, setas laterais e Page Down, a execuç�
 | Campos numéricos | Texto/decimal/valor acima do máximo e colagem inválida rejeitados; vazio normalizado. |
 | pt-BR/en | Diálogo e janela traduzidos; captura visual inspecionada para contraste. |
 | Classificação global / passo do Espaço | Aplicados, persistidos e recuperados pelo processo seguinte. |
+| R, +/− e Add/Subtract | Restauram/aumentam/diminuem a largura; personalizações F6/F7/F8 e ausência de alias após personalizar verificadas. |
+| Botão esquerdo e arraste | Press/release roteados, captura WPF real e deslocamento em dois eixos por coordenadas determinísticas. Perda de foco/captura, tecla R e navegação liberam captura/cursor. |
 
 Evidência de desenvolvimento final em `artifacts/reader-options-final-validation`; pacote final em `artifacts/reader-options-package-validation`. As capturas de preferências pt-BR/en e da barra em inglês acompanham o JSON. Os testes de Core/Storage cobrem 10/45/100% de passo, opções inválidas e perfis legados com F12/Ctrl+P personalizados. A revisão visual corrigiu rótulos que herdavam foreground escuro. Pressão física, suavidade e outro DPI continuam pendentes.
+
+A atualização seguinte de largura/arraste foi verificada em `artifacts/drag-green-validation-04`; evidência do pacote atualizado em `artifacts/drag-package-validation`, com `PointerChecks` no JSON. 12 casos DragPanTests cobrem movimento em ambos os eixos, liberação, reversão nas bordas, eixos sem overflow, posição persistida, transições e coordenadas inválidas. Core/Storage verificam R personalizado em perfil antigo e roundtrip dos três atalhos. O smoke não movimenta o cursor físico: combinar movimento real com botão mantido, sair do viewport e trocar de monitor/DPI permanece uma verificação humana.
 
 A segunda execução de desenvolvimento registrou 597 intervalos em dez segundos, mediana 16,6617 ms, máximo 43,571 ms e deslocamento 4178,843 DIPs. Isso é cadência de callbacks WPF de uma janela fora da tela; não comprova a percepção visual nem a cadência final do monitor. A captura `reader.png` foi inspecionada: imagem proporcional, margens escuras e controles ocultos na leitura.
 

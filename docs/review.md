@@ -20,6 +20,7 @@ Revisão local em 10/10/2026: correção, clareza, fronteiras, entradas e recurs
 | Espaço ainda não descia/avançava | Operação no Core com sobreposição e limites; teste de API ausente e smoke de tecla falharam antes, passaram depois. Atalhos personalizados existentes têm prioridade. |
 | Foco continuava no seletor de classificação | Fechamento devolve foco ao viewport; clique na imagem também. Smoke reproduziu foco perdido antes da correção. |
 | Origem da tecla podia ser um filho de controle editável | Guard percorre ancestrais e reconhece itens do dropdown. Smoke com tecla no ComboBoxItem falhou antes da correção e passou depois. |
+| Progresso de RAR sólido notificava arraste fora da thread WPF | Smoke reproduziu acesso a Cursor fora do dispatcher. ReaderDrag marshala ReaderChanged ao dispatcher; os quatro formatos passaram após a correção. |
 
 ## Fronteiras e posse
 
@@ -35,7 +36,7 @@ Persistência mantém temporário, backup e arquivo corrompido para recuperaçã
 
 ## Evidência de teste e dependências
 
-145 testes Core e 75 Integration passaram após a atualização de preferências/interface, sem skip. Build Release: zero avisos/erros. Format verify passou. Mutação de `image.ByteLength > budgetBytes` para `>=` fez três dos quatro testes de cache falharem; condição restaurada e os quatro passaram. Isso comprova sensibilidade desses testes à fronteira do orçamento, não um mutation score da solução.
+158 testes Core e 75 Integration passaram após a atualização de atalhos/arraste, sem skip. Build Release: zero avisos/erros. Format verify passou. Mutação de `image.ByteLength > budgetBytes` para `>=` fez três dos quatro testes de cache falharem; condição restaurada e os quatro passaram. Isso comprova sensibilidade desses testes à fronteira do orçamento, não um mutation score da solução.
 
 Cinco lockfiles fixam versões e content hashes. Auditoria NuGet com `list ComicBookReader.slnx package --vulnerable --include-transitive --no-restore` não reportou vulnerabilidades conhecidas nas fontes consultadas em 10/10/2026. Isso não é prova de ausência de vulnerabilidades desconhecidas. Não foi feito upgrade de dependências.
 

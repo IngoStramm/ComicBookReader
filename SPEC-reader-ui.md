@@ -29,9 +29,13 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 | Tela cheia | F11 | Alternância sem perder a página. |
 | Abrir arquivo | Ctrl+O | Seletor de CBZ/CBR. |
 | Aumentar/diminuir tamanho | +/−; Ctrl+roda | Ajustar largura preferida do livro; passo inicial proposto de 5%. |
+| Largura padrão | R | Remover o override de largura do livro e usar a preferência global. |
 | Rolar com mouse | Roda; Shift+roda | Vertical/horizontal, sem troca automática de página. |
+| Arrastar a página | Botão esquerdo mantido + movimento | Acompanhar o cursor nos eixos com overflow, sem trocar página nas bordas. |
 
 Atalhos são configuráveis e conflitos devem ser apresentados. As setas permanecem comandos de rolagem: a configuração não deve permitir associá-las à troca de página. O nome/tipo de comando é a regra; as teclas não confirmadas pelo usuário são defaults propostos.
+
+Aumentar/diminuir e Largura padrão têm campos de atalho nas preferências e dicas na barra. O padrão OemPlus também aceita Shift+OemPlus e Add; OemMinus também aceita Subtract. Uma atribuição explícita à combinação tem prioridade; personalizar ZoomIn/ZoomOut remove seus aliases. O arraste captura o mouse no viewport, usa coordenadas em DIPs e deslocamentos relativos ao último movimento para inverter imediatamente nas bordas. Soltar o botão, perder foco/captura, redimensionar, navegar, abrir livro, abrir diálogo ou usar teclado/roda encerra o gesto. Overview/loading/ausência de overflow não iniciam arraste.
 
 Espaço foi solicitado após avaliação do protótipo. O comando preserva o offset horizontal e mostra o trecho final antes de avançar no próximo toque. Uma página sem overflow vertical avança diretamente; na última página, permanece no fim. Na visão completa, avança à próxima em modo de leitura; durante loading, não interfere no alvo. Uma atribuição personalizada existente a Espaço tem prioridade sobre essa ação padrão, sem migração do perfil. Fechar o dropdown de classificação ou clicar na área de leitura recupera seu foco; teclas dentro dos controles de edição continuam locais ao controle.
 

@@ -1,6 +1,6 @@
 # Matriz de aceitação
 
-Data: 10/10/2026. 220 testes passaram (145 Core, 75 Integration), build/format/restore bloqueado passaram. O pacote local atualizado está em `artifacts/win-x64-options`. O checklist não declara concluída a aceitação visual. **Automático** indica evidência de regra/integração ou WPF com eventos roteados; **Parcial** mantém os casos humanos pendentes.
+Data: 10/10/2026. 233 testes passaram (158 Core, 75 Integration), build/format/restore bloqueado passaram. O pacote local atualizado está em `artifacts/win-x64-drag`. O checklist não declara concluída a aceitação visual. **Automático** indica evidência de regra/integração ou WPF com eventos roteados; **Parcial** mantém os casos humanos pendentes.
 
 Nomes de testes abaixo identificam classes reais nos projetos `tests/ComicBookReader.Core.Tests` e `tests/ComicBookReader.Integration.Tests`. Execução da janela, ambiente e limites da evidência: [manual-validation.md](manual-validation.md). Achados: [review.md](review.md).
 
