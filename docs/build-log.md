@@ -29,3 +29,7 @@ RED por classes ausentes observado; GREEN: ordenação/índice passaram (5 Core 
 ## T10
 
 Execução antecipada independente após T05. RED observado por Core.Layout ausente; GREEN: 46 testes Core incluindo 41 de layout passaram, build sem avisos. Exemplos de escala, classificação, centros, overview, viewport e entradas inválidas verificados.
+
+## T07
+
+RED observado por decoder/opener ausentes; GREEN: 21 testes Integration passaram, inclusive JPEG/PNG/WebP, oito orientações EXIF, alpha premultiplicado, hash, fechamento concorrente e limites. Build Release sem avisos. APIs obsoletas e tokens de testes corrigidos sem supressões.

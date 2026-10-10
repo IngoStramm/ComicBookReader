@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 7/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 8/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -181,15 +181,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t07"></a>
 
-## [ ] T07: Ler pixels de uma página CBZ
+## [x] T07: Ler pixels de uma página CBZ
 
 **Descrição:** Conectar índice, sessão e decoder em background. Fixtures de imagens/ZIP são produzidas nos testes a partir de conteúdo sintético; nenhum arquivo pessoal é necessário.
 
 **Critérios de aceitação:**
 
-- [ ] JPEG/PNG/WebP e EXIF normalizado retornam dimensões, BGRA32 premultiplicado e stride esperados. Validar tamanho codificado/dimensões antes de alocações grandes onde a API permitir.
-- [ ] ReadPageAsync permite voltar a uma página anterior; página inválida mantém seu índice.
-- [ ] Cancelamento e fechamento liberam stream/buffers; hash do CBZ permanece igual.
+- [x] JPEG/PNG/WebP e EXIF normalizado retornam dimensões, BGRA32 premultiplicado e stride esperados. Validar tamanho codificado/dimensões antes de alocações grandes onde a API permitir.
+- [x] ReadPageAsync permite voltar a uma página anterior; página inválida mantém seu índice.
+- [x] Cancelamento e fechamento liberam stream/buffers; hash do CBZ permanece igual.
 
 **Verificação:** [V-INTEGRATION](plan.md#v-integration); [V-BUILD](plan.md#v-build); conferir pixels conhecidos, não só sucesso de abertura.
 
