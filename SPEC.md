@@ -168,7 +168,7 @@ As dependências listadas são propostas nesta spec; sua adoção entra na revis
 
 Nenhuma preferência essencial de leitura está pendente. Defaults de velocidade e atalhos são propostas ajustáveis. A validação técnica de pacotes, memória e compatibilidade de arquivos ocorrerá durante a implementação. Confirmar o patch do SDK ao preparar o ambiente.
 
-Esta spec deve ser revisada antes da fase de planejamento. As fases posteriores da skill produzem plano e tarefas; não foram iniciadas neste pedido de especificação.
+O usuário solicitou o avanço para planejamento com escolha de modelo por tarefa. O [plano de implementação](tasks/plan.md) e a [lista de tarefas](tasks/todo.md) registram essa etapa e ficam disponíveis para revisão. Nenhuma implementação foi iniciada.
 
 ## Base da investigação
 
