@@ -28,7 +28,19 @@
     <Border x:Name="Toolbar" Background="#ED24282C" VerticalAlignment="Top" Margin="12" Padding="8">
       <WrapPanel>
         <Button Content="_Abrir…" Click="OpenClicked" ToolTip="Ctrl+O" />
+        <Button Content="‹" Click="PreviousClicked" ToolTip="Página anterior (Page Up)" AutomationProperties.Name="Página anterior" />
         <TextBlock x:Name="PageLabel" Text="Nenhuma HQ aberta" VerticalAlignment="Center" Margin="12,0" />
+        <Button Content="›" Click="NextClicked" ToolTip="Próxima página (Page Down)" AutomationProperties.Name="Próxima página" />
+        <Button Content="Página _inteira" Click="OverviewClicked" ToolTip="Ver página inteira / retornar (V)" />
+        <Button Content="−" Click="SmallerClicked" AutomationProperties.Name="Diminuir largura de leitura" />
+        <TextBlock x:Name="WidthLabel" Text="Largura: 100%" VerticalAlignment="Center" Margin="6,0" />
+        <Button Content="+" Click="LargerClicked" AutomationProperties.Name="Aumentar largura de leitura" />
+        <ComboBox x:Name="ClassificationChoice" SelectedIndex="0" SelectionChanged="ClassificationChanged"
+                  Margin="8,0" MinWidth="110" VerticalContentAlignment="Center" AutomationProperties.Name="Tipo de página">
+          <ComboBoxItem Content="Automática" />
+          <ComboBoxItem Content="Simples" />
+          <ComboBoxItem Content="Dupla" />
+        </ComboBox>
         <Button Content="_Tela cheia" Click="FullscreenClicked" ToolTip="F11" />
       </WrapPanel>
     </Border>
