@@ -30,8 +30,11 @@ public sealed class ReaderInput : IDisposable
 
     private static ScrollDirection? Direction(Key key) => key switch
     {
-        Key.Up => ScrollDirection.Up, Key.Down => ScrollDirection.Down,
-        Key.Left => ScrollDirection.Left, Key.Right => ScrollDirection.Right, _ => null
+        Key.Up => ScrollDirection.Up,
+        Key.Down => ScrollDirection.Down,
+        Key.Left => ScrollDirection.Left,
+        Key.Right => ScrollDirection.Right,
+        _ => null
     };
 
     private void KeyDown(object sender, KeyEventArgs e)

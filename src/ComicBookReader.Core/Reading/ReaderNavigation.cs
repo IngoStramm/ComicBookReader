@@ -37,8 +37,15 @@ public sealed partial class ReaderController
                 previous = State.Image;
                 overview = null;
                 ResolvePageSettings(currentSession, target);
-                State = State with { Mode = ReaderMode.Reading, Image = image, Layout = ReadingLayout(image),
-                    PresentedIndex = target, OffsetXDip = 0, OffsetYDip = 0 };
+                State = State with
+                {
+                    Mode = ReaderMode.Reading,
+                    Image = image,
+                    Layout = ReadingLayout(image),
+                    PresentedIndex = target,
+                    OffsetXDip = 0,
+                    OffsetYDip = 0
+                };
                 image = null;
             }
             Changed?.Invoke();
@@ -49,8 +56,11 @@ public sealed partial class ReaderController
             lock (gate)
             {
                 if (current != generation || disposed) return;
-                State = State with { Mode = overview is null ? ReaderMode.Reading : ReaderMode.Overview,
-                    TargetIndex = State.PresentedIndex };
+                State = State with
+                {
+                    Mode = overview is null ? ReaderMode.Reading : ReaderMode.Overview,
+                    TargetIndex = State.PresentedIndex
+                };
             }
             Changed?.Invoke();
         }

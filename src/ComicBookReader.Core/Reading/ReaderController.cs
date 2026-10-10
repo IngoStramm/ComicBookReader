@@ -67,9 +67,16 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
                 var offsets = position is null ? (X: 0d, Y: 0d) : PreferencesResolver.RestorePosition(position, layout.MaxOffsetXDip, layout.MaxOffsetYDip);
                 State = new ReaderState
                 {
-                    Mode = ReaderMode.Reading, Book = candidate.Book, Pages = candidate.Pages,
-                    Image = image, Layout = layout, Generation = current, TargetIndex = index, PresentedIndex = index,
-                    OffsetXDip = offsets.X, OffsetYDip = offsets.Y
+                    Mode = ReaderMode.Reading,
+                    Book = candidate.Book,
+                    Pages = candidate.Pages,
+                    Image = image,
+                    Layout = layout,
+                    Generation = current,
+                    TargetIndex = index,
+                    PresentedIndex = index,
+                    OffsetXDip = offsets.X,
+                    OffsetYDip = offsets.Y
                 };
                 candidate = null;
                 image = null;
@@ -104,8 +111,13 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
         lock (gate)
         {
             if (current != generation || disposed) return;
-            State = State with { Mode = State.Image is null ? ReaderMode.Empty :
-                overview is null ? ReaderMode.Reading : ReaderMode.Overview, Error = error, OpenProgress = null };
+            State = State with
+            {
+                Mode = State.Image is null ? ReaderMode.Empty :
+                overview is null ? ReaderMode.Reading : ReaderMode.Overview,
+                Error = error,
+                OpenProgress = null
+            };
         }
         Changed?.Invoke();
     }

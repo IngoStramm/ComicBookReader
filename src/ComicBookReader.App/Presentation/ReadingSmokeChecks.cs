@@ -95,11 +95,21 @@ internal static class ReadingSmokeChecks
         var dpi = VisualTreeHelper.GetDpi(window);
         return new
         {
-            RestartVerified = restarted, OverlayHiddenWithoutReframe = true,
-            RoutedArrowScrollAndRelease = true, FocusLossStopsScroll = true, EdgeKeepsPage = true,
-            SpreadResolutionsMatch = true, OverviewRestoresExactly = true, RapidNavigationPassed = true,
-            ResizePassed = true, ClosedInOverview = true, DpiX = dpi.PixelsPerInchX, DpiY = dpi.PixelsPerInchY,
-            ScrollDurationSeconds = 10, ScrollDistanceDip = moved, RenderingIntervals = intervals.Count,
+            RestartVerified = restarted,
+            OverlayHiddenWithoutReframe = true,
+            RoutedArrowScrollAndRelease = true,
+            FocusLossStopsScroll = true,
+            EdgeKeepsPage = true,
+            SpreadResolutionsMatch = true,
+            OverviewRestoresExactly = true,
+            RapidNavigationPassed = true,
+            ResizePassed = true,
+            ClosedInOverview = true,
+            DpiX = dpi.PixelsPerInchX,
+            DpiY = dpi.PixelsPerInchY,
+            ScrollDurationSeconds = 10,
+            ScrollDistanceDip = moved,
+            RenderingIntervals = intervals.Count,
             MedianIntervalMs = intervals.Count == 0 ? (double?)null : intervals.Order().ElementAt(intervals.Count / 2),
             MaximumIntervalMs = intervals.Count == 0 ? (double?)null : intervals.Max(),
             Scope = "Offscreen WPF runtime with routed input. Physical keyboard repeat, alternate monitor/DPI and perceptual smoothness need human validation."

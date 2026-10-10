@@ -31,8 +31,13 @@ public sealed class PreferencesWindow : Window
         panel.Children.Add(new TextBlock { Text = "Atalhos · setas ficam reservadas para rolagem", Margin = new Thickness(0, 14, 0, 8) });
         Dictionary<string, string> labels = new()
         {
-            ["NextPage"] = "Próxima página", ["PreviousPage"] = "Página anterior", ["Overview"] = "Página inteira / retornar",
-            ["Fullscreen"] = "Tela cheia", ["Open"] = "Abrir HQ", ["ZoomIn"] = "Aumentar largura", ["ZoomOut"] = "Diminuir largura"
+            ["NextPage"] = "Próxima página",
+            ["PreviousPage"] = "Página anterior",
+            ["Overview"] = "Página inteira / retornar",
+            ["Fullscreen"] = "Tela cheia",
+            ["Open"] = "Abrir HQ",
+            ["ZoomIn"] = "Aumentar largura",
+            ["ZoomOut"] = "Diminuir largura"
         };
         foreach (var binding in preferences.KeyBindings) keys[binding.Key] = AddField(panel, labels[binding.Key], binding.Value);
         error = new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.LightSalmon, Margin = new Thickness(0, 10, 0, 10) };
@@ -63,7 +68,8 @@ public sealed class PreferencesWindow : Window
         {
             Result = PreferencesResolver.Validate(original with
             {
-                PreferredPageWidthRatio = ratio / 100, ScrollSpeed = velocity,
+                PreferredPageWidthRatio = ratio / 100,
+                ScrollSpeed = velocity,
                 KeyBindings = keys.ToDictionary(x => x.Key, x => x.Value.Text)
             });
             DialogResult = true;

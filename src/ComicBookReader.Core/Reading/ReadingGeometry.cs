@@ -33,8 +33,13 @@ public sealed partial class ReaderController
         else
         {
             overview = new(State.Layout!, State.OffsetXDip, State.OffsetYDip, viewport);
-            State = State with { Mode = ReaderMode.Overview,
-                Layout = calculator.CalculateOverview(State.Image.Size, viewport), OffsetXDip = 0, OffsetYDip = 0 };
+            State = State with
+            {
+                Mode = ReaderMode.Overview,
+                Layout = calculator.CalculateOverview(State.Image.Size, viewport),
+                OffsetXDip = 0,
+                OffsetYDip = 0
+            };
         }
         Changed?.Invoke();
     }
@@ -74,8 +79,11 @@ public sealed partial class ReaderController
         double imageY = (y + oldY - old.OriginYDip) / old.Scale;
         var layout = ReadingLayout(State.Image);
         double newX = anchorX ?? viewport.WidthDip / 2, newY = anchorY ?? viewport.HeightDip / 2;
-        State = State with { Layout = layout,
+        State = State with
+        {
+            Layout = layout,
             OffsetXDip = Math.Clamp(imageX * layout.Scale + layout.OriginXDip - newX, 0, layout.MaxOffsetXDip),
-            OffsetYDip = Math.Clamp(imageY * layout.Scale + layout.OriginYDip - newY, 0, layout.MaxOffsetYDip) };
+            OffsetYDip = Math.Clamp(imageY * layout.Scale + layout.OriginYDip - newY, 0, layout.MaxOffsetYDip)
+        };
     }
 }

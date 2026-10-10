@@ -29,7 +29,9 @@ public sealed class PreferencesStoreTests
         using var directory = new TemporaryPreferencesDirectory();
         var expected = new ReaderPreferences
         {
-            PreferredPageWidthRatio = 1.3, ScrollSpeed = .8, LastFullscreen = false,
+            PreferredPageWidthRatio = 1.3,
+            ScrollSpeed = .8,
+            LastFullscreen = false,
             KeyBindings = new() { ["NextPage"] = "Ctrl+N" },
             Books = new()
             {

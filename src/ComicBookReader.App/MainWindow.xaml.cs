@@ -1,11 +1,11 @@
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Controls;
+using System.Windows.Input;
 using ComicBookReader.App.Presentation;
 using ComicBookReader.Core.ComicFiles;
 using ComicBookReader.Core.Layout;
-using ComicBookReader.Core.Reading;
 using ComicBookReader.Core.Preferences;
+using ComicBookReader.Core.Reading;
 using ComicBookReader.Infrastructure.Archives;
 using ComicBookReader.Infrastructure.Storage;
 using Microsoft.Win32;

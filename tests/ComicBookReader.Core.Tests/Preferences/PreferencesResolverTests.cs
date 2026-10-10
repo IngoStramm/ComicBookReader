@@ -72,7 +72,8 @@ public sealed class PreferencesResolverTests
     {
         var preferences = PreferencesResolver.Validate(new ReaderPreferences
         {
-            PreferredPageWidthRatio = width, ScrollSpeed = speed,
+            PreferredPageWidthRatio = width,
+            ScrollSpeed = speed,
             Books = new() { ["book"] = new BookPreferences { WidthRatio = width } }
         });
         Assert.Equal(width, preferences.PreferredPageWidthRatio);
@@ -155,7 +156,8 @@ public sealed class PreferencesResolverTests
         {
             KeyBindings = new()
             {
-                ["NextPage"] = "Shift+Ctrl+N", ["PreviousPage"] = "ctrl+shift+n"
+                ["NextPage"] = "Shift+Ctrl+N",
+                ["PreviousPage"] = "ctrl+shift+n"
             }
         }));
     }

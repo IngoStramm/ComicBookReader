@@ -1,5 +1,5 @@
-using System.Windows;
 using System.IO;
+using System.Windows;
 using ComicBookReader.App.Presentation;
 using ComicBookReader.Core.Contracts;
 using ComicBookReader.Core.Preferences;

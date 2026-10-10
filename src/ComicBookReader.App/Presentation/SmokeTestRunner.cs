@@ -46,9 +46,14 @@ internal static class SmokeTestRunner
             throw new InvalidOperationException("Fullscreen keys did not change the window mode.");
         var evidence = new
         {
-            ready.Book.CanonicalPath, Pages = ready.Pages.Count, ready.Image.Size,
-            ready.Layout, window.ActualWidth, window.ActualHeight,
-            FailedOpenPreservedBook = true, CanceledOpenPreservedBook = true,
+            ready.Book.CanonicalPath,
+            Pages = ready.Pages.Count,
+            ready.Image.Size,
+            ready.Layout,
+            window.ActualWidth,
+            window.ActualHeight,
+            FailedOpenPreservedBook = true,
+            CanceledOpenPreservedBook = true,
             FullscreenRoutedKeysPassed = true,
             ReadingChecks = readingChecks,
             Scope = "WPF runtime and captured visual; perceptual scrolling awaits validation"

@@ -9,7 +9,9 @@ internal sealed class PreferencesDto
     internal const int MaximumFileBytes = 8 * 1024 * 1024;
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
-        WriteIndented = true, PropertyNameCaseInsensitive = true, AllowDuplicateProperties = false
+        WriteIndented = true,
+        PropertyNameCaseInsensitive = true,
+        AllowDuplicateProperties = false
     };
 
     public int SchemaVersion { get; set; } = 1;
@@ -96,16 +98,20 @@ internal sealed class BookPreferencesDto
     public ReadingPositionDto? Position { get; set; }
     internal BookPreferences ToSnapshot() => new()
     {
-        WidthRatio = WidthRatio, Classifications = Classifications,
+        WidthRatio = WidthRatio,
+        Classifications = Classifications,
         Position = Position is null ? null : new LastReadingPosition(Position.PageKey, Position.PageIndex, Position.RelativeX, Position.RelativeY)
     };
     internal static BookPreferencesDto FromSnapshot(BookPreferences book) => new()
     {
-        WidthRatio = book.WidthRatio, Classifications = book.Classifications,
+        WidthRatio = book.WidthRatio,
+        Classifications = book.Classifications,
         Position = book.Position is null ? null : new ReadingPositionDto
         {
-            PageKey = book.Position.PageKey, PageIndex = book.Position.PageIndex,
-            RelativeX = book.Position.RelativeX, RelativeY = book.Position.RelativeY
+            PageKey = book.Position.PageKey,
+            PageIndex = book.Position.PageIndex,
+            RelativeX = book.Position.RelativeX,
+            RelativeY = book.Position.RelativeY
         }
     };
 }

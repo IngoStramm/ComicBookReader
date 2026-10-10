@@ -35,10 +35,13 @@ public sealed class ReadingPreferencesTests
     [Fact]
     public async Task PageKeyWinsOverOldIndexAndMissingPageUsesClampedFallback()
     {
-        var prefs = new ReaderPreferences { Books = new()
+        var prefs = new ReaderPreferences
         {
-            ["A"] = new BookPreferences { Position = new("second", 0, 0, .5) }
-        } };
+            Books = new()
+            {
+                ["A"] = new BookPreferences { Position = new("second", 0, 0, .5) }
+            }
+        };
         await using var reader = new ReaderController(new Opener(), preferences: prefs);
         await reader.OpenAsync("A", TestContext.Current.CancellationToken);
         Assert.Equal(1, reader.State.PresentedIndex);
