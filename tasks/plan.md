@@ -4,7 +4,7 @@ Status: plano autorizado por `$build`; implementação e pacote local disponíve
 
 ## Resultado esperado
 
-Um leitor Windows de CBZ/CBR, em tela cheia, que rola suavemente com setas mantidas, preserva a escala aproximada em imagens duplas e alterna entre visão completa e ponto de leitura. As bordas nunca trocam a página. Preferências e progresso evitam reconfiguração a cada arquivo.
+Um leitor Windows de CBZ/CBR, em tela cheia, que rola suavemente com setas mantidas, preserva a escala aproximada em imagens duplas e alterna entre visão completa e ponto de leitura. As setas nunca trocam a página nas bordas. A atualização solicitada após avaliação acrescenta Espaço para descer e avançar quando já está no fim. Preferências e progresso evitam reconfiguração a cada arquivo.
 
 Base: [spec principal](../SPEC.md), [mapa de módulos](../CAPABILITY-MAP.md) e specs de [arquivos](../SPEC-comic-files.md), [preferências](../SPEC-reading-preferences.md), [layout](../SPEC-page-layout.md) e [interface](../SPEC-reader-ui.md).
 

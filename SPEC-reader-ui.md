@@ -22,6 +22,7 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 | Rolar verticalmente | ↑/↓ mantidas | Movimento contínuo dentro da imagem atual. |
 | Rolar horizontalmente | ←/→ mantidas | Movimento contínuo em imagens que ultrapassam a largura. |
 | Próxima/anterior página | Page Down/Page Up | Uma troca por pressão física, ignorando auto-repeat. |
+| Descer ou avançar | Espaço | Descer 90% da altura útil, limitado ao fim; se já estiver no fim, avançar uma página. Ignorar auto-repeat. |
 | Visão completa/restaurar | V | Alternância, uma ação por pressão física. |
 | Tela cheia | F11 | Alternância sem perder a página. |
 | Abrir arquivo | Ctrl+O | Seletor de CBZ/CBR. |
@@ -29,6 +30,8 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 | Rolar com mouse | Roda; Shift+roda | Vertical/horizontal, sem troca automática de página. |
 
 Atalhos são configuráveis e conflitos devem ser apresentados. As setas permanecem comandos de rolagem: a configuração não deve permitir associá-las à troca de página. O nome/tipo de comando é a regra; as teclas não confirmadas pelo usuário são defaults propostos.
+
+Espaço foi solicitado após avaliação do protótipo. O comando preserva o offset horizontal e mostra o trecho final antes de avançar no próximo toque. Uma página sem overflow vertical avança diretamente; na última página, permanece no fim. Na visão completa, avança à próxima em modo de leitura; durante loading, não interfere no alvo. Uma atribuição personalizada existente a Espaço tem prioridade sobre essa ação padrão, sem migração do perfil. Fechar o dropdown de classificação ou clicar na área de leitura recupera seu foco; teclas dentro dos controles de edição continuam locais ao controle.
 
 ## Rolagem contínua
 
@@ -85,9 +88,10 @@ rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotn
 | UI-07 | Redimensionar/mudar DPI alternando modo de visão mantém proporção, âncora válida e controles acessíveis. | Unidade e manual Windows 11. |
 | UI-08 | Corrigir a classificação e reabrir o livro recupera a preferência; uma imagem dupla continua sendo um índice. | Integração e manual. |
 | UI-09 | Rolagem real por 10 s em página com overflow é visualmente contínua; não depende de ajustar a taxa de repetição do Windows. | Manual, registrando monitor/DPI e hardware. |
+| UI-10 | Espaço desce com sobreposição, mostra o fim e avança no toque seguinte; respeita a última página e loading. | Unidade e input roteado na janela. |
 
 Para UI-09, registrar também cadência dos quadros se houver trancos; a aprovação visual não é substituída pelo teste de deslocamento. Testes manuais precisam incluir página dupla, diálogo durante tecla pressionada, troca rápida de páginas e retomada da leitura.
 
 ## Limites e perguntas abertas
 
-Sempre manter rolagem e navegação separadas, preservar foco e liberar snapshots obsoletos; revisar com o usuário mudanças desses comportamentos; nunca alterar o tamanho preferido só porque a imagem entrou em paisagem ou visão completa. Teclas/velocidade propostas poderão ser ajustadas no protótipo. A suavidade percebida exige validação em execução; nenhuma foi afirmada nesta etapa documental.
+Setas mantêm rolagem e navegação separadas; Espaço combina as ações conforme a solicitação do usuário após testar o protótipo. Preservar foco e liberar snapshots obsoletos; revisar com o usuário outras mudanças desses comportamentos; nunca alterar o tamanho preferido só porque a imagem entrou em paisagem ou visão completa. Teclas/velocidade propostas poderão ser ajustadas no protótipo. A suavidade percebida exige validação em execução.

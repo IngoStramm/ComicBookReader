@@ -1,6 +1,6 @@
 # Validação da janela
 
-Data: 10/10/2026. Esta página distingue execução automatizada de avaliação humana. A versão local está disponível em `artifacts/win-x64/ComicBookReader.App.exe`.
+Data: 10/10/2026. Esta página distingue execução automatizada de avaliação humana. A atualização de teclado está disponível em `artifacts/win-x64-keyboard/ComicBookReader.App.exe`.
 
 ## Ambiente observado
 
@@ -14,6 +14,8 @@ Resultados da execução de desenvolvimento em `artifacts/runtime-validation` e 
 
 A execução adicional em `artifacts/self-contained-validation` aponta `DOTNET_ROOT` e `DOTNET_ROOT_X64` para uma pasta inexistente, para verificar que o host publicado usa o runtime que acompanha o pacote.
 
+Após feedback do usuário sobre Espaço, setas laterais e Page Down, a execução em `artifacts/keyboard-fix-validation-09` validou a atualização de desenvolvimento. A entrega usa outra pasta para preservar a versão em avaliação. A verificação do pacote atualizado fica em `artifacts/keyboard-package-validation`, também sem fallback para runtime instalado.
+
 | Caso executado | Resultado |
 | --- | --- |
 | Abrir CBZ/RAR4/RAR5/RAR sólido e apresentar pixels | Passou. PNG da janela e `runtime.json` por formato. |
@@ -22,6 +24,10 @@ A execução adicional em `artifacts/self-contained-validation` aponta `DOTNET_R
 | Roteamento de ↓ por 10 s e liberação | Deslocamento positivo; soltar encerra movimento. |
 | Evento roteado de perda de foco | Direções limpas. |
 | Pressionar ↓ na borda | Mesma página. |
+| Page Down/Page Up por input roteado | Avançam/voltam um índice; aliases WPF normalizados. |
+| Espaço por input roteado | Desce 90% da altura; mostra o fim e avança no toque seguinte. |
+| ←/→ com largura 150% | Movem horizontalmente; a borda mantém a página. |
+| Tecla no item do dropdown e fechamento | Não rola durante edição; fechar recupera o foco da área de leitura. |
 | Controles temporários | Ocultam-se após dois segundos; Tab os revela; layout não muda. |
 | Duplas com duas resoluções distintas | Mesma largura de leitura. |
 | V/V | Escala e offsets restaurados exatamente. |
@@ -35,7 +41,7 @@ A segunda execução de desenvolvimento registrou 597 intervalos em dez segundos
 Não houve aprovação visual do movimento, pressão física das teclas, interação humana com o seletor/preferências nem alteração do DPI. Não marcar UI-09/G-02/G-07 como aceitação completa com base nos testes acima.
 
 1. Abrir uma HQ de teste em tela cheia e segurar ↓ por dez segundos; observar trancos. Soltar, alternar foco e abrir o seletor enquanto a tecla estiver pressionada; o movimento deve parar e exigir nova pressão.
-2. Segurar Page Down: apenas uma troca por pressão física. Pressionar setas nas quatro bordas: nenhuma troca de página.
+2. Segurar Page Down ou Espaço: apenas uma ação por pressão física. Espaço desce e mostra o trecho final; o próximo toque avança. Pressionar setas nas quatro bordas: nenhuma troca de página. Ajustar largura para mais de 100%, testar ←/→ e repetir depois de fechar o seletor de classificação.
 3. Abrir Ctrl+O e cancelar o seletor: conservar a HQ. Arrastar um CBZ e um CBR para abrir pela outra entrada.
 4. Usar Tab para acessar controles e preferências. Em campos, setas editam o controle e não movem a HQ. Testar um atalho duplicado/seta, aplicar um válido e reiniciar.
 5. Ajustar largura/classificação, rolar, consultar V, fechar e reabrir o arquivo. Confirmar legibilidade e recuperação do ponto guardado.

@@ -14,7 +14,7 @@ Nome público confirmado pelo usuário: **ComicBookReader**. Raiz documental: `C
 | --- | --- |
 | Usuário | Ler habitualmente em tela cheia. |
 | Usuário | Segurar ↑/↓ deve produzir movimento suave. Atingir uma borda mantém a mesma página, inclusive se a seta for pressionada novamente. |
-| Usuário | Trocar de página somente por comandos separados dos de rolagem. |
+| Usuário | Setas rolam sem trocar de página; Page Down/Page Up navegam. Após teste do protótipo, Espaço também desce a imagem e avança quando já está no fim. |
 | Usuário | Adaptar o tamanho de leitura a diferentes arquivos e scans, reduzindo ajustes repetidos. |
 | Usuário | Considerar paisagem um indício de imagem dupla e compensar sua escala, mantendo a imagem inteira. |
 | Usuário | Oferecer um atalho para ver a imagem completa e retornar ao zoom anterior. |

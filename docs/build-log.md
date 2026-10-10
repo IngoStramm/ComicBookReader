@@ -85,3 +85,13 @@ O pacote executou CBZ/RAR4/RAR5/sólido e dois processos de retomada, com hashes
 ## T30 / próxima retomada
 
 docs/acceptance.md relaciona todos os IDs à evidência. 24 tarefas concluídas; T08/T12/T14/T21/T26/T30 mantêm verificações humanas específicas em docs/manual-validation.md. A distribuição de avaliação está preparada para realizar esses casos no executável final. Não declarar a aceitação visual completa com base nos smoke tests.
+
+## Feedback de teclado — 10/10/2026
+
+O usuário solicitou Espaço para descer/avançar, rolagem lateral com overflow e correção de Page Down. O enum WPF `Key.PageDown.ToString()` produziu `Next`; o smoke roteado reproduziu a falha antes da normalização e passou depois. Page Up e Enter também recebem nomes canônicos explícitos.
+
+`ScrollForwardAsync` desce 90% do viewport, preserva X e mostra o fim antes de avançar no próximo toque. Páginas sem overflow avançam diretamente; última página e loading são respeitados. Espaço ignora auto-repeat e mantém prioridade de eventual atalho personalizado existente, sem modificar o schema/perfil. Três testes novos falharam por API ausente e passaram após implementação; o smoke de Espaço também falhou antes de integrar a tecla.
+
+Setas laterais já tinham cálculo de deslocamento; três casos adicionais verificam largura sem/com overflow e bordas. O smoke reproduziu foco ainda no seletor após fechar e vazamento de setas a partir do ComboBoxItem. O fechamento/clique na imagem recupera foco; guard inclui ancestrais de controles editáveis. O fechamento do popup é assíncrono; teste aguarda condição com prazo de três segundos. Uma tentativa de reaproveitar evidência após smoke interrompido encontrou snapshot esperado antigo; as execuções seguintes usaram diretórios novos, preservando a evidência anterior.
+
+Verificação de desenvolvimento em `artifacts/keyboard-fix-validation-09`: CBZ com duas inicializações e RAR4/RAR5/sólido passaram, hashes preservados. 132 Core + 74 Integration passaram, sem skips; build Release com zero avisos/erros e format verify passou. A entrada roteada observa modificadores físicos do Windows e não substitui o teste humano de teclado/repetição. Pacote atualizado preparado em `artifacts/win-x64-keyboard`, preservando a distribuição anterior. O pacote passou os quatro formatos e retomada, sem runtime instalado e com hashes preservados; evidência em `artifacts/keyboard-package-validation`.

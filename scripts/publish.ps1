@@ -1,7 +1,10 @@
-param([string]$DotNet = (Join-Path $env:LOCALAPPDATA 'ComicBookReader-dev/dotnet-10.0.401/dotnet.exe'))
+param(
+    [string]$DotNet = (Join-Path $env:LOCALAPPDATA 'ComicBookReader-dev/dotnet-10.0.401/dotnet.exe'),
+    [string]$OutputDirectory = 'artifacts/win-x64'
+)
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$destination = Join-Path $projectRoot 'artifacts/win-x64'
+$destination = [IO.Path]::GetFullPath((Join-Path $projectRoot $OutputDirectory))
 Push-Location $projectRoot
 try {
     rtk proxy $DotNet publish src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Release --runtime win-x64 --self-contained true --output $destination -p:RestoreLockedMode=true -p:RestorePackagesWithLockFile=true
