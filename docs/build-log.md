@@ -21,3 +21,7 @@ Aplicativo net10.0-windows configurado para win-x64. Restore/build Release passa
 ## T05
 
 RED observado por namespace de contratos ausente; GREEN: três testes reais de identidade, validade do buffer e lease independente passaram. Build Release sem avisos. Core sem bibliotecas de terceiros.
+
+## T06
+
+RED por classes ausentes observado; GREEN: ordenação/índice passaram (5 Core antes de Layout e 2 Integration). Build sem avisos após integrar Layout; números enormes, subpastas, duplicidades e ZIP vazio conferidos.

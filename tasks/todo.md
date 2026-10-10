@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 5/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 6/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -147,14 +147,14 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: contratos e posse compartilhad
 
 <a id="t06"></a>
 
-## [ ] T06: Indexar imagens de CBZ em ordem natural
+## [x] T06: Indexar imagens de CBZ em ordem natural
 
 **Descrição:** Implementar o índice ZIP somente para leitura, filtragem e ordenação natural dos caminhos completos, antes da sessão de decodificação.
 
 **Critérios de aceitação:**
 
-- [ ] 1, 2, 10, subpastas, empates e números enormes têm ordem determinística; auxiliares são ignorados.
-- [ ] Arquivos não ZIP ou sem imagens têm erros específicos; entradas duplicadas recebem PageKeys distintos.
+- [x] 1, 2, 10, subpastas, empates e números enormes têm ordem determinística; auxiliares são ignorados.
+- [x] Arquivos não ZIP ou sem imagens têm erros específicos; entradas duplicadas recebem PageKeys distintos.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-INTEGRATION](plan.md#v-integration); [V-BUILD](plan.md#v-build).
 
