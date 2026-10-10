@@ -19,6 +19,7 @@ internal static class SmokeTestRunner
         var ready = window.Reader.State;
         if (ready.Mode != ReaderMode.Reading || ready.Image is null)
             throw new InvalidOperationException(ready.Error?.Message ?? "Page did not become ready.");
+        object? readingChecks = ready.Pages.Count >= 3 ? await ReadingSmokeChecks.RunAsync(window, output) : null;
         var target = new RenderTargetBitmap((int)window.Root.ActualWidth, (int)window.Root.ActualHeight,
             96, 96, PixelFormats.Pbgra32);
         target.Render(window.Root);
@@ -49,6 +50,7 @@ internal static class SmokeTestRunner
             ready.Layout, window.ActualWidth, window.ActualHeight,
             FailedOpenPreservedBook = true, CanceledOpenPreservedBook = true,
             FullscreenRoutedKeysPassed = true,
+            ReadingChecks = readingChecks,
             Scope = "WPF runtime and captured visual; perceptual scrolling awaits validation"
         };
         await File.WriteAllTextAsync(Path.Combine(output, "runtime.json"), JsonSerializer.Serialize(evidence,

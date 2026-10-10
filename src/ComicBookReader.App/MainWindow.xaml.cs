@@ -21,7 +21,12 @@ public partial class MainWindow : Window
     private bool updatingControls;
     private readonly PreferencesSaveCoordinator saves;
     private bool closing;
+    private bool allowClose;
+    private bool progressDirty;
+    private readonly System.Windows.Threading.DispatcherTimer snapshotTimer;
+    private readonly ReadingOverlay overlay;
     private string? storageWarning;
+    internal bool HasStorageWarning => storageWarning is not null;
 
     public MainWindow(bool startFullscreen = true, ReaderPreferences? preferences = null,
         IReadingPreferencesStore? store = null, string? storageWarning = null)
@@ -31,6 +36,10 @@ public partial class MainWindow : Window
         saves = new PreferencesSaveCoordinator(store ?? new JsonReadingPreferencesStore(), preferences);
         this.storageWarning = storageWarning;
         InitializeComponent();
+        overlay = new ReadingOverlay(this);
+        snapshotTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
+        snapshotTimer.Tick += (_, _) => { if (progressDirty && Reader.State.Mode != ReaderMode.Loading) PersistProgress(); };
+        snapshotTimer.Start();
         Reader.Changed += ReaderChanged;
         Viewport.SizeChanged += (_, _) => UpdateViewport();
         input = new ReaderInput(this, Reader, RunCommand);
@@ -42,8 +51,12 @@ public partial class MainWindow : Window
         Closing += ClosingWindow;
     }
 
-    private void ReaderChanged() { UpdateView(); PersistProgress(); }
-    private void PersistProgress() => saves.Update(Reader.CapturePreferences() with { LastFullscreen = fullscreen });
+    private void ReaderChanged() { UpdateView(); progressDirty = true; }
+    private void PersistProgress()
+    {
+        saves.Update(Reader.CapturePreferences() with { LastFullscreen = fullscreen });
+        progressDirty = false;
+    }
     private void SaveStatusChanged(object? sender, EventArgs e) => Dispatcher.BeginInvoke(() =>
     {
         storageWarning = saves.LastError is null ? null : "As alterações desta sessão não puderam ser salvas.";
@@ -51,9 +64,14 @@ public partial class MainWindow : Window
     });
     private async void ClosingWindow(object? sender, System.ComponentModel.CancelEventArgs e)
     {
-        if (closing) return;
+        if (allowClose) return;
         e.Cancel = true;
+        if (closing) return;
+        closing = true;
+        IsEnabled = false;
         input.Stop();
+        snapshotTimer.Stop();
+        overlay.Dispose();
         PersistProgress();
         await saves.FlushAsync();
         saves.SaveStatusChanged -= SaveStatusChanged;
@@ -61,7 +79,7 @@ public partial class MainWindow : Window
         input.Dispose();
         await Reader.DisposeAsync();
         await saves.DisposeAsync();
-        closing = true;
+        allowClose = true;
         Close();
     }
 
@@ -181,5 +199,6 @@ public partial class MainWindow : Window
             state.Book is null ? "Ctrl+O · Abrir HQ    F11 · Tela cheia" : System.IO.Path.GetFileName(state.Book.CanonicalPath));
         if (state.Mode == ReaderMode.Loading && state.OpenProgress is { } progress)
             Status.Text = $"Preparando RAR: {progress.EntriesProcessed} entradas · {progress.BytesMaterialized / 1048576d:F1} MiB";
+        overlay.Update();
     }
 }

@@ -46,7 +46,7 @@
         <Button Content="Largura _padrão" Click="ResetWidthClicked" ToolTip="Usar o padrão global nesta HQ" />
       </WrapPanel>
     </Border>
-    <Border Background="#ED24282C" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+    <Border x:Name="StatusPanel" Background="#ED24282C" VerticalAlignment="Bottom" HorizontalAlignment="Left"
             Margin="12" Padding="10,6" MaxWidth="600">
       <TextBlock x:Name="Status" Text="Ctrl+O · Abrir HQ    F11 · Tela cheia"
                  TextWrapping="Wrap" AutomationProperties.LiveSetting="Polite" />
