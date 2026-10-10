@@ -101,7 +101,7 @@ public sealed class ZipComicSessionTests
         using var fixture = new SyntheticComicFactory();
         var path = fixture.CreateZip(("1.png", SyntheticComicFactory.Image(SKEncodedImageFormat.Png)));
         var decoder = new GateDecoder();
-        var session = await new ComicOpener(decoder).OpenAsync(path, CancellationToken.None);
+        var session = await new ComicOpener(decoder, useCache: false).OpenAsync(path, CancellationToken.None);
         var read = session.ReadPageAsync(0, CancellationToken.None).AsTask();
         await decoder.Entered.Task.WaitAsync(TimeSpan.FromSeconds(10), TestContext.Current.CancellationToken);
         var queued = session.ReadPageAsync(0, CancellationToken.None).AsTask();

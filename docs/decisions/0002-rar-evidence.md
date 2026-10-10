@@ -1,6 +1,7 @@
 # 0002 — Evidência de containers RAR
 
-Data: 2026-10-09. Escopo: T09, preparação das fixtures e pesquisa de APIs.
+Data: 2026-10-09. Escopo: T09, fixtures, pesquisa de APIs e prova de execução do
+adapter com o decoder compartilhado. Testes confirmados no commit `06cac74`.
 
 Manter SharpCompress **0.50.5**, conforme SPEC-comic-files. As fixtures reais de
 RAR4, RAR5 e RAR5 sólido, com procedência MIT, hashes, assinaturas, flags e JPEG
@@ -44,17 +45,47 @@ determina o Reader para RAR sólido. O cache privado deverá usar nomes gerados,
 limites de sessão e cancelamento conforme a spec; as fixtures não autorizam
 extração para caminhos definidos pelas entradas.
 
-Verificação já realizada: SHA-256 e tamanho de todos os binários; assinaturas
+Verificação binária realizada: SHA-256 e tamanho de todos os binários; assinaturas
 RAR; CRC32 de todos os headers dos três arquivos de leitura; flags de sólido,
 encriptação e volume nas fixtures de rejeição; JPEG upstream com SHA-256 e
-dimensões 384 × 512 extraídas do marcador SOF. Nenhuma dessas inspeções é uma
-alegação de que os testes C# de integração já passaram.
+dimensões 384 × 512 extraídas do marcador SOF.
 
-Validação de execução ainda necessária no runner de integração: ler os bytes do
-JPEG via Archive em RAR4/RAR5; percorrer o sólido via Reader e conferir o mesmo
-hash; reler os dados materializados; comprovar preservação dos hashes dos CBR e
-liberação dos streams; retornar `UnsupportedArchive` nas três fixtures de
-rejeição. Acrescentar a evidência efetiva após executar esses casos.
+O runner C# executou os três casos de
+[`ArchiveCompatibilityTests.cs`](../../tests/ComicBookReader.Integration.Tests/Archives/ArchiveCompatibilityTests.cs)
+com sucesso: dois casos não sólidos, RAR4/RAR5, e um caso RAR5 sólido. A execução
+completa de integração terminou com **41 testes aprovados, zero falhas e zero
+testes ignorados**, incluindo os três casos RAR; o build Release da solução
+terminou com zero warnings e zero erros. Execução e resultados foram confirmados
+pelo agente raiz após compilar o arquivo final, com SharpCompress 0.50.5,
+SkiaSharp 4.153.1 e SDK .NET 10.0.401 x64.
+
+Comandos para reproduzir essa validação, na raiz do projeto:
+
+```powershell
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" build ComicBookReader.slnx --configuration Release -warnaserror
+rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" run --project tests/ComicBookReader.Integration.Tests/ComicBookReader.Integration.Tests.csproj --configuration Release
+```
+
+Escopo comprovado pelos testes:
+
+- Archive não sólido indexa uma imagem, confere tamanho/metadados e permite
+  abrir o JPEG duas vezes, com bytes iguais e SHA-256 de referência correto.
+- Reader sólido consome completamente texto e EXE antes de materializar o JPEG;
+  nenhum EXE é gravado ou executado. Depois de fechar Reader e arquivo original,
+  dois streams independentes dos bytes materializados são decodificados e
+  produzem pixels iguais.
+- `SkiaPageDecoder` devolve 384 × 512, stride de 1536 bytes e buffer BGRA32;
+  cinco amostras de pixels e alpha opaco correspondem à referência independente
+  do JPEG original, obtida com Pillow instalado, com tolerância de três níveis
+  por canal para arredondamento dos decoders JPEG.
+- Os hashes dos três CBR permanecem iguais após leitura e decodificação; abertura
+  exclusiva de cada arquivo comprova liberação dos handles de Archive/Reader.
+
+Essa execução é uma prova de compatibilidade das bibliotecas conectadas ao
+decoder do projeto. A sessão CBR, o cache privado de produção, os limites e seu
+cancelamento continuam dependentes de T22/T23. A tradução das três fixtures de
+rejeição para `UnsupportedArchive` também continua pendente de integração do
+produto; não foi comprovada por esses três testes de compatibilidade.
 
 Limitações explícitas: uma única imagem por fixture; reler o JPEG materializado
 cobre reutilização, mas não navegação entre duas imagens diferentes. JPEG é o

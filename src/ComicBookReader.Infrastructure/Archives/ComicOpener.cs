@@ -5,9 +5,11 @@ using ComicBookReader.Infrastructure.Imaging;
 
 namespace ComicBookReader.Infrastructure.Archives;
 
-public sealed class ComicOpener(SkiaPageDecoder? decoder = null) : IComicOpener
+public sealed class ComicOpener(SkiaPageDecoder? decoder = null, SolidRarMaterializer? solidRarMaterializer = null,
+    bool useCache = true, bool prefetchEnabled = true) : IComicOpener
 {
     private readonly SkiaPageDecoder decoder = decoder ?? new SkiaPageDecoder();
+    private readonly SolidRarMaterializer solidRarMaterializer = solidRarMaterializer ?? new SolidRarMaterializer();
 
     public Task<IComicSession> OpenAsync(string path, CancellationToken cancellationToken,
         IProgress<ComicOpenProgress>? progress = null) => Task.Run<IComicSession>(() =>
@@ -20,27 +22,39 @@ public sealed class ComicOpener(SkiaPageDecoder? decoder = null) : IComicOpener
             Span<byte> signature = stackalloc byte[8];
             var count = file.Read(signature);
             file.Position = 0;
-            if (count >= 7 && signature[..7].SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00 }) ||
-                count >= 8 && signature.SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x01, 0x00 }))
-                throw new ReaderException(ReaderErrorCode.UnsupportedArchive, "O suporte a arquivos RAR ainda não está disponível.");
-            if (count < 4 || signature[0] != 0x50 || signature[1] != 0x4b ||
-                !((signature[2] == 3 && signature[3] == 4) || (signature[2] == 5 && signature[3] == 6) || (signature[2] == 7 && signature[3] == 8)))
-                throw new ReaderException(ReaderErrorCode.InvalidArchive, "O arquivo não é uma HQ ZIP válida.");
-            CheckUnsupportedZip(file, cancellationToken);
-            file.Position = 0;
-            cancellationToken.ThrowIfCancellationRequested();
-            var session = new ZipComicSession(file, decoder);
+            var isRar = count >= 7 && signature[..7].SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00 }) ||
+                count >= 8 && signature.SequenceEqual(new byte[] { 0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x01, 0x00 });
+            IComicSession session;
+            if (isRar)
+            {
+                if (SolidRarMaterializer.InspectArchive(file, cancellationToken))
+                {
+                    session = this.solidRarMaterializer.Materialize(file, decoder, cancellationToken, progress);
+                    file.Dispose();
+                }
+                else session = new RarComicSession(file, decoder, cancellationToken);
+            }
+            else
+            {
+                if (count < 4 || signature[0] != 0x50 || signature[1] != 0x4b ||
+                    !((signature[2] == 3 && signature[3] == 4) || (signature[2] == 5 && signature[3] == 6) || (signature[2] == 7 && signature[3] == 8)))
+                    throw new ReaderException(ReaderErrorCode.InvalidArchive, "O arquivo não é uma HQ ZIP ou RAR válida.");
+                CheckUnsupportedZip(file, cancellationToken);
+                file.Position = 0;
+                cancellationToken.ThrowIfCancellationRequested();
+                session = new ZipComicSession(file, decoder);
+            }
             file = null;
             if (cancellationToken.IsCancellationRequested)
             {
                 session.DisposeAsync().AsTask().GetAwaiter().GetResult();
                 cancellationToken.ThrowIfCancellationRequested();
             }
-            return session;
+            return useCache ? new CachedComicSession(session, prefetchEnabled) : session;
         }
         catch (Exception exception) when (exception is InvalidDataException or EndOfStreamException)
         {
-            throw new ReaderException(ReaderErrorCode.InvalidArchive, "O arquivo ZIP está danificado ou incompleto.", exception);
+            throw new ReaderException(ReaderErrorCode.InvalidArchive, "O arquivo da HQ está danificado ou incompleto.", exception);
         }
         catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
         {
