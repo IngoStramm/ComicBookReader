@@ -21,6 +21,11 @@ Revisão local em 10/10/2026: correção, clareza, fronteiras, entradas e recurs
 | Foco continuava no seletor de classificação | Fechamento devolve foco ao viewport; clique na imagem também. Smoke reproduziu foco perdido antes da correção. |
 | Origem da tecla podia ser um filho de controle editável | Guard percorre ancestrais e reconhece itens do dropdown. Smoke com tecla no ComboBoxItem falhou antes da correção e passou depois. |
 | Progresso de RAR sólido notificava arraste fora da thread WPF | Smoke reproduziu acesso a Cursor fora do dispatcher. ReaderDrag marshala ReaderChanged ao dispatcher; os quatro formatos passaram após a correção. |
+| Portátil precisava das licenças sem arquivos auxiliares | Textos integrais incorporados como recurso e apresentados no diálogo Sobre pt-BR/en; smoke confere SHA256. |
+| Publicação single-file exigia pacote de análise fora do lockfile | Analyzer habilitado na App, Microsoft.NET.ILLink.Tasks 10.0.12 fixado; BuildPortable ativa publicação somente na App. Restore bloqueado mantido nos dois formatos. |
+| Pacote Skia incluía PDB nativo de 96 MB | Target da publicação portátil exclui apenas símbolos; instalador exclui `*.pdb`. EXE sozinho passou decodificação real. |
+| ISCC reportava FileVersion 0.0.0.0 | Versão 6.7.3 verificada pelo próprio pré-processador ISPP; compilação executada com sucesso. |
+| DOTNET_ROOT sozinho não registra a origem do runtime usado | Smoke confere runtime/decoder na instalação. No portátil .NET 10, CoreCLR é estático: exige export DotNetRuntimeInfo no EXE e decoder na extração privada. Paths gravados no JSON. |
 
 ## Fronteiras e posse
 
@@ -40,7 +45,7 @@ Persistência mantém temporário, backup e arquivo corrompido para recuperaçã
 
 Cinco lockfiles fixam versões e content hashes. Auditoria NuGet com `list ComicBookReader.slnx package --vulnerable --include-transitive --no-restore` não reportou vulnerabilidades conhecidas nas fontes consultadas em 10/10/2026. Isso não é prova de ausência de vulnerabilidades desconhecidas. Não foi feito upgrade de dependências.
 
-SharpCompress/SkiaSharp e runtimes possuem licenças incluídas no pacote; xUnit fica fora da distribuição. As fixtures são redistribuíveis e suas licenças ficam no repositório. Nenhum recurso/binário do CDisplayEx foi incorporado.
+SharpCompress/SkiaSharp e runtimes possuem licenças incluídas no pacote e incorporadas em Sobre; xUnit e o analisador de single-file ficam fora do runtime distribuído. O lockfile da App ganhou somente Microsoft.NET.ILLink.Tasks 10.0.12, ferramenta do SDK, sem atualização das bibliotecas do leitor. As fixtures são redistribuíveis e suas licenças ficam no repositório. Nenhum recurso/binário do CDisplayEx foi incorporado.
 
 ## Resultado
 

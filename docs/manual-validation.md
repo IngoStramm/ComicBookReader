@@ -1,6 +1,6 @@
 # Validação da janela
 
-Data: 10/10/2026. Esta página distingue execução automatizada de avaliação humana. A atualização de atalhos/arraste está disponível em `artifacts/win-x64-drag/ComicBookReader.App.exe`.
+Data: 10/10/2026. Esta página distingue execução automatizada de avaliação humana. Os arquivos portátil e instalador 0.1.0 estão em `artifacts/distribution`. O pacote anterior `artifacts/win-x64-drag` foi preservado.
 
 ## Ambiente observado
 
@@ -46,6 +46,16 @@ Evidência de desenvolvimento final em `artifacts/reader-options-final-validatio
 A atualização seguinte de largura/arraste foi verificada em `artifacts/drag-green-validation-04`; evidência do pacote atualizado em `artifacts/drag-package-validation`, com `PointerChecks` no JSON. 12 casos DragPanTests cobrem movimento em ambos os eixos, liberação, reversão nas bordas, eixos sem overflow, posição persistida, transições e coordenadas inválidas. Core/Storage verificam R personalizado em perfil antigo e roundtrip dos três atalhos. O smoke não movimenta o cursor físico: combinar movimento real com botão mantido, sair do viewport e trocar de monitor/DPI permanece uma verificação humana.
 
 A segunda execução de desenvolvimento registrou 597 intervalos em dez segundos, mediana 16,6617 ms, máximo 43,571 ms e deslocamento 4178,843 DIPs. Isso é cadência de callbacks WPF de uma janela fora da tela; não comprova a percepção visual nem a cadência final do monitor. A captura `reader.png` foi inspecionada: imagem proporcional, margens escuras e controles ocultos na leitura.
+
+## Distribuição em arquivo único e instalador
+
+`scripts/verify-distribution.ps1` valida os dois executáveis usando uma pasta exclusiva em `artifacts/distribution-validation/<id>`. O portátil é copiado sozinho e renomeado para `portable only/Reader standalone.exe`. Com DOTNET_ROOT/DOTNET_ROOT_X64 inexistentes, CBZ (incluindo segundo processo), RAR4, RAR5 e sólido passaram. O diálogo Sobre renderiza em pt-BR/en; o SHA256 do texto incorporado coincide com a agregação integral das licenças, e capturas ficam em `about-pt-BR.png`/`about-en.png`.
+
+Para comprovar a origem do runtime, o smoke verifica os módulos carregados. Na versão instalada, `coreclr.dll` e `libSkiaSharp.dll` devem estar sob a pasta da instalação. O host single-file self-contained do .NET 10 [liga CoreCLR estaticamente](https://github.com/dotnet/runtime/blob/v10.0.12/src/native/corehost/apphost/static/CMakeLists.txt): no portátil, o teste exige o export `DotNetRuntimeInfo` no próprio executável e o decoder sob a extração exclusiva definida por DOTNET_BUNDLE_EXTRACT_BASE_DIR. Os caminhos são registrados em `RuntimeModules` no JSON. Assim, o teste não depende somente de variáveis DOTNET_ROOT para inferir a ausência de fallback global.
+
+O instalador foi executado silenciosamente por usuário, em caminho com espaços, com idioma brasileiro e reinstalação em inglês. Foram conferidos executável, decoder nativo, licenças, versão no Registro HKCU e destinos dos atalhos do menu Iniciar/área de trabalho. A aplicação instalada passou os mesmos quatro formatos/retomada, sem runtime externo. O instalador e o portátil excluem PDBs de depuração.
+
+A desinstalação removeu executável, atalhos e registro de desinstalação. Conteúdo adicional colocado na pasta de instalação e um marcador exclusivo na pasta de dados permaneceram; o hash das preferências reais não mudou. O script recusa sobrescrever uma instalação/atalho existente e confere a posse/caminho antes de executar o desinstalador. Evidência: `result.json`, `install.log`, `reinstall.log` e `uninstall.log` no diretório da execução. Não houve interação com HQs pessoais nem encerramento da aplicação em uso.
 
 ## Verificações humanas pendentes
 

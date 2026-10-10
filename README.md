@@ -2,9 +2,16 @@
 
 Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imagens JPEG/PNG/WebP, rolagem contínua e tamanho de uma página preservado nas imagens duplas.
 
-## Usar a versão local
+## Baixar e compartilhar
 
-Abra `artifacts/win-x64-drag/ComicBookReader.App.exe` para avaliar os atalhos de largura e o arraste da página. Mantenha os demais arquivos dessa pasta juntos. O pacote inclui o runtime .NET e o decoder nativo; não exige instalar o SDK. É uma versão para avaliação local, com validação visual de suavidade e de outros monitores/DPI pendente.
+Os dois formatos para Windows x64 estão em `artifacts/distribution`:
+
+- `ComicBookReader-0.1.0-Portable.exe`: abra diretamente. Basta compartilhar esse único arquivo.
+- `ComicBookReader-0.1.0-Setup.exe`: instalador em português do Brasil e inglês. Instala para o usuário atual, cria um atalho no menu Iniciar, oferece atalho na área de trabalho e permite desinstalar pelas configurações do Windows.
+
+Ambos incluem o .NET e o decoder de imagens; a pessoa não precisa instalar o SDK, baixar bibliotecas nem receber a pasta do projeto. As licenças completas estão no botão **Sobre**. Preferências e progresso ficam em `%LOCALAPPDATA%\ComicBookReader`, são compartilhados entre os dois formatos e permanecem após desinstalar. A versão portátil dispensa instalação, mas usa esse diretório de dados e extrai bibliotecas nativas para o cache temporário do .NET.
+
+A distribuição anterior em `artifacts/win-x64-drag` permanece disponível. É uma versão para avaliação, com validação visual de suavidade e de outros monitores/DPI pendente.
 
 Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou passar seu caminho como argumento ao executável. A primeira execução começa em tela cheia. F12 mostra/esconde a barra; o botão ☰ também a reabre. Mover o mouse sobre a imagem não revela os controles. Tab/Alt permitem acesso pelo teclado sem mudar o tamanho da página.
 
@@ -55,6 +62,15 @@ rtk proxy powershell -NoProfile -File scripts/verify-app.ps1 -Executable artifac
 
 `publish.ps1` aceita `-DotNet` para outro caminho do SDK e `-OutputDirectory` para uma pasta local (padrão `artifacts/win-x64`). Usa restore bloqueado e copia as licenças dos pacotes efetivamente resolvidos. O modo self-contained segue a [documentação oficial do .NET](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-publish).
 
+Para gerar os dois arquivos, instalar o compilador [Inno Setup 6.7.3 oficial](https://github.com/jrsoftware/issrc/releases/tag/is-6_7_3), respeitando sua licença de uso. Os caminhos privados são os padrões dos scripts; `-DotNet` e `-Iscc` permitem informar outros caminhos. O pré-processador verifica a versão do compilador. A publicação em arquivo único segue a [documentação do .NET](https://learn.microsoft.com/en-us/dotnet/core/deploying/single-file/overview), com bibliotecas nativas incluídas, compressão e sem trimming.
+
+```powershell
+rtk proxy powershell -NoProfile -File scripts/build-distribution.ps1
+rtk proxy powershell -NoProfile -File scripts/verify-distribution.ps1
+```
+
+O primeiro comando gera os executáveis, instruções em pt-BR/en e `SHA256SUMS-0.1.0.txt`. O segundo copia somente o executável portátil para uma pasta com espaços, renomeia-o e testa os quatro formatos, conferindo que o runtime e o decoder carregados vêm da distribuição. Também instala/reinstala/desinstala em uma pasta exclusiva da validação, confere atalhos, Registro por usuário e preservação dos dados. Recusa sobrescrever uma instalação ou atalho já existentes. Os instaladores são executados de forma silenciosa; logs e hashes ficam em `artifacts/distribution-validation/<id>`.
+
 O smoke test usa HQ sintética e fixtures redistribuíveis, preferências isoladas e janela fora da tela. Testa input roteado, renderização, leitura, retomada entre processos e hashes. Não substitui a avaliação visual nem a pressão física de teclas; o roteiro e a evidência estão em [docs/manual-validation.md](docs/manual-validation.md) e [docs/acceptance.md](docs/acceptance.md).
 
-Os avisos de dependências ficam em [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) e no diretório `licenses` do pacote. Artefatos e caches não são versionados.
+Os avisos de dependências ficam em [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md), no diretório `licenses` da versão instalada e incorporados ao botão Sobre dos dois executáveis. Artefatos e caches não são versionados.

@@ -1,6 +1,6 @@
 # Matriz de aceitação
 
-Data: 10/10/2026. 233 testes passaram (158 Core, 75 Integration), build/format/restore bloqueado passaram. O pacote local atualizado está em `artifacts/win-x64-drag`. O checklist não declara concluída a aceitação visual. **Automático** indica evidência de regra/integração ou WPF com eventos roteados; **Parcial** mantém os casos humanos pendentes.
+Data: 10/10/2026. 233 testes passaram (158 Core, 75 Integration), build/format/restore bloqueado passaram. Portátil e instalador 0.1.0 estão em `artifacts/distribution`; o pacote anterior `artifacts/win-x64-drag` foi preservado. O checklist não declara concluída a aceitação visual. **Automático** indica evidência de regra/integração ou WPF com eventos roteados; **Parcial** mantém os casos humanos pendentes.
 
 Nomes de testes abaixo identificam classes reais nos projetos `tests/ComicBookReader.Core.Tests` e `tests/ComicBookReader.Integration.Tests`. Execução da janela, ambiente e limites da evidência: [manual-validation.md](manual-validation.md). Achados: [review.md](review.md).
 
@@ -44,5 +44,9 @@ Nomes de testes abaixo identificam classes reais nos projetos `tests/ComicBookRe
 | G-07 | Parcial | Resize e DIPs a 96 DPI comprovados; mudança real de DPI/monitor pendente. |
 | G-08 | Automático | Geração tardia, cancelamento ignorado pelo decoder e navegação concorrente. |
 | G-09 | Automático | Hashes preservados, acesso somente leitura; sem escrita no CDisplayEx/Registro. |
+| Distribuição portátil | Automático | EXE sozinho/renomeado em caminho com espaços, CBZ/RAR4/RAR5/sólido e retomada, runtime incluído. |
+| Instalador por usuário | Automático | Instalação em pt-BR, reinstalação em inglês, HKCU/atalhos conferidos e execução real da aplicação. |
+| Desinstalação | Automático | Remove itens instalados e preserva preferências e conteúdo adicional do usuário. |
+| Licenças incorporadas | Automático | Sobre pt-BR/en renderiza; SHA256 dos textos completos coincide nos dois formatos. |
 
 A distribuição é uma versão local para avaliação. T30 permanece aberto até a aceitação humana de suavidade, teclado e monitor/DPI; esse estado não é substituído por aprovação do build.
