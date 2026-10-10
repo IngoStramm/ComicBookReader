@@ -1,6 +1,8 @@
 param(
     [string]$Executable = 'src/ComicBookReader.App/bin/Release/net10.0-windows/ComicBookReader.App.exe',
-    [string]$EvidenceDirectory = 'artifacts/runtime-validation'
+    [string]$EvidenceDirectory = 'artifacts/runtime-validation',
+    [switch]$Standalone,
+    [string]$BundledLicensesFile = ''
 )
 $ErrorActionPreference = 'Stop'
 $privateRuntime = Join-Path $env:LOCALAPPDATA 'ComicBookReader-dev/dotnet-10.0.401'
@@ -10,12 +12,20 @@ $executablePath = [IO.Path]::GetFullPath((Join-Path $projectRoot $Executable))
 $evidenceRoot = [IO.Path]::GetFullPath((Join-Path $projectRoot $EvidenceDirectory))
 [IO.Directory]::CreateDirectory($evidenceRoot) | Out-Null
 $runtimeConfigPath = [IO.Path]::ChangeExtension($executablePath, 'runtimeconfig.json')
-$runtimeConfig = Get-Content -Raw -LiteralPath $runtimeConfigPath | ConvertFrom-Json
-if ($runtimeConfig.runtimeOptions.includedFrameworks) {
-    # Prove the self-contained host uses its own runtime, with no installed runtime fallback.
+$runtimeConfig = if (Test-Path -LiteralPath $runtimeConfigPath) { Get-Content -Raw -LiteralPath $runtimeConfigPath | ConvertFrom-Json } else { $null }
+if (-not $Standalone -and $null -eq $runtimeConfig) { throw 'Missing runtimeconfig; use -Standalone only for the single-file distribution.' }
+if ($Standalone -or $runtimeConfig.runtimeOptions.includedFrameworks) {
+    # Check the paths of loaded native modules inside the smoke test as well.
     $env:DOTNET_ROOT = Join-Path $evidenceRoot 'no-installed-runtime'
     $env:DOTNET_ROOT_X64 = $env:DOTNET_ROOT
+    $env:DOTNET_BUNDLE_EXTRACT_BASE_DIR = Join-Path $evidenceRoot 'native-extraction'
+    $env:COMICBOOKREADER_RUNTIME_DIRECTORY = if ($Standalone) { $env:DOTNET_BUNDLE_EXTRACT_BASE_DIR } else { Split-Path -Parent $executablePath }
+} else {
+    Remove-Item Env:COMICBOOKREADER_RUNTIME_DIRECTORY -ErrorAction SilentlyContinue
 }
+if ($BundledLicensesFile) {
+    $env:COMICBOOKREADER_LICENSES_SHA256 = (Get-FileHash -LiteralPath $BundledLicensesFile -Algorithm SHA256).Hash
+} else { Remove-Item Env:COMICBOOKREADER_LICENSES_SHA256 -ErrorAction SilentlyContinue }
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.IO.Compression
 $comicPath = Join-Path $evidenceRoot 'synthetic.cbz'

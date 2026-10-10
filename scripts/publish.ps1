@@ -1,13 +1,16 @@
 param(
     [string]$DotNet = (Join-Path $env:LOCALAPPDATA 'ComicBookReader-dev/dotnet-10.0.401/dotnet.exe'),
-    [string]$OutputDirectory = 'artifacts/win-x64'
+    [string]$OutputDirectory = 'artifacts/win-x64',
+    [string]$ThirdPartyLicensesFile = ''
 )
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $destination = [IO.Path]::GetFullPath((Join-Path $projectRoot $OutputDirectory))
 Push-Location $projectRoot
 try {
-    rtk proxy $DotNet publish src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Release --runtime win-x64 --self-contained true --output $destination -p:RestoreLockedMode=true -p:RestorePackagesWithLockFile=true
+    $publishArguments = @('publish', 'src/ComicBookReader.App/ComicBookReader.App.csproj', '--configuration', 'Release', '--runtime', 'win-x64', '--self-contained', 'true', '--output', $destination, '-p:RestoreLockedMode=true', '-p:RestorePackagesWithLockFile=true')
+    if ($ThirdPartyLicensesFile) { $publishArguments += "-p:ThirdPartyLicensesFile=$([IO.Path]::GetFullPath($ThirdPartyLicensesFile))" }
+    rtk proxy $DotNet @publishArguments
     if ($LASTEXITCODE -ne 0) { throw 'Locked publication failed.' }
     $packageCache = if ($env:NUGET_PACKAGES) { $env:NUGET_PACKAGES } else { Join-Path $env:USERPROFILE '.nuget/packages' }
     $legalDirectory = Join-Path $destination 'licenses'
