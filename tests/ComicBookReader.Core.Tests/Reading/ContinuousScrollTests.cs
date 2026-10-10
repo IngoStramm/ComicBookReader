@@ -76,11 +76,11 @@ public sealed class ContinuousScrollTests
     private sealed class Opener : IComicOpener
     {
         public Task<IComicSession> OpenAsync(string path, CancellationToken cancellationToken,
-            IProgress<ComicOpenProgress>? progress = null) => Task.FromResult<IComicSession>(new Session());
+            IProgress<ComicOpenProgress>? progress = null) => Task.FromResult<IComicSession>(new Session(path));
     }
-    private sealed class Session : IComicSession
+    private sealed class Session(string path) : IComicSession
     {
-        public BookInfo Book { get; } = new("book", "book", 1, DateTime.UnixEpoch);
+        public BookInfo Book { get; } = new(path, path, 1, DateTime.UnixEpoch);
         public IReadOnlyList<PageInfo> Pages { get; } = [new(0, "0", "0.png")];
         public ValueTask<PageImage> ReadPageAsync(int index, CancellationToken cancellationToken)
             => ValueTask.FromResult(new PageImage(new PixelSize(10, 40), 40, new byte[1600]));

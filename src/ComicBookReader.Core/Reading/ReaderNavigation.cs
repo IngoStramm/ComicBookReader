@@ -8,6 +8,7 @@ public sealed partial class ReaderController
     public async Task NavigateAsync(int delta, CancellationToken cancellationToken = default)
     {
         Deactivate();
+        CapturePreferences();
         IComicSession currentSession;
         CancellationTokenSource request;
         int target, current;
@@ -34,6 +35,7 @@ public sealed partial class ReaderController
                 if (current != generation || disposed) return;
                 previous = State.Image;
                 overview = null;
+                ResolvePageSettings(currentSession, target);
                 State = State with { Mode = ReaderMode.Reading, Image = image, Layout = ReadingLayout(image),
                     PresentedIndex = target, OffsetXDip = 0, OffsetYDip = 0 };
                 image = null;

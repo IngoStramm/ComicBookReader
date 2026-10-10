@@ -42,6 +42,8 @@
           <ComboBoxItem Content="Dupla" />
         </ComboBox>
         <Button Content="_Tela cheia" Click="FullscreenClicked" ToolTip="F11" />
+        <Button Content="_Preferências…" Click="PreferencesClicked" />
+        <Button Content="Largura _padrão" Click="ResetWidthClicked" ToolTip="Usar o padrão global nesta HQ" />
       </WrapPanel>
     </Border>
     <Border Background="#ED24282C" VerticalAlignment="Bottom" HorizontalAlignment="Left"

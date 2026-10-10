@@ -42,13 +42,13 @@ public sealed partial class ReaderController
     public void SetWidthRatio(double ratio, double? anchorXDip = null, double? anchorYDip = null)
     {
         if (!double.IsFinite(ratio) || ratio is < .25 or > 2) throw new ArgumentOutOfRangeException(nameof(ratio));
-        ChangeGeometry(() => WidthRatio = ratio, anchorXDip, anchorYDip);
+        ChangeGeometry(() => { WidthRatio = ratio; SaveWidthOverride(); }, anchorXDip, anchorYDip);
     }
 
     public void SetClassification(PageClassificationOverride classification)
     {
         if (!Enum.IsDefined(classification)) throw new ArgumentOutOfRangeException(nameof(classification));
-        ChangeGeometry(() => Classification = classification, null, null);
+        ChangeGeometry(() => { Classification = classification; SaveClassificationOverride(); }, null, null);
     }
 
     private void ChangeGeometry(Action change, double? anchorX, double? anchorY)

@@ -5,7 +5,8 @@ using ComicBookReader.Core.Preferences;
 
 namespace ComicBookReader.Core.Reading;
 
-public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCalculator? layoutCalculator = null) : IAsyncDisposable
+public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCalculator? layoutCalculator = null,
+    ReaderPreferences? preferences = null) : IAsyncDisposable
 {
     private readonly IPageLayoutCalculator calculator = layoutCalculator ?? new PageLayoutCalculator();
     private readonly object gate = new();
@@ -22,6 +23,7 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
     public async Task OpenAsync(string path, CancellationToken cancellationToken = default)
     {
         Deactivate();
+        CapturePreferences();
         CancellationTokenSource request;
         int current;
         lock (gate)
@@ -39,7 +41,8 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
         {
             candidate = await opener.OpenAsync(path, request.Token);
             request.Token.ThrowIfCancellationRequested();
-            image = await candidate.ReadPageAsync(0, request.Token);
+            int index = RestoredPageIndex(candidate);
+            image = await candidate.ReadPageAsync(index, request.Token);
             IComicSession? previous;
             PageImage? previousImage;
             lock (gate)
@@ -49,10 +52,15 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
                 previousImage = State.Image;
                 session = candidate;
                 overview = null;
+                ResolvePageSettings(candidate, index);
+                var layout = ReadingLayout(image);
+                var position = GetBookSettings(candidate.Book.BookId).Position;
+                var offsets = position is null ? (X: 0d, Y: 0d) : PreferencesResolver.RestorePosition(position, layout.MaxOffsetXDip, layout.MaxOffsetYDip);
                 State = new ReaderState
                 {
                     Mode = ReaderMode.Reading, Book = candidate.Book, Pages = candidate.Pages,
-                    Image = image, Layout = ReadingLayout(image), Generation = current
+                    Image = image, Layout = layout, Generation = current, TargetIndex = index, PresentedIndex = index,
+                    OffsetXDip = offsets.X, OffsetYDip = offsets.Y
                 };
                 candidate = null;
                 image = null;

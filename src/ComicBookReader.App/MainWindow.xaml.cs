@@ -7,32 +7,67 @@ using ComicBookReader.Core.Layout;
 using ComicBookReader.Core.Reading;
 using ComicBookReader.Core.Preferences;
 using ComicBookReader.Infrastructure.Archives;
+using ComicBookReader.Infrastructure.Storage;
 using Microsoft.Win32;
 
 namespace ComicBookReader.App;
 
 public partial class MainWindow : Window
 {
-    public ReaderController Reader { get; } = new(new ComicOpener());
+    public ReaderController Reader { get; }
     private PageImage? presented;
     private bool fullscreen;
     private readonly ReaderInput input;
     private bool updatingControls;
+    private readonly PreferencesSaveCoordinator saves;
+    private bool closing;
+    private string? storageWarning;
 
-    public MainWindow(bool startFullscreen = true)
+    public MainWindow(bool startFullscreen = true, ReaderPreferences? preferences = null,
+        IReadingPreferencesStore? store = null, string? storageWarning = null)
     {
+        Reader = new ReaderController(new ComicOpener(), preferences: preferences);
+        saves = new PreferencesSaveCoordinator(store ?? new JsonReadingPreferencesStore(), preferences);
+        this.storageWarning = storageWarning;
         InitializeComponent();
-        Reader.Changed += UpdateView;
+        Reader.Changed += ReaderChanged;
         Viewport.SizeChanged += (_, _) => UpdateViewport();
         input = new ReaderInput(this, Reader, RunCommand);
+        input.Bindings = (preferences ?? new ReaderPreferences()).KeyBindings;
+        saves.SaveStatusChanged += SaveStatusChanged;
         PreviewMouseWheel += MouseWheelChanged;
         Drop += OnDrop;
         Loaded += (_, _) => { SetFullscreen(startFullscreen); UpdateViewport(); Viewport.Focus(); };
-        Closed += async (_, _) => { input.Dispose(); Reader.Changed -= UpdateView; await Reader.DisposeAsync(); };
+        Closing += ClosingWindow;
+    }
+
+    private void ReaderChanged() { UpdateView(); PersistProgress(); }
+    private void PersistProgress() => saves.Update(Reader.CapturePreferences() with { LastFullscreen = fullscreen });
+    private void SaveStatusChanged(object? sender, EventArgs e) => Dispatcher.BeginInvoke(() =>
+    {
+        storageWarning = saves.LastError is null ? null : "As alterações desta sessão não puderam ser salvas.";
+        UpdateView();
+    });
+    private async void ClosingWindow(object? sender, System.ComponentModel.CancelEventArgs e)
+    {
+        if (closing) return;
+        e.Cancel = true;
+        input.Stop();
+        PersistProgress();
+        await saves.FlushAsync();
+        saves.SaveStatusChanged -= SaveStatusChanged;
+        Reader.Changed -= ReaderChanged;
+        input.Dispose();
+        await Reader.DisposeAsync();
+        await saves.DisposeAsync();
+        closing = true;
+        Close();
     }
 
     public async Task OpenPathAsync(string path)
     {
+        PersistProgress();
+        await saves.FlushAsync();
         await Reader.OpenAsync(path);
         Viewport.Focus();
     }
@@ -54,8 +89,8 @@ public partial class MainWindow : Window
     {
         switch (command)
         {
-            case "NextPage": await Reader.NavigateAsync(1); break;
-            case "PreviousPage": await Reader.NavigateAsync(-1); break;
+            case "NextPage": await NavigateAsync(1); break;
+            case "PreviousPage": await NavigateAsync(-1); break;
             case "Fullscreen": ToggleFullscreen(); break;
             case "Escape": if (fullscreen) SetFullscreen(false); break;
             case "Open": OpenClicked(this, new RoutedEventArgs()); break;
@@ -65,8 +100,9 @@ public partial class MainWindow : Window
         }
     }
 
-    private async void PreviousClicked(object sender, RoutedEventArgs e) => await Reader.NavigateAsync(-1);
-    private async void NextClicked(object sender, RoutedEventArgs e) => await Reader.NavigateAsync(1);
+    private async Task NavigateAsync(int delta) { PersistProgress(); await saves.FlushAsync(); await Reader.NavigateAsync(delta); }
+    private async void PreviousClicked(object sender, RoutedEventArgs e) => await NavigateAsync(-1);
+    private async void NextClicked(object sender, RoutedEventArgs e) => await NavigateAsync(1);
     private void OverviewClicked(object sender, RoutedEventArgs e) { Reader.ToggleOverview(); Viewport.Focus(); }
     private void SmallerClicked(object sender, RoutedEventArgs e) => ChangeWidth(-.05);
     private void LargerClicked(object sender, RoutedEventArgs e) => ChangeWidth(.05);
@@ -76,6 +112,19 @@ public partial class MainWindow : Window
     {
         if (!updatingControls && ClassificationChoice is not null)
             Reader.SetClassification((PageClassificationOverride)ClassificationChoice.SelectedIndex);
+    }
+    private void ResetWidthClicked(object sender, RoutedEventArgs e) { Reader.ResetBookWidth(); Viewport.Focus(); }
+    private void PreferencesClicked(object sender, RoutedEventArgs e)
+    {
+        input.Stop();
+        var dialog = new PreferencesWindow(Reader.CapturePreferences()) { Owner = this };
+        if (dialog.ShowDialog() == true && dialog.Result is { } result)
+        {
+            Reader.ApplyPreferences(result);
+            input.Bindings = result.KeyBindings;
+            PersistProgress();
+        }
+        Viewport.Focus();
     }
     private void MouseWheelChanged(object sender, MouseWheelEventArgs e)
     {
@@ -96,6 +145,7 @@ public partial class MainWindow : Window
         WindowStyle = enabled ? WindowStyle.None : WindowStyle.SingleBorderWindow;
         ResizeMode = enabled ? ResizeMode.NoResize : ResizeMode.CanResize;
         if (enabled) WindowState = WindowState.Maximized;
+        PersistProgress();
     }
 
     private void UpdateViewport()
@@ -126,7 +176,7 @@ public partial class MainWindow : Window
         }
         EmptyHint.Visibility = state.Image is null ? Visibility.Visible : Visibility.Collapsed;
         PageLabel.Text = state.Book is null ? "Nenhuma HQ aberta" : $"{state.PresentedIndex + 1} / {state.Pages.Count}";
-        Status.Text = state.Error?.Message ?? (state.Mode == ReaderMode.Loading ? "Carregando…" :
+        Status.Text = state.Error?.Message ?? storageWarning ?? (state.Mode == ReaderMode.Loading ? "Carregando…" :
             state.Book is null ? "Ctrl+O · Abrir HQ    F11 · Tela cheia" : System.IO.Path.GetFileName(state.Book.CanonicalPath));
     }
 }

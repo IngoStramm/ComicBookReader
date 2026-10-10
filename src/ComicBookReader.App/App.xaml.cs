@@ -1,6 +1,9 @@
 using System.Windows;
 using System.IO;
 using ComicBookReader.App.Presentation;
+using ComicBookReader.Core.Contracts;
+using ComicBookReader.Core.Preferences;
+using ComicBookReader.Infrastructure.Storage;
 
 namespace ComicBookReader.App;
 
@@ -10,7 +13,12 @@ public partial class App : Application
     {
         base.OnStartup(e);
         bool smoke = e.Args.Length == 3 && e.Args[0] == "--smoke-test";
-        var window = new MainWindow(!smoke);
+        var store = new JsonReadingPreferencesStore(smoke ? Path.Combine(Path.GetFullPath(e.Args[2]), "preferences") : null);
+        ReaderPreferences preferences;
+        string? warning;
+        try { preferences = await store.LoadAsync(CancellationToken.None); warning = store.LastWarning; }
+        catch (ReaderException) { preferences = new(); warning = "Não foi possível recuperar as preferências. Os padrões foram aplicados."; }
+        var window = new MainWindow(!smoke && preferences.LastFullscreen, preferences, store, warning);
         if (smoke) { window.Left = -10000; window.Top = -10000; window.ShowActivated = false; }
         MainWindow = window;
         window.Show();
