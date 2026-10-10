@@ -24,6 +24,10 @@ internal static class ReadingSmokeChecks
                 restored.Classifications.SequenceEqual(expected.Classifications), "Restart lost reading preferences.");
         }
         await reader.NavigateAsync(-100);
+        RaiseKey(window, Key.PageDown, true);
+        await WaitForPageAsync(window, 1, "Page Down did not advance the page.");
+        RaiseKey(window, Key.PageUp, true);
+        await WaitForPageAsync(window, 0, "Page Up did not return to the previous page.");
         reader.SetWidthRatio(1);
         reader.ScrollBy(0, -double.MaxValue);
         var originalLayout = reader.State.Layout;
@@ -98,6 +102,7 @@ internal static class ReadingSmokeChecks
             RestartVerified = restarted,
             OverlayHiddenWithoutReframe = true,
             RoutedArrowScrollAndRelease = true,
+            PageNavigationKeysPassed = true,
             FocusLossStopsScroll = true,
             EdgeKeepsPage = true,
             SpreadResolutionsMatch = true,
@@ -125,5 +130,16 @@ internal static class ReadingSmokeChecks
     private static void Require(bool condition, string message)
     {
         if (!condition) throw new InvalidOperationException(message);
+    }
+
+    private static async Task WaitForPageAsync(MainWindow window, int index, string message)
+    {
+        var timer = Stopwatch.StartNew();
+        while (timer.Elapsed < TimeSpan.FromSeconds(3))
+        {
+            if (window.Reader.State.Mode == ReaderMode.Reading && window.Reader.State.PresentedIndex == index) return;
+            await Task.Delay(10);
+        }
+        throw new InvalidOperationException(message);
     }
 }

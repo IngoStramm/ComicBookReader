@@ -48,9 +48,16 @@ public sealed class ReaderInput : IDisposable
             return;
         }
         if (key == Key.Escape) { Stop(); command("Escape"); e.Handled = true; return; }
+        string keyName = key switch
+        {
+            Key.PageDown => nameof(Key.PageDown),
+            Key.PageUp => nameof(Key.PageUp),
+            Key.Enter => nameof(Key.Enter),
+            _ => key.ToString()
+        };
         string chord = (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) ? "Ctrl+" : "") +
             (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) ? "Shift+" : "") +
-            (Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) ? "Alt+" : "") + key;
+            (Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) ? "Alt+" : "") + keyName;
         foreach (var binding in Bindings)
         {
             if (!string.Equals(binding.Value, chord, StringComparison.OrdinalIgnoreCase)) continue;
