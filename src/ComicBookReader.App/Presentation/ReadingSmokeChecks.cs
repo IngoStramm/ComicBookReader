@@ -11,7 +11,7 @@ namespace ComicBookReader.App.Presentation;
 
 internal static class ReadingSmokeChecks
 {
-    public static async Task<object> RunAsync(MainWindow window, string output)
+    public static async Task<bool> ValidateRestartAsync(MainWindow window, string output)
     {
         var reader = window.Reader;
         var expectedFile = Path.Combine(output, "expected-reopen.json");
@@ -23,7 +23,26 @@ internal static class ReadingSmokeChecks
             Require(restored.WidthRatio == expected.WidthRatio && restored.Position == expected.Position &&
                 restored.Classifications.SequenceEqual(expected.Classifications), "Restart lost reading preferences.");
         }
+        return restarted;
+    }
+
+    public static async Task<object> RunAsync(MainWindow window, string output, bool restarted)
+    {
+        var reader = window.Reader;
+        var expectedFile = Path.Combine(output, "expected-reopen.json");
         await reader.NavigateAsync(-100);
+        reader.SetClassification(PageClassificationOverride.Auto);
+        await Task.Delay(2300);
+        var toolbarLayout = reader.State.Layout;
+        if (window.Toolbar.Visibility == Visibility.Visible) RaiseKey(window, Key.F12, true);
+        Require(window.Toolbar.Visibility == Visibility.Collapsed, "F12 did not hide the toolbar before the toggle test.");
+        RaiseKey(window, Key.F12, true);
+        Require(window.Toolbar.Visibility == Visibility.Visible, "F12 did not show the reading toolbar.");
+        RaiseKey(window, Key.F12, true);
+        Require(window.Toolbar.Visibility == Visibility.Collapsed, "F12 did not hide the reading toolbar.");
+        window.RaiseEvent(new MouseEventArgs(Mouse.PrimaryDevice, 0) { RoutedEvent = Mouse.PreviewMouseMoveEvent });
+        Require(window.Toolbar.Visibility == Visibility.Collapsed, "Mouse movement showed the toolbar.");
+        Require(reader.State.Layout == toolbarLayout, "Toggling the toolbar changed page size.");
         var pageKey = RaiseKey(window, Key.PageDown, true);
         await WaitForPageAsync(window, 1,
             $"Page Down did not advance the page (handled={pageKey.Handled}, source={pageKey.OriginalSource?.GetType().Name}, modifiers={Keyboard.Modifiers}, mode={reader.State.Mode}).");
@@ -34,7 +53,7 @@ internal static class ReadingSmokeChecks
         RaiseKey(window, Key.Space, true);
         await WaitForAsync(() => reader.State.OffsetYDip > 0, "Space did not scroll down.");
         Require(reader.State.PresentedIndex == 0 &&
-            Math.Abs(reader.State.OffsetYDip - .9 * window.Viewport.ActualHeight) < .001,
+            Math.Abs(reader.State.OffsetYDip - reader.CapturePreferences().SpaceScrollPercent / 100d * window.Viewport.ActualHeight) < .001,
             "Space skipped a page or lost viewport overlap.");
         reader.ScrollBy(0, reader.State.Layout!.MaxOffsetYDip - reader.State.OffsetYDip - 10);
         RaiseKey(window, Key.Space, true);
@@ -83,7 +102,7 @@ internal static class ReadingSmokeChecks
         reader.SetWidthRatio(1);
         reader.ScrollBy(0, -double.MaxValue);
         var originalLayout = reader.State.Layout;
-        await Task.Delay(2300);
+        if (window.Toolbar.Visibility == Visibility.Visible) RaiseKey(window, Key.F12, true);
         Require(window.Toolbar.Visibility == Visibility.Collapsed, "Reading controls did not hide.");
         Require(reader.State.Layout == originalLayout, "Hiding controls changed page size.");
         RaiseKey(window, Key.Tab, true);

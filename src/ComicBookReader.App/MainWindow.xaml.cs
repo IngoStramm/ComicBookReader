@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using ComicBookReader.App.Presentation;
 using ComicBookReader.Core.ComicFiles;
@@ -26,6 +27,7 @@ public partial class MainWindow : Window
     private readonly System.Windows.Threading.DispatcherTimer snapshotTimer;
     private readonly ReadingOverlay overlay;
     private string? storageWarning;
+    private UiText text;
     internal bool HasStorageWarning => storageWarning is not null;
 
     public MainWindow(bool startFullscreen = true, ReaderPreferences? preferences = null,
@@ -35,6 +37,7 @@ public partial class MainWindow : Window
             Environment.GetEnvironmentVariable("COMICBOOKREADER_DISABLE_PREFETCH") != "1"), preferences: preferences);
         saves = new PreferencesSaveCoordinator(store ?? new JsonReadingPreferencesStore(), preferences);
         this.storageWarning = storageWarning;
+        text = new UiText((preferences ?? new ReaderPreferences()).Language);
         InitializeComponent();
         overlay = new ReadingOverlay(this);
         snapshotTimer = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(300) };
@@ -44,6 +47,9 @@ public partial class MainWindow : Window
         Viewport.SizeChanged += (_, _) => UpdateViewport();
         input = new ReaderInput(this, Reader, RunCommand);
         input.Bindings = (preferences ?? new ReaderPreferences()).KeyBindings;
+        ApplyLanguage((preferences ?? new ReaderPreferences()).Language);
+        Reader.ApplyPreferences(preferences ?? new ReaderPreferences());
+        Toolbar.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ToolbarButtonClicked));
         saves.SaveStatusChanged += SaveStatusChanged;
         PreviewMouseWheel += MouseWheelChanged;
         Drop += OnDrop;
@@ -59,7 +65,7 @@ public partial class MainWindow : Window
     }
     private void SaveStatusChanged(object? sender, EventArgs e) => Dispatcher.BeginInvoke(() =>
     {
-        storageWarning = saves.LastError is null ? null : "As alterações desta sessão não puderam ser salvas.";
+        storageWarning = saves.LastError is null ? null : text["SaveWarning"];
         UpdateView();
     });
     private async void ClosingWindow(object? sender, System.ComponentModel.CancelEventArgs e)
@@ -91,121 +97,4 @@ public partial class MainWindow : Window
         Viewport.Focus();
     }
 
-    private async void OpenClicked(object sender, RoutedEventArgs e)
-    {
-        input.Stop();
-        var dialog = new OpenFileDialog { Filter = "Histórias em quadrinhos|*.cbz;*.cbr|Todos os arquivos|*.*" };
-        if (dialog.ShowDialog(this) == true) await OpenPathAsync(dialog.FileName);
-    }
-
-    private async void OnDrop(object sender, DragEventArgs e)
-    {
-        if (e.Data.GetData(DataFormats.FileDrop) is string[] { Length: 1 } paths)
-            await OpenPathAsync(paths[0]);
-    }
-
-    private async void RunCommand(string command)
-    {
-        switch (command)
-        {
-            case "NextPage": await NavigateAsync(1); break;
-            case "PreviousPage": await NavigateAsync(-1); break;
-            case "ScrollForward":
-                PersistProgress();
-                await saves.FlushAsync();
-                await Reader.ScrollForwardAsync();
-                break;
-            case "Fullscreen": ToggleFullscreen(); break;
-            case "Escape": if (fullscreen) SetFullscreen(false); break;
-            case "Open": OpenClicked(this, new RoutedEventArgs()); break;
-            case "Overview": Reader.ToggleOverview(); break;
-            case "ZoomIn": ChangeWidth(.05); break;
-            case "ZoomOut": ChangeWidth(-.05); break;
-        }
-    }
-
-    private async Task NavigateAsync(int delta) { PersistProgress(); await saves.FlushAsync(); await Reader.NavigateAsync(delta); }
-    private async void PreviousClicked(object sender, RoutedEventArgs e) => await NavigateAsync(-1);
-    private async void NextClicked(object sender, RoutedEventArgs e) => await NavigateAsync(1);
-    private void OverviewClicked(object sender, RoutedEventArgs e) { Reader.ToggleOverview(); Viewport.Focus(); }
-    private void SmallerClicked(object sender, RoutedEventArgs e) => ChangeWidth(-.05);
-    private void LargerClicked(object sender, RoutedEventArgs e) => ChangeWidth(.05);
-    private void ChangeWidth(double delta, Point? anchor = null) => Reader.SetWidthRatio(
-        Math.Clamp(Reader.WidthRatio + delta, .25, 2), anchor?.X, anchor?.Y);
-    private void ClassificationChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (!updatingControls && ClassificationChoice is not null)
-            Reader.SetClassification((PageClassificationOverride)ClassificationChoice.SelectedIndex);
-    }
-    private void ClassificationClosed(object? sender, EventArgs e) => Viewport.Focus();
-    private void ViewportClicked(object sender, MouseButtonEventArgs e) => Viewport.Focus();
-    private void ResetWidthClicked(object sender, RoutedEventArgs e) { Reader.ResetBookWidth(); Viewport.Focus(); }
-    private void PreferencesClicked(object sender, RoutedEventArgs e)
-    {
-        input.Stop();
-        var dialog = new PreferencesWindow(Reader.CapturePreferences()) { Owner = this };
-        if (dialog.ShowDialog() == true && dialog.Result is { } result)
-        {
-            Reader.ApplyPreferences(result);
-            input.Bindings = result.KeyBindings;
-            PersistProgress();
-        }
-        Viewport.Focus();
-    }
-    private void MouseWheelChanged(object sender, MouseWheelEventArgs e)
-    {
-        if (!Viewport.IsMouseOver) return;
-        if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-            ChangeWidth(Math.Sign(e.Delta) * .05, e.GetPosition(Viewport));
-        else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)) Reader.ScrollBy(-e.Delta, 0);
-        else Reader.ScrollBy(0, -e.Delta);
-        e.Handled = true;
-    }
-
-    private void FullscreenClicked(object sender, RoutedEventArgs e) => ToggleFullscreen();
-    public void ToggleFullscreen() => SetFullscreen(!fullscreen);
-    private void SetFullscreen(bool enabled)
-    {
-        fullscreen = enabled;
-        WindowState = WindowState.Normal;
-        WindowStyle = enabled ? WindowStyle.None : WindowStyle.SingleBorderWindow;
-        ResizeMode = enabled ? ResizeMode.NoResize : ResizeMode.CanResize;
-        if (enabled) WindowState = WindowState.Maximized;
-        PersistProgress();
-    }
-
-    private void UpdateViewport()
-    {
-        if (Viewport.ActualWidth > 0 && Viewport.ActualHeight > 0)
-            Reader.SetViewport(new ViewportSize(Viewport.ActualWidth, Viewport.ActualHeight));
-    }
-
-    private void UpdateView()
-    {
-        if (!Dispatcher.CheckAccess()) { Dispatcher.Invoke(UpdateView); return; }
-        var state = Reader.State;
-        updatingControls = true;
-        ClassificationChoice.SelectedIndex = (int)Reader.Classification;
-        WidthLabel.Text = $"Largura: {Reader.WidthRatio:P0}";
-        updatingControls = false;
-        if (!ReferenceEquals(presented, state.Image))
-        {
-            presented = state.Image;
-            Page.Source = presented is null ? null : BitmapPresenter.Create(presented);
-        }
-        if (state.Layout is { } layout)
-        {
-            Page.Width = layout.DisplayWidthDip;
-            Page.Height = layout.DisplayHeightDip;
-            Canvas.SetLeft(Page, layout.OriginXDip - state.OffsetXDip);
-            Canvas.SetTop(Page, layout.OriginYDip - state.OffsetYDip);
-        }
-        EmptyHint.Visibility = state.Image is null ? Visibility.Visible : Visibility.Collapsed;
-        PageLabel.Text = state.Book is null ? "Nenhuma HQ aberta" : $"{state.PresentedIndex + 1} / {state.Pages.Count}";
-        Status.Text = state.Error?.Message ?? storageWarning ?? (state.Mode == ReaderMode.Loading ? "Carregando…" :
-            state.Book is null ? "Ctrl+O · Abrir HQ    F11 · Tela cheia" : System.IO.Path.GetFileName(state.Book.CanonicalPath));
-        if (state.Mode == ReaderMode.Loading && state.OpenProgress is { } progress)
-            Status.Text = $"Preparando RAR: {progress.EntriesProcessed} entradas · {progress.BytesMaterialized / 1048576d:F1} MiB";
-        overlay.Update();
-    }
 }

@@ -40,15 +40,23 @@ public sealed class ReaderInput : IDisposable
 
     private void KeyDown(object sender, KeyEventArgs e)
     {
-        if (IsEditingControl(e.OriginalSource as DependencyObject)) { Stop(); return; }
+        bool editing = IsEditingControl(e.OriginalSource as DependencyObject);
         Key key = e.Key == Key.System ? e.SystemKey : e.Key;
         if (Direction(key) is { } direction)
         {
+            if (editing) { Stop(); return; }
             reader.PressDirection(direction);
             e.Handled = true;
             return;
         }
-        if (key == Key.Escape) { Stop(); command("Escape"); e.Handled = true; return; }
+        if (key == Key.Escape)
+        {
+            Stop();
+            if (editing) return;
+            command("Escape"); e.Handled = true; return;
+        }
+        if (key == Key.Space && Keyboard.Modifiers == ModifierKeys.None && IsButton(e.OriginalSource as DependencyObject))
+        { Stop(); return; }
         string keyName = key switch
         {
             Key.PageDown => nameof(Key.PageDown),
@@ -62,15 +70,28 @@ public sealed class ReaderInput : IDisposable
         foreach (var binding in Bindings)
         {
             if (!string.Equals(binding.Value, chord, StringComparison.OrdinalIgnoreCase)) continue;
+            if (editing && binding.Key is not ("ToggleToolbar" or "Preferences" or "Open" or "Fullscreen"))
+            { Stop(); return; }
             e.Handled = true;
             if (!e.IsRepeat) { Stop(); command(binding.Key); }
             return;
         }
         if (key == Key.Space && Keyboard.Modifiers == ModifierKeys.None)
         {
+            if (editing) { Stop(); return; }
             e.Handled = true;
             if (!e.IsRepeat) { Stop(); command("ScrollForward"); }
         }
+    }
+
+    private static bool IsButton(DependencyObject? source)
+    {
+        while (source is not null)
+        {
+            if (source is ButtonBase) return true;
+            source = LogicalTreeHelper.GetParent(source) ?? (source is Visual ? VisualTreeHelper.GetParent(source) : null);
+        }
+        return false;
     }
 
     private static bool IsEditingControl(DependencyObject? source)
@@ -89,7 +110,7 @@ public sealed class ReaderInput : IDisposable
         if (Direction(e.Key) is not { } direction) return;
         reader.ReleaseDirection(direction);
         if (!reader.HasActiveDirections) previousTimestamp = 0;
-        e.Handled = true;
+        if (!IsEditingControl(e.OriginalSource as DependencyObject)) e.Handled = true;
     }
 
     private void Render(object? sender, EventArgs e)

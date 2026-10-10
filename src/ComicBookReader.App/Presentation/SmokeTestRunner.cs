@@ -19,7 +19,10 @@ internal static class SmokeTestRunner
         var ready = window.Reader.State;
         if (ready.Mode != ReaderMode.Reading || ready.Image is null)
             throw new InvalidOperationException(ready.Error?.Message ?? "Page did not become ready.");
-        object? readingChecks = ready.Pages.Count >= 3 ? await ReadingSmokeChecks.RunAsync(window, output) : null;
+        bool restarted = ready.Pages.Count >= 3 && await ReadingSmokeChecks.ValidateRestartAsync(window, output);
+        if (ready.Pages.Count >= 3) await UiOptionsSmokeChecks.RunAsync(window, output);
+        object? readingChecks = ready.Pages.Count >= 3 ? await ReadingSmokeChecks.RunAsync(window, output, restarted) : null;
+        if (ready.Pages.Count >= 3) await UiOptionsSmokeChecks.SaveExpectedAsync(window, output);
         var target = new RenderTargetBitmap((int)window.Root.ActualWidth, (int)window.Root.ActualHeight,
             96, 96, PixelFormats.Pbgra32);
         target.Render(window.Root);
