@@ -33,3 +33,7 @@ Execução antecipada independente após T05. RED observado por Core.Layout ause
 ## T07
 
 RED observado por decoder/opener ausentes; GREEN: 21 testes Integration passaram, inclusive JPEG/PNG/WebP, oito orientações EXIF, alpha premultiplicado, hash, fechamento concorrente e limites. Build Release sem avisos. APIs obsoletas e tokens de testes corrigidos sem supressões.
+
+## T17
+
+Implementação independente antecipada após T05; RED pelos modelos/resolver ausentes. GREEN: 51 casos de preferências dentro de 99 Core passaram; build completo agora validado. Precedência, snapshots separados, bindings e posições relativas conferidos.

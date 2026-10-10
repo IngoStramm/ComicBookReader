@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 8/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 9/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -488,15 +488,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t17"></a>
 
-## [ ] T17: Resolver preferências e progresso
+## [x] T17: Resolver preferências e progresso
 
 **Descrição:** Implementar snapshots validados, precedência livro/global/default, posições relativas e regras de atalhos. Separar dados de preferência de DTOs JSON.
 
 **Critérios de aceitação:**
 
-- [ ] Livro prevalece sobre global; outro livro conserva seu default; campos ausentes recebem defaults.
-- [ ] Valores não finitos, fora da faixa e atalhos duplicados/reservados recebem tratamento explícito.
-- [ ] Posição relativa é válida em 0–1 e eixo sem overflow salva/restaura zero.
+- [x] Livro prevalece sobre global; outro livro conserva seu default; campos ausentes recebem defaults.
+- [x] Valores não finitos, fora da faixa e atalhos duplicados/reservados recebem tratamento explícito.
+- [x] Posição relativa é válida em 0–1 e eixo sem overflow salva/restaura zero.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-BUILD](plan.md#v-build); verificar RP-01/05/06.
 
