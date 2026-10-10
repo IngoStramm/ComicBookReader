@@ -1,6 +1,6 @@
 # Spec: comic-files
 
-Produto: ComicBookReader. Status: proposta para revisão. Módulo do [mapa aprovado](CAPABILITY-MAP.md); requisitos comuns em [SPEC.md](SPEC.md).
+Produto: ComicBookReader. Status: contrato autorizado por `$build`; evidência em [docs/acceptance.md](docs/acceptance.md). Módulo do [mapa aprovado](CAPABILITY-MAP.md); requisitos comuns em [SPEC.md](SPEC.md).
 
 ## Objetivo
 

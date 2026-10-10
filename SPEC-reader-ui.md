@@ -1,6 +1,6 @@
 # Spec: reader-ui
 
-Produto: ComicBookReader. Status: proposta para revisão. Módulo do [mapa aprovado](CAPABILITY-MAP.md); requisitos comuns em [SPEC.md](SPEC.md).
+Produto: ComicBookReader. Status: contrato autorizado por `$build`; implementação local com aceitação humana pendente em [docs/acceptance.md](docs/acceptance.md). Módulo do [mapa aprovado](CAPABILITY-MAP.md); requisitos comuns em [SPEC.md](SPEC.md).
 
 ## Objetivo
 

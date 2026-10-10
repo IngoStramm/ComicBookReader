@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 12/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 24/30 tarefas concluídas; seis tarefas conservam verificações humanas pendentes. Implementação local disponível; evidência em docs/build-log.md e docs/acceptance.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -217,7 +217,7 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integração nativa, orientaç
 
 - [ ] Abrir CBZ por seletor ou arrastar e soltar mostra a primeira imagem sem bloquear a janela; fundo/margens seguem a spec.
 - [ ] Primeira execução começa em tela cheia; F11/Esc e abertura cancelada funcionam.
-- [ ] Abrir arquivo inválido conserva a imagem anterior; buffers substituídos são liberados.
+- [x] Abrir arquivo inválido conserva a imagem anterior; buffers substituídos são liberados.
 
 **Verificação:** [V-BUILD](plan.md#v-build); [V-APP](plan.md#v-app): abrir CBZ sintético, cancelar seletor e tentar arquivo inválido; registrar resultado.
 
@@ -299,15 +299,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: geometria é pequena, mas defi
 
 <a id="t11"></a>
 
-## [ ] T11: Controlar carregamento e alvo de leitura
+## [x] T11: Controlar carregamento e alvo de leitura
 
 **Descrição:** Introduzir o controller testável e substituir o caminho inicial da janela por ele. Controller é a única fonte de estado, com geração de requests e descarte de resultados obsoletos. A janela passa a apresentar a geometria calculada pelo controller.
 
 **Critérios de aceitação:**
 
-- [ ] Estado diferencia alvo e página apresentada; scrolling fica suspenso durante loading.
-- [ ] Apenas a geração atual apresenta pixels/erros; resultado antigo é descartado mesmo se ignorar cancelamento.
-- [ ] Trocar livro/fechar libera recursos e mantém o livro anterior se a nova abertura falhar.
+- [x] Estado diferencia alvo e página apresentada; scrolling fica suspenso durante loading.
+- [x] Apenas a geração atual apresenta pixels/erros; resultado antigo é descartado mesmo se ignorar cancelamento.
+- [x] Trocar livro/fechar libera recursos e mantém o livro anterior se a nova abertura falhar.
 
 **Verificação:** [V-CORE](plan.md#v-core) com tarefas controladas; [V-INTEGRATION](plan.md#v-integration); [V-APP](plan.md#v-app): navegação/abertura concorrente e cancelamento.
 
@@ -334,7 +334,7 @@ Roteamento: gpt-6.1-sol/xhigh — raiz — Motivo: concorrência e propriedade d
 **Critérios de aceitação:**
 
 - [ ] Repetição do Windows não causa várias trocas por uma pressão; primeira/última página são limites.
-- [ ] Página nova começa no topo/esquerda e reaplica layout; imagem dupla ocupa um índice.
+- [x] Página nova começa no topo/esquerda e reaplica layout; imagem dupla ocupa um índice.
 - [ ] Teclas em diálogo/campo editável não navegam na HQ.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-BUILD](plan.md#v-build); [V-APP](plan.md#v-app): segurar Page Down e testar limites/foco.
@@ -396,7 +396,7 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: regra temporal precisa ser ún
 **Critérios de aceitação:**
 
 - [ ] Setas mantidas movem a imagem continuamente; soltar/perder foco/abrir diálogo interrompe imediatamente.
-- [ ] Após retomar o foco não há movimento até uma nova pressão, nem salto após pausa.
+- [x] Após retomar o foco não há movimento até uma nova pressão, nem salto após pausa.
 - [ ] Teste visual de 10 s registra hardware, monitor/DPI e cadência se houver trancos; setas e roda não trocam página.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-BUILD](plan.md#v-build); [V-APP](plan.md#v-app) para UI-02/03/09; anexar observações visuais reais.
@@ -424,15 +424,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t15"></a>
 
-## [ ] T15: Alternar visão completa e restaurar leitura
+## [x] T15: Alternar visão completa e restaurar leitura
 
 **Descrição:** Adicionar V como alternância por pressão física, com snapshot vinculado à imagem/livro. Reutilizar o layout da T10.
 
 **Critérios de aceitação:**
 
-- [ ] V duas vezes no mesmo viewport restaura escala/offsets até 1 DIP.
-- [ ] Navegação descarta snapshot; mudança de viewport restaura âncora válida; toggle limpa teclas pressionadas.
-- [ ] Snapshot fornece o ponto de leitura original para a futura persistência, nunca offsets do overview.
+- [x] V duas vezes no mesmo viewport restaura escala/offsets até 1 DIP.
+- [x] Navegação descarta snapshot; mudança de viewport restaura âncora válida; toggle limpa teclas pressionadas.
+- [x] Snapshot fornece o ponto de leitura original para a futura persistência, nunca offsets do overview.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-APP](plan.md#v-app): repetir V em página dupla com pan e após redimensionar.
 
@@ -452,15 +452,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: restauração depende do estad
 
 <a id="t16"></a>
 
-## [ ] T16: Ajustar largura e classificar manualmente
+## [x] T16: Ajustar largura e classificar manualmente
 
 **Descrição:** Expor tamanho relativo de uma página e Auto/Simples/Dupla. Aplicar +/− e Ctrl+roda preservando âncora. Os ajustes ficam em memória nesta fatia; gravação chega em T20.
 
 **Critérios de aceitação:**
 
-- [ ] Compensação de páginas duplas conserva a largura lógica e permite movimento lateral.
-- [ ] Zoom respeita 0,25–2, preserva cursor/centro e não depende da resolução do scan.
-- [ ] Alterar tamanho durante overview encerra esse modo; um snapshot obsoleto não pode ser restaurado.
+- [x] Compensação de páginas duplas conserva a largura lógica e permite movimento lateral.
+- [x] Zoom respeita 0,25–2, preserva cursor/centro e não depende da resolução do scan.
+- [x] Alterar tamanho durante overview encerra esse modo; um snapshot obsoleto não pode ser restaurado.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-APP](plan.md#v-app): comparar páginas 1000×1500, 2000×1500 e 4000×3000 com o mesmo viewport.
 
@@ -544,15 +544,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: recuperação e compatibilidad
 
 <a id="t19"></a>
 
-## [ ] T19: Serializar autosave e flush
+## [x] T19: Serializar autosave e flush
 
 **Descrição:** Consolidar alterações por 300 ms e garantir ordem de snapshots. Navegar e fechar pedem flush sem bloquear a UI; falha mantém preferências em memória.
 
 **Critérios de aceitação:**
 
-- [ ] Gravações nunca se sobrepõem e snapshot antigo não substitui o mais novo.
-- [ ] Flush grava o último estado em troca de página/fechamento; dispose/cancelamento têm dono explícito.
-- [ ] Falha de armazenamento não trava leitura e produz um estado de aviso consumível pela UI.
+- [x] Gravações nunca se sobrepõem e snapshot antigo não substitui o mais novo.
+- [x] Flush grava o último estado em troca de página/fechamento; dispose/cancelamento têm dono explícito.
+- [x] Falha de armazenamento não trava leitura e produz um estado de aviso consumível pela UI.
 
 **Verificação:** [V-CORE](plan.md#v-core) com scheduler/store controlados; [V-INTEGRATION](plan.md#v-integration); [V-BUILD](plan.md#v-build).
 
@@ -578,15 +578,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t20"></a>
 
-## [ ] T20: Recuperar tamanho e ponto de leitura
+## [x] T20: Recuperar tamanho e ponto de leitura
 
 **Descrição:** Integrar preferências à janela/controller. Persistir ajustes do livro, override por PageKey, último fullscreen e progresso relativo; overview fornece o snapshot original.
 
 **Critérios de aceitação:**
 
-- [ ] Reabrir/reiniciar recupera página, tamanho, tipo e ponto válido; página inexistente usa fallback limitado.
-- [ ] Salvar/fechar durante overview recupera o ponto original de leitura na reabertura.
-- [ ] Falha de IO mostra aviso discreto e permite continuar lendo; nenhum dado legado é migrado.
+- [x] Reabrir/reiniciar recupera página, tamanho, tipo e ponto válido; página inexistente usa fallback limitado.
+- [x] Salvar/fechar durante overview recupera o ponto original de leitura na reabertura.
+- [x] Falha de IO mostra aviso discreto e permite continuar lendo; nenhum dado legado é migrado.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-INTEGRATION](plan.md#v-integration); [V-APP](plan.md#v-app): ajustar, mover, fechar em overview e reabrir.
 
@@ -612,8 +612,8 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: persistência deve refletir o 
 
 **Critérios de aceitação:**
 
-- [ ] Velocidade e largura global respeitam faixas; alterar global não remove overrides de livros.
-- [ ] Conflitos são apresentados; nenhuma configuração pode associar setas à navegação.
+- [x] Velocidade e largura global respeitam faixas; alterar global não remove overrides de livros.
+- [x] Conflitos são apresentados; nenhuma configuração pode associar setas à navegação.
 - [ ] Controles têm rótulo, foco por teclado e diálogo suspende movimento; salvar recupera configurações ao reiniciar.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-BUILD](plan.md#v-build); [V-APP](plan.md#v-app): reconfigurar, criar conflito, reiniciar e navegar por Tab.
@@ -642,15 +642,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t22"></a>
 
-## [ ] T22: Abrir CBR não sólido no leitor
+## [x] T22: Abrir CBR não sólido no leitor
 
 **Descrição:** Adicionar a sessão RAR4/RAR5 e seleção por assinatura do conteúdo. Reutilizar identidade, decoder e ciclo de vida dos contratos.
 
 **Critérios de aceitação:**
 
-- [ ] Fixtures RAR4/RAR5 abrem na interface e permitem ir/voltar com ordem correta.
-- [ ] Extensão incorreta não decide o formato; senha e multivolume retornam UnsupportedArchive.
-- [ ] Cancelar/fechar libera o arquivo, e hash antes/depois é igual.
+- [x] Fixtures RAR4/RAR5 abrem na interface e permitem ir/voltar com ordem correta.
+- [x] Extensão incorreta não decide o formato; senha e multivolume retornam UnsupportedArchive.
+- [x] Cancelar/fechar libera o arquivo, e hash antes/depois é igual.
 
 **Verificação:** [V-INTEGRATION](plan.md#v-integration); [V-BUILD](plan.md#v-build); [V-APP](plan.md#v-app) com as duas fixtures não sólidas.
 
@@ -669,15 +669,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: suporte CBR precisa integrar n
 
 <a id="t23"></a>
 
-## [ ] T23: Materializar RAR sólido com segurança
+## [x] T23: Materializar RAR sólido com segurança
 
 **Descrição:** Implementar Reader sequencial, cache privado por sessão e progresso/cancelamento antes de oferecer acesso arbitrário. Limites são explícitos, sem usar os nomes da entrada como destino.
 
 **Critérios de aceitação:**
 
-- [ ] RAR sólido permite página seguinte/anterior após materialização; loading mostra progresso.
-- [ ] Cache usa nomes gerados, fica restrito à sessão e respeita 2 GiB/128 MiB por entrada.
-- [ ] Cancelamento/fechamento remove cache; próxima inicialização limpa resíduos pertencentes ao aplicativo.
+- [x] RAR sólido permite página seguinte/anterior após materialização; loading mostra progresso.
+- [x] Cache usa nomes gerados, fica restrito à sessão e respeita 2 GiB/128 MiB por entrada.
+- [x] Cancelamento/fechamento remove cache; próxima inicialização limpa resíduos pertencentes ao aplicativo.
 
 **Verificação:** [V-INTEGRATION](plan.md#v-integration): sólido, cancelamento e entradas com traversal; [V-APP](plan.md#v-app): progresso e abertura de outro livro.
 
@@ -697,15 +697,15 @@ Roteamento: gpt-6.1-sol/xhigh — raiz — Motivo: extração sequencial, cancel
 
 <a id="t24"></a>
 
-## [ ] T24: Aplicar limites e apresentar falhas de entrada
+## [x] T24: Aplicar limites e apresentar falhas de entrada
 
 **Descrição:** Fechar os caminhos de erro do MVP: tamanho codificado, dimensões/pixels, arquivo inválido, imagem corrompida e acesso negado. Aplicar limites antes da alocação onde o decoder permitir.
 
 **Critérios de aceitação:**
 
-- [ ] 96 milhões de pixels/128 MiB por entrada produzem ResourceLimit e permitem abrir outro livro.
-- [ ] Erro de página não renumera o índice; erros são compreensíveis em português e sem stack de terceiros.
-- [ ] Arquivos malformados e entradas fora do cache não provocam escrita externa; HQs conservam seus hashes.
+- [x] 96 milhões de pixels/128 MiB por entrada produzem ResourceLimit e permitem abrir outro livro.
+- [x] Erro de página não renumera o índice; erros são compreensíveis em português e sem stack de terceiros.
+- [x] Arquivos malformados e entradas fora do cache não provocam escrita externa; HQs conservam seus hashes.
 
 **Verificação:** [V-INTEGRATION](plan.md#v-integration) com fixtures sintéticas inválidas/protegidas; [V-APP](plan.md#v-app) para mensagens; [V-BUILD](plan.md#v-build).
 
@@ -733,15 +733,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t25"></a>
 
-## [ ] T25: Priorizar leitura e limitar cache de imagens
+## [x] T25: Priorizar leitura e limitar cache de imagens
 
 **Descrição:** Adicionar cache adicional de 256 MiB, contabilizado por stride×altura, e prefetch anterior/seguinte com baixa prioridade. Página atual tem contabilização separada.
 
 **Critérios de aceitação:**
 
-- [ ] Leitura pedida tem prioridade; prefetch cancela/cede e não publica imagens antigas.
-- [ ] Cache adicional não excede 256 MiB, preserva leases ativos e descarta buffers ao fechar.
-- [ ] Não há crescimento persistente de recursos ao alternar livros; prefetch pode ser desligado para diagnosticar comportamento.
+- [x] Leitura pedida tem prioridade; prefetch cancela/cede e não publica imagens antigas.
+- [x] Cache adicional não excede 256 MiB, preserva leases ativos e descarta buffers ao fechar.
+- [x] Não há crescimento persistente de recursos ao alternar livros; prefetch pode ser desligado para diagnosticar comportamento.
 
 **Verificação:** [V-INTEGRATION](plan.md#v-integration) instrumentada; [V-BUILD](plan.md#v-build); [V-APP](plan.md#v-app): alternar páginas/livros e observar recursos.
 
@@ -768,7 +768,7 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: prioridades e descarte compart
 **Critérios de aceitação:**
 
 - [ ] Mudança de viewport conserva proporção e âncora válida; DPI não é aplicado duas vezes.
-- [ ] Overlay não altera o tamanho de leitura e controles continuam acessíveis em janela/tela cheia.
+- [x] Overlay não altera o tamanho de leitura e controles continuam acessíveis em janela/tela cheia.
 - [ ] UI-07/09 são exercitados de verdade; resultados indicam ambientes testados e limitações.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-BUILD](plan.md#v-build); [V-APP](plan.md#v-app): resize, fullscreen, diálogo, pan e 10 s de movimento; usar monitor/DPI alternativo quando disponível.
@@ -789,15 +789,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: percepção de suavidade e DPI
 
 <a id="t27"></a>
 
-## [ ] T27: Revisar contratos, recursos e segurança
+## [x] T27: Revisar contratos, recursos e segurança
 
 **Descrição:** Revisar o diff completo por qualidade, limites de entrada, lifecycle, persistência e licenças. Esta é uma tarefa de revisão; correções descobertas entram como tarefas pequenas antes de prosseguir.
 
 **Critérios de aceitação:**
 
-- [ ] Nenhum achado relevante de correção, recursos ou entrada fica sem tratamento/evidência.
-- [ ] Ausência de stubs, supressões e testes enfraquecidos é verificada; cobertura dos IDs da spec é conferida.
-- [ ] Revisão registra bibliotecas/licenças, acesso somente leitura à HQ e preservação do CDisplayEx.
+- [x] Nenhum achado relevante de correção, recursos ou entrada fica sem tratamento/evidência.
+- [x] Ausência de stubs, supressões e testes enfraquecidos é verificada; cobertura dos IDs da spec é conferida.
+- [x] Revisão registra bibliotecas/licenças, acesso somente leitura à HQ e preservação do CDisplayEx.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-INTEGRATION](plan.md#v-integration); [V-BUILD](plan.md#v-build); [V-FORMAT](plan.md#v-format); inspeção de código e registro de achados.
 
@@ -821,14 +821,14 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t28"></a>
 
-## [ ] T28: Fixar lockfiles restauráveis
+## [x] T28: Fixar lockfiles restauráveis
 
 **Descrição:** Gerar e versionar um lockfile por projeto com a base aprovada. Esta tarefa delimita os cinco arquivos gerados e valida restore em modo bloqueado.
 
 **Critérios de aceitação:**
 
-- [ ] Cinco lockfiles registram dependências resolvidas sem atualização silenciosa.
-- [ ] Restore bloqueado e build passam na arquitetura x64; dependências nativas do decoder estão resolvidas.
+- [x] Cinco lockfiles registram dependências resolvidas sem atualização silenciosa.
+- [x] Restore bloqueado e build passam na arquitetura x64; dependências nativas do decoder estão resolvidas.
 
 **Verificação:** [V-LOCK-GENERATE](plan.md#v-lock-generate); [V-LOCK-CHECK](plan.md#v-lock-check); [V-BUILD](plan.md#v-build); [V-CORE](plan.md#v-core); [V-INTEGRATION](plan.md#v-integration).
 
@@ -848,15 +848,15 @@ Roteamento: gpt-6-luna/medium — raiz — Motivo: operação delimitada com val
 
 <a id="t29"></a>
 
-## [ ] T29: Gerar pacote Windows x64
+## [x] T29: Gerar pacote Windows x64
 
 **Descrição:** Publicar distribuição self-contained, sem instalador nem associação de arquivos. Documentar iniciar, dados locais e atalhos; incluir notices de terceiros.
 
 **Critérios de aceitação:**
 
-- [ ] Executável publicado abre CBZ/CBR sem depender do runtime instalado no computador.
-- [ ] Artefato contém bibliotecas nativas necessárias e avisos de terceiros; saídas não entram no Git.
-- [ ] README descreve comandos de uso e limitações reais; diretório do CDisplayEx permanece intacto.
+- [x] Executável publicado abre CBZ/CBR sem depender do runtime instalado no computador.
+- [x] Artefato contém bibliotecas nativas necessárias e avisos de terceiros; saídas não entram no Git.
+- [x] README descreve comandos de uso e limitações reais; diretório do CDisplayEx permanece intacto.
 
 **Verificação:** [V-PUBLISH](plan.md#v-publish); executar artifacts/win-x64/ComicBookReader.App.exe e abrir fixtures CBZ/CBR; [V-LOCK-CHECK](plan.md#v-lock-check).
 
@@ -881,8 +881,8 @@ Roteamento: gpt-6-luna/high — raiz — Motivo: empacotamento com comandos defi
 **Critérios de aceitação:**
 
 - [ ] G-01 a G-09 e todos os IDs CF/RP/PL/UI têm evidência vinculada, sem declarar cenário não testado.
-- [ ] Build/format/testes passam e smoke test publicado inclui dupla, retorno de overview, reinício e troca rápida.
-- [ ] Resultado fica pronto para revisão humana; falhas geram tarefas de correção, sem marcar a versão pronta nem publicar externamente.
+- [x] Build/format/testes passam e smoke test publicado inclui dupla, retorno de overview, reinício e troca rápida.
+- [x] Resultado fica pronto para revisão humana; falhas geram tarefas de correção, sem marcar a versão pronta nem publicar externamente.
 
 **Verificação:** [V-LOCK-CHECK](plan.md#v-lock-check); [V-BUILD](plan.md#v-build); [V-FORMAT](plan.md#v-format); [V-CORE](plan.md#v-core); [V-INTEGRATION](plan.md#v-integration); smoke test [V-PUBLISH](plan.md#v-publish) e matriz da spec no executável.
 

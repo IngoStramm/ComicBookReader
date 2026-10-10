@@ -1,6 +1,6 @@
 # Spec: ComicBookReader
 
-Status: especificação proposta para revisão. O mapa de módulos foi aprovado; este documento não representa implementação ou teste do aplicativo.
+Status: contrato da implementação autorizada por `$build`. Pacote local disponível; evidência e aceitação pendente em [docs/acceptance.md](docs/acceptance.md).
 
 ## Objetivo
 
@@ -51,11 +51,11 @@ Dependências e ordem dos módulos seguem o [mapa aprovado](CAPABILITY-MAP.md): 
 | Persistência | System.Text.Json do .NET 10 | Arquivos locais versionados, sem servidor ou banco adicional. |
 | Testes | xunit.v3 4.0.2, projetos executáveis | Testes de regras e integração executados pela CLI. |
 
-As versões são a base consultada para esta spec, não prova de compatibilidade integrada. Fixar o patch do SDK no `global.json` e os pacotes/lockfiles ao preparar os projetos. Não adotar versões preliminares automaticamente.
+As versões estão fixadas no global.json, Directory.Packages.props e lockfiles; a compatibilidade dos casos testados está registrada em docs/build-log.md. Não adotar versões preliminares automaticamente.
 
 O .NET 10 é LTS na [política oficial](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core). WPF funciona em Windows e oferece gráficos, entrada e layout, conforme a [documentação oficial](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/overview/). As versões de pacotes foram conferidas nas páginas dos publicadores: [SharpCompress](https://www.nuget.org/packages/SharpCompress), [SkiaSharp](https://www.nuget.org/packages/SkiaSharp) e [xUnit](https://www.nuget.org/packages/xunit.v3).
 
-Verificação local: Windows 11 Home Single Language de 64 bits. O `dotnet` do PATH aponta para o host x86 7.0.9; também existe um host x64, mas nenhum SDK foi encontrado nos dois locais examinados. O SDK .NET 10 x64 será um pré-requisito da implementação; nenhum SDK ou pacote foi instalado nesta etapa.
+Ambiente: Windows 11 x64. O SDK 10.0.401 x64 foi disponibilizado em pasta privada e fixado em global.json; usar os caminhos dos comandos abaixo para evitar o host x86 do PATH. Cinco lockfiles registram os pacotes verificados. Evidência em docs/decisions/0001-toolchain.md e docs/build-log.md.
 
 ## Estrutura proposta do projeto
 
@@ -89,11 +89,11 @@ SPEC-*.md
 CAPABILITY-MAP.md
 ```
 
-Os quatro módulos lógicos não exigem quatro assemblies separados. Core concentra contratos/regras, Infrastructure seus adaptadores, e App a interface. Os projetos e diretórios de código acima ainda não existem.
+Core concentra contratos/regras, Infrastructure seus adaptadores, e App a interface. Os projetos e diretórios indicados foram implementados.
 
 ## Comandos
 
-Comandos previstos para executar na raiz do projeto, após disponibilizar o SDK x64 e criar os projetos. O caminho explícito evita usar o host x86 encontrado no PATH.
+Comandos de desenvolvimento na raiz do projeto. O caminho explícito usa o SDK x64 privado.
 
 ```powershell
 rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" --list-sdks
@@ -106,7 +106,7 @@ rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotn
 rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotnet.exe" publish src/ComicBookReader.App/ComicBookReader.App.csproj --configuration Release --runtime win-x64 --self-contained true --output artifacts/win-x64
 ```
 
-Executar projetos de teste pela CLI é documentado pelo [xUnit](https://xunit.net/docs/getting-started/v3/getting-started). Validar esses comandos na preparação dos projetos; não foram executados aqui porque há somente documentos.
+Executar projetos de teste pela CLI é documentado pelo [xUnit](https://xunit.net/docs/getting-started/v3/getting-started). Os resultados desses comandos estão em docs/build-log.md.
 
 ## Estilo de código
 
@@ -168,7 +168,7 @@ As dependências listadas são propostas nesta spec; sua adoção entra na revis
 
 Nenhuma preferência essencial de leitura está pendente. Defaults de velocidade e atalhos são propostas ajustáveis. A validação técnica de pacotes, memória e compatibilidade de arquivos ocorrerá durante a implementação. Confirmar o patch do SDK ao preparar o ambiente.
 
-O usuário solicitou o avanço para planejamento com escolha de modelo por tarefa. O [plano de implementação](tasks/plan.md) e a [lista de tarefas](tasks/todo.md) registram essa etapa e ficam disponíveis para revisão. Nenhuma implementação foi iniciada.
+O [plano de implementação](tasks/plan.md) e a [lista de tarefas](tasks/todo.md) registram o trabalho autorizado por `$build`. A distribuição local está preparada; aceitação visual, teclado físico e outro monitor/DPI permanecem explicitamente pendentes.
 
 ## Base da investigação
 

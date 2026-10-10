@@ -49,3 +49,39 @@ Três casos reais RAR passaram dentro de 41 Integration: RAR4/RAR5 não sólidos
 ## T13
 
 RED API ausente; GREEN 107 testes Core. Deslocamento 600 DIPs em 30/60/120Hz; oposição, diagonal, pausa 50ms, liberação e bordas verificados. App build Release sem warnings.
+
+## Retomada automática — 10/10/2026
+
+A pasta inicial da sessão continha a investigação; o repositório foi recuperado em Documents/LeitorHQ, branch `feat/comicbookreader`. Mudanças anteriores de persistência, CBR e cache foram preservadas, inspecionadas e validadas. Não se inferiu RED retroativo para esses arquivos. A integração inicialmente não compilava por CA2014 num teste: stackalloc foi movido para fora do loop, sem supressão. Base recuperada: 122 Core e 72 Integration passaram.
+
+## T08/T11/T12/T14/T15/T16
+
+Janela WPF, controller, teclas separadas, geometria e overview já estavam implementados nos commits anteriores. A retomada ampliou o smoke real: imagem, failed/canceled open, F11/Esc, resize, overview exato, duas resoluções duplas, geração tardia, eventos de rolagem/release/foco e dez segundos de callbacks. Controles temporários foram reproduzidos como falha em WPF e corrigidos sem mudar o viewport. T08/T12/T14 conservam casos físicos/visuais pendentes; T11/T15/T16 possuem evidência automática.
+
+RED/GREEN adicional: ajustar a largura em loading mudava o modo para Reading; o controller agora preserva Loading. Cancelar durante decode que ignora token publicava pixels; os testes passaram após a verificação do token na abertura/navegação e preservação de overview. Progresso do RAR sólido agora passa ao estado/UI e ignora gerações antigas.
+
+## T19/T20/T21
+
+Fila de autosave validada com concorrência, debounce, flush, falha/retry e snapshots independentes. Preferências recuperadas por livro/página; captura em overview salva o ponto original. Dois processos WPF sucessivos comprovam retomada de página, largura, classificação e posição. Captura completa de preferências saiu do quadro de rolagem e foi consolidada em 300 ms. T21 tem regras/controles implementados; interação física com campos/atalhos permanece pendente.
+
+## T22/T23/T24/T25
+
+Fixtures RAR4/RAR5/sólida abriram na janela e em testes, com arquivo liberado e hash igual. RAR sólido usa cache privado, nomes gerados, marcadores/lease de posse, recuperação não recursiva e limites. Traversal, proteção, multivolume, limite, cancelamento e cache abandonado testados.
+
+RED/GREEN novo: opener normal decodificava a mesma página duas vezes; wrapper de cache integrado reduz para uma e preserva pixels. Testes específicos dos adapters brutos continuam exercendo seus fechamentos, enquanto testes do wrapper cobrem cancelamento/prioridade/leases. RED/GREEN de entrada auxiliar grande retornava NoImages em vez de ResourceLimit; limite aplicado também aos auxiliares.
+
+## T26/T27
+
+Revisão em docs/review.md, com achados corrigidos. Smoke em 96 DPI, resize 1000×760 → 800×600, hardware e cadência registrados em docs/manual-validation.md. Testes não substituem percepção visual nem troca real de DPI. T26 permanece aberto. Controle de mutação `>` → `>=` na fronteira do cache fez três testes falharem; condição restaurada e quatro casos passaram. Formatação corrigida em commit separado; nenhuma supressão ou teste ignorado introduzido.
+
+## T28/T29
+
+Cinco lockfiles gerados, restore bloqueado verificado. Primeira publicação bloqueada apontou NU1004 por RID ausente nos projetos referenciados; `RuntimeIdentifiers=win-x64` comum e regeneração resolveram sem atualizar versões. `scripts/publish.ps1` gerou pacote self-contained em artifacts/win-x64 com decoder nativo, licenças e README.
+
+Auditoria NuGet dos cinco projetos, incluindo transitivas: nenhum pacote vulnerável conhecido reportado pelas fontes consultadas. Build final Release com warnings como erros: zero avisos/erros. 126 testes Core e 74 Integration passaram, sem skips; format verify passou. Não há meta percentual de cobertura.
+
+O pacote executou CBZ/RAR4/RAR5/sólido e dois processos de retomada, com hashes preservados. Uma execução adicional apontou DOTNET_ROOT e DOTNET_ROOT_X64 para pasta inexistente; os quatro formatos passaram usando o runtime do pacote. Evidência local em artifacts/self-contained-validation. Não houve envio externo ou merge.
+
+## T30 / próxima retomada
+
+docs/acceptance.md relaciona todos os IDs à evidência. 24 tarefas concluídas; T08/T12/T14/T21/T26/T30 mantêm verificações humanas específicas em docs/manual-validation.md. A distribuição de avaliação está preparada para realizar esses casos no executável final. Não declarar a aceitação visual completa com base nos smoke tests.

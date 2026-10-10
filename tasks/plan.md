@@ -1,6 +1,6 @@
 # Plano de implementação: ComicBookReader
 
-Status: plano proposto para revisão, criado em 2026-10-09 a pedido do usuário. Nenhuma tarefa de implementação foi executada nesta etapa.
+Status: plano autorizado por `$build`; implementação e pacote local disponíveis em 10/10/2026. Estado por tarefa em todo.md; aceitação humana de teclado, suavidade e outro DPI pendente.
 
 ## Resultado esperado
 
@@ -8,7 +8,7 @@ Um leitor Windows de CBZ/CBR, em tela cheia, que rola suavemente com setas manti
 
 Base: [spec principal](../SPEC.md), [mapa de módulos](../CAPABILITY-MAP.md) e specs de [arquivos](../SPEC-comic-files.md), [preferências](../SPEC-reading-preferences.md), [layout](../SPEC-page-layout.md) e [interface](../SPEC-reader-ui.md).
 
-O estado das tarefas e seus critérios ficam exclusivamente em [todo.md](todo.md). Esta página é o índice e o registro de decisões. Todos os caminhos de código abaixo são propostos: ainda não existem.
+O estado das tarefas e seus critérios ficam exclusivamente em [todo.md](todo.md). Esta página é o índice e o registro de decisões. Os caminhos de código foram implementados; evidências atuais em [build-log.md](../docs/build-log.md) e [acceptance.md](../docs/acceptance.md).
 
 ## Decisões de implementação
 
@@ -233,4 +233,6 @@ Caso a suavidade ou o tamanho percebido não satisfaçam o usuário, registrar o
 
 ## Retomada
 
-Ler a spec, este plano e todo.md; verificar o estado real do Git e os pré-requisitos da próxima tarefa. Atualizar os checkboxes somente com evidência. A próxima tarefa planejada é T01. A implementação deve começar após a revisão do plano.
+Ler todo.md e docs/acceptance.md; verificar Git e a evidência existente antes de repetir comandos. A implementação automatizável está entregue como pacote local. A próxima etapa é a validação humana indicada em docs/manual-validation.md (T08/T12/T14/T21/T26/T30). Não marcar esses itens com base em eventos roteados ou cadência de callbacks.
+
+O pacote de avaliação foi preparado antes da conclusão perceptual de T26 para permitir testar o executável final. T27 registra revisão de código e limites, T28/T29 registram empacotamento; esse avanço técnico não substitui nem reduz os critérios pendentes. Não houve merge/publicação externa.
