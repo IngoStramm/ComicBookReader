@@ -13,12 +13,14 @@ internal static class SmokeTestRunner
     public static async Task RunAsync(MainWindow window, string path, string output)
     {
         Directory.CreateDirectory(output);
+        DistributionSmokeChecks.Run(output);
         await window.OpenPathAsync(path);
         await Task.Delay(200);
         window.UpdateLayout();
         var ready = window.Reader.State;
         if (ready.Mode != ReaderMode.Reading || ready.Image is null)
             throw new InvalidOperationException(ready.Error?.Message ?? "Page did not become ready.");
+        var runtimeModules = DistributionSmokeChecks.CheckNativeModules();
         bool restarted = ready.Pages.Count >= 3 && await ReadingSmokeChecks.ValidateRestartAsync(window, output);
         if (ready.Pages.Count >= 3) await UiOptionsSmokeChecks.RunAsync(window, output);
         object? pointerChecks = ready.Pages.Count >= 3 ? await DragSmokeChecks.RunAsync(window) : null;
@@ -50,6 +52,7 @@ internal static class SmokeTestRunner
             throw new InvalidOperationException("Fullscreen keys did not change the window mode.");
         var evidence = new
         {
+            RuntimeModules = runtimeModules,
             ready.Book.CanonicalPath,
             Pages = ready.Pages.Count,
             ready.Image.Size,

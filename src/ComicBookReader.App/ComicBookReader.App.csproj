@@ -5,9 +5,21 @@
     <UseWPF>true</UseWPF>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <ApplicationIcon>Assets/comic-reader.ico</ApplicationIcon>
+    <Version>0.1.0</Version>
+    <FileVersion>0.1.0.0</FileVersion>
+    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
+    <PublishSingleFile Condition="'$(BuildPortable)' == 'true'">true</PublishSingleFile>
+    <ThirdPartyLicensesFile Condition="'$(ThirdPartyLicensesFile)' == ''">$(MSBuildThisFileDirectory)../../THIRD-PARTY-NOTICES.md</ThirdPartyLicensesFile>
   </PropertyGroup>
   <ItemGroup>
     <Resource Include="Assets/comic-reader.ico" />
+    <EmbeddedResource Include="$(ThirdPartyLicensesFile)" LogicalName="ComicBookReader.ThirdPartyLicenses" />
     <ProjectReference Include="../ComicBookReader.Infrastructure/ComicBookReader.Infrastructure.csproj" />
   </ItemGroup>
+  <Target Name="ExcludePortableSymbols" AfterTargets="ComputeResolvedFilesToPublishList" Condition="'$(BuildPortable)' == 'true'">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.pdb'" />
+    </ItemGroup>
+  </Target>
 </Project>

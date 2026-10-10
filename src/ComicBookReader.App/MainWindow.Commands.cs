@@ -79,6 +79,12 @@ public partial class MainWindow
         UpdateView();
         PersistProgress();
     }
+    private void AboutClicked(object sender, RoutedEventArgs e)
+    {
+        input.Stop();
+        new AboutWindow(Reader.CapturePreferences().Language) { Owner = this }.ShowDialog();
+        ReturnToReading();
+    }
     private void HideToolbarClicked(object sender, RoutedEventArgs e) { overlay.Toggle(); ReturnToReading(); }
     private void ToolbarButtonClicked(object sender, RoutedEventArgs e) => ReturnToReading();
     private void ReturnToReading()

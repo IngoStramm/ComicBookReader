@@ -45,6 +45,7 @@
         </ComboBox>
         <Button Content="{DynamicResource FullscreenButton}" Click="FullscreenClicked" ToolTip="{DynamicResource FullscreenTip}" />
         <Button Content="{DynamicResource PreferencesButton}" Click="PreferencesClicked" ToolTip="{DynamicResource PreferencesTip}" />
+        <Button Content="{DynamicResource AboutButton}" Click="AboutClicked" />
         <Button x:Name="DefaultWidthButton" Content="{DynamicResource ResetWidthButton}" Click="ResetWidthClicked" ToolTip="{DynamicResource ResetWidthTip}" />
         <Button Content="{DynamicResource ToolbarButton}" Click="HideToolbarClicked" ToolTip="{DynamicResource ToggleToolbarTip}" />
       </WrapPanel>
