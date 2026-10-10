@@ -56,6 +56,7 @@ public sealed partial class ReaderController
         if (anchorX is { } x && !double.IsFinite(x) || anchorY is { } y && !double.IsFinite(y))
             throw new ArgumentOutOfRangeException(nameof(anchorX));
         Deactivate();
+        if (State.Mode == ReaderMode.Loading) return;
         var saved = overview ?? (State.Layout is { } layout ? new ReadingSnapshot(layout, State.OffsetXDip, State.OffsetYDip, viewport) : null);
         change();
         overview = null;

@@ -18,5 +18,6 @@ public sealed record ReaderState
     public double OffsetXDip { get; init; }
     public double OffsetYDip { get; init; }
     public ReaderException? Error { get; init; }
+    public ComicOpenProgress? OpenProgress { get; init; }
     public int Generation { get; init; }
 }

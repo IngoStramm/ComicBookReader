@@ -32,14 +32,22 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
             activeRequest?.Cancel();
             activeRequest = request = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             current = ++generation;
-            State = State with { Mode = ReaderMode.Loading, Error = null, Generation = current };
+            State = State with { Mode = ReaderMode.Loading, Error = null, OpenProgress = null, Generation = current };
         }
         Changed?.Invoke();
         IComicSession? candidate = null;
         PageImage? image = null;
         try
         {
-            candidate = await opener.OpenAsync(path, request.Token);
+            candidate = await opener.OpenAsync(path, request.Token, new OpenProgressReporter(value =>
+            {
+                lock (gate)
+                {
+                    if (current != generation || disposed || State.Mode != ReaderMode.Loading) return;
+                    State = State with { OpenProgress = value };
+                }
+                Changed?.Invoke();
+            }));
             request.Token.ThrowIfCancellationRequested();
             int index = RestoredPageIndex(candidate);
             image = await candidate.ReadPageAsync(index, request.Token);
@@ -95,9 +103,15 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
         lock (gate)
         {
             if (current != generation || disposed) return;
-            State = State with { Mode = State.Image is null ? ReaderMode.Empty : ReaderMode.Reading, Error = error };
+            State = State with { Mode = State.Image is null ? ReaderMode.Empty :
+                overview is null ? ReaderMode.Reading : ReaderMode.Overview, Error = error, OpenProgress = null };
         }
         Changed?.Invoke();
+    }
+
+    private sealed class OpenProgressReporter(Action<ComicOpenProgress> report) : IProgress<ComicOpenProgress>
+    {
+        public void Report(ComicOpenProgress value) => report(value);
     }
 
     public void SetViewport(ViewportSize value)

@@ -26,7 +26,8 @@ public partial class MainWindow : Window
     public MainWindow(bool startFullscreen = true, ReaderPreferences? preferences = null,
         IReadingPreferencesStore? store = null, string? storageWarning = null)
     {
-        Reader = new ReaderController(new ComicOpener(), preferences: preferences);
+        Reader = new ReaderController(new ComicOpener(prefetchEnabled:
+            Environment.GetEnvironmentVariable("COMICBOOKREADER_DISABLE_PREFETCH") != "1"), preferences: preferences);
         saves = new PreferencesSaveCoordinator(store ?? new JsonReadingPreferencesStore(), preferences);
         this.storageWarning = storageWarning;
         InitializeComponent();
@@ -178,5 +179,7 @@ public partial class MainWindow : Window
         PageLabel.Text = state.Book is null ? "Nenhuma HQ aberta" : $"{state.PresentedIndex + 1} / {state.Pages.Count}";
         Status.Text = state.Error?.Message ?? storageWarning ?? (state.Mode == ReaderMode.Loading ? "Carregando…" :
             state.Book is null ? "Ctrl+O · Abrir HQ    F11 · Tela cheia" : System.IO.Path.GetFileName(state.Book.CanonicalPath));
+        if (state.Mode == ReaderMode.Loading && state.OpenProgress is { } progress)
+            Status.Text = $"Preparando RAR: {progress.EntriesProcessed} entradas · {progress.BytesMaterialized / 1048576d:F1} MiB";
     }
 }
