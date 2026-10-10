@@ -51,6 +51,7 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
             request.Token.ThrowIfCancellationRequested();
             int index = RestoredPageIndex(candidate);
             image = await candidate.ReadPageAsync(index, request.Token);
+            request.Token.ThrowIfCancellationRequested();
             IComicSession? previous;
             PageImage? previousImage;
             lock (gate)

@@ -29,6 +29,7 @@ public sealed partial class ReaderController
         try
         {
             image = await currentSession.ReadPageAsync(target, request.Token);
+            request.Token.ThrowIfCancellationRequested();
             PageImage? previous;
             lock (gate)
             {
@@ -48,7 +49,8 @@ public sealed partial class ReaderController
             lock (gate)
             {
                 if (current != generation || disposed) return;
-                State = State with { Mode = ReaderMode.Reading, TargetIndex = State.PresentedIndex };
+                State = State with { Mode = overview is null ? ReaderMode.Reading : ReaderMode.Overview,
+                    TargetIndex = State.PresentedIndex };
             }
             Changed?.Invoke();
         }

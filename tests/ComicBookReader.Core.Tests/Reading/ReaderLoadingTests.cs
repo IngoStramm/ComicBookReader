@@ -7,6 +7,22 @@ namespace ComicBookReader.Core.Tests.Reading;
 public sealed class ReaderLoadingTests
 {
     [Fact]
+    public async Task CancellationDuringFirstDecodeKeepsPreviousOverviewAndReleasesCandidate()
+    {
+        using var cancellation = new CancellationTokenSource();
+        var candidate = new FakeSession("second", cancellation.Cancel);
+        await using var reader = new ReaderController(new ControlledOpener(
+            Task.FromResult<IComicSession>(new FakeSession("first")), Task.FromResult<IComicSession>(candidate)));
+        await reader.OpenAsync("first", TestContext.Current.CancellationToken);
+        reader.ToggleOverview();
+        await reader.OpenAsync("second", cancellation.Token);
+        Assert.Equal("first", reader.State.Book!.CanonicalPath);
+        Assert.Equal(ReaderMode.Overview, reader.State.Mode);
+        Assert.True(candidate.IsDisposed);
+        Assert.Throws<ObjectDisposedException>(() => candidate.LastImage!.Pixels);
+    }
+
+    [Fact]
     public async Task OpeningProgressIsVisibleAndAnObsoleteBookCannotChangeIt()
     {
         var opener = new ProgressOpener();
@@ -96,13 +112,18 @@ public sealed class ReaderLoadingTests
             IProgress<ComicOpenProgress>? progress = null) => results[next++];
     }
 
-    private sealed class FakeSession(string path) : IComicSession
+    private sealed class FakeSession(string path, Action? onRead = null) : IComicSession
     {
         public bool IsDisposed { get; private set; }
         public BookInfo Book { get; } = new(path, path, 1, DateTime.UnixEpoch);
         public IReadOnlyList<PageInfo> Pages { get; } = [new(0, "0", "0.png"), new(1, "1", "1.png")];
+        public PageImage? LastImage { get; private set; }
         public ValueTask<PageImage> ReadPageAsync(int pageIndex, CancellationToken cancellationToken)
-            => ValueTask.FromResult(new PageImage(new PixelSize(2, 3), 8, new byte[24]));
+        {
+            onRead?.Invoke();
+            LastImage = new PageImage(new PixelSize(2, 3), 8, new byte[24]);
+            return ValueTask.FromResult(LastImage);
+        }
         public ValueTask DisposeAsync() { IsDisposed = true; return ValueTask.CompletedTask; }
     }
 }

@@ -7,6 +7,27 @@ namespace ComicBookReader.Core.Tests.Reading;
 public sealed class ReaderNavigationTests
 {
     [Fact]
+    public async Task CanceledNavigationThatIgnoresTokenKeepsOverviewAndDisposesReturnedPixels()
+    {
+        var session = new TestSession();
+        await using var reader = new ReaderController(new TestOpener(session));
+        await reader.OpenAsync("book", TestContext.Current.CancellationToken);
+        reader.ScrollBy(0, 100);
+        var point = reader.ReadingPosition;
+        reader.ToggleOverview();
+        using var cancellation = new CancellationTokenSource();
+        var pending = reader.NavigateAsync(1, cancellation.Token);
+        cancellation.Cancel();
+        var obsolete = TestSession.Image();
+        session.Delayed.SetResult(obsolete);
+        await pending;
+        Assert.Equal(ReaderMode.Overview, reader.State.Mode);
+        Assert.Equal(0, reader.State.PresentedIndex);
+        Assert.Equal(point, reader.ReadingPosition);
+        Assert.Throws<ObjectDisposedException>(() => obsolete.Pixels);
+    }
+
+    [Fact]
     public async Task LatePageResultCannotReplaceNewerTargetAndIsDisposed()
     {
         var session = new TestSession();
