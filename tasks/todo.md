@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 2/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 3/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -58,14 +58,14 @@ Roteamento: gpt-6-luna/medium — raiz — Motivo: configurações delimitadas c
 
 <a id="t03"></a>
 
-## [ ] T03: Criar Core e Infrastructure com runners de teste
+## [x] T03: Criar Core e Infrastructure com runners de teste
 
 **Descrição:** Criar os dois projetos de biblioteca e os dois projetos executáveis de teste. Core não referencia WPF nem bibliotecas de adapters.
 
 **Critérios de aceitação:**
 
-- [ ] Referências seguem Core ← Infrastructure; testes têm runner xUnit v3 executável.
-- [ ] Restore e build são válidos; não criar testes vazios para aparentar cobertura.
+- [x] Referências seguem Core ← Infrastructure; testes têm runner xUnit v3 executável.
+- [x] Restore e build são válidos; não criar testes vazios para aparentar cobertura.
 
 **Verificação:** [V-RESTORE](plan.md#v-restore); [V-BUILD](plan.md#v-build). Só executar testes quando houver casos reais em T05/T07.
 
