@@ -41,3 +41,7 @@ Implementação independente antecipada após T05; RED pelos modelos/resolver au
 ## T18
 
 RED observado por Storage/AtomicFileWriter ausentes. GREEN: 41 testes Integration totais (19 novos de JSON, 19 anteriores e 3 RAR) passaram; build sem avisos. Backup, corrupção preservada, futuro read-only, cancelamento e escrita interrompida conferidos.
+
+## T09
+
+Três casos reais RAR passaram dentro de 41 Integration: RAR4/RAR5 não sólidos e RAR5 sólido via Reader sequencial. SHA e cinco pixels JPEG independentes conferidos, arquivo liberado/imutável, JPEG materializado lido duas vezes. Fixtures MIT e limites do caso documentados.

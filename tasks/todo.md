@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 10/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 11/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -237,15 +237,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: primeira integração entre ar
 
 <a id="t09"></a>
 
-## [ ] T09: Comprovar RAR4, RAR5 e RAR sólido
+## [x] T09: Comprovar RAR4, RAR5 e RAR sólido
 
 **Descrição:** Antecipar o risco CBR com três fixtures pequenas redistribuíveis. Provar o caminho de acesso aleatório e o Reader sequencial de RAR sólido antes de prometer suporte na interface.
 
 **Critérios de aceitação:**
 
-- [ ] Cada fixture tem procedência/licença, hash e conteúdo esperado registrados.
-- [ ] RAR4/RAR5 podem ser lidos; o Reader percorre o sólido e permite materializar suas entradas.
-- [ ] Se o adapter falhar, registrar a causa e revisar a decisão técnica; o requisito CBR não pode ser reduzido.
+- [x] Cada fixture tem procedência/licença, hash e conteúdo esperado registrados.
+- [x] RAR4/RAR5 podem ser lidos; o Reader percorre o sólido e permite materializar suas entradas.
+- [x] Se o adapter falhar, registrar a causa e revisar a decisão técnica; o requisito CBR não pode ser reduzido.
 
 **Verificação:** [V-INTEGRATION](plan.md#v-integration); confirmar acesso à página anterior a partir dos dados materializados; conferir procedência.
 
