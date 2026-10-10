@@ -14,6 +14,18 @@ namespace ComicBookReader.Integration.Tests.Archives;
 public sealed class SolidRarSessionTests
 {
     [Fact]
+    public async Task AuxiliaryEntriesAlsoRespectThePerEntryResourceLimit()
+    {
+        using var workspace = new CacheWorkspace();
+        var path = workspace.CreateStoredRar(("metadata.dat", new byte[33]));
+        var materializer = new SolidRarMaterializer(workspace.CacheRoot, maximumEntryBytes: 32);
+        var error = await Assert.ThrowsAsync<ReaderException>(() =>
+            new ComicOpener(solidRarMaterializer: materializer).OpenAsync(path, TestContext.Current.CancellationToken));
+        Assert.Equal(ReaderErrorCode.ResourceLimit, error.Code);
+        Assert.Empty(Directory.GetDirectories(workspace.CacheRoot));
+    }
+
+    [Fact]
     public async Task CompressedSolidRarDrainsAuxiliaryEntriesAndReadsReferencePixelsRepeatedly()
     {
         using var fixture = new RarComicSessionTests.FixtureCopy("solid.cbr");

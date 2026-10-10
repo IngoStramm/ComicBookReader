@@ -87,7 +87,7 @@ public sealed class SolidRarMaterializer
                 if (!entry.IsDirectory)
                 {
                     var isImage = ComicEntryIndex.IsImage(name);
-                    if (isImage && (entry.Size > maximumEntryBytes || entry.Size > maximumCacheBytes - materialized))
+                    if (entry.Size > maximumEntryBytes || isImage && entry.Size > maximumCacheBytes - materialized)
                         throw LimitExceeded();
                     string? pageFile = isImage ? cache.NewPageFile() : null;
                     using var output = pageFile is null ? null : cache.CreatePage(pageFile);
@@ -101,12 +101,13 @@ public sealed class SolidRarMaterializer
                             var count = input.Read(buffer, 0, buffer.Length);
                             if (count == 0) break;
                             cancellationToken.ThrowIfCancellationRequested();
+                            if (count > maximumEntryBytes - entryBytes) throw LimitExceeded();
+                            entryBytes += count;
                             if (output is not null)
                             {
-                                if (count > maximumEntryBytes - entryBytes || count > maximumCacheBytes - materialized)
+                                if (count > maximumCacheBytes - materialized)
                                     throw LimitExceeded();
                                 output.Write(buffer, 0, count);
-                                entryBytes += count;
                                 materialized += count;
                                 progress?.Report(new ComicOpenProgress(ordinal, materialized));
                             }
