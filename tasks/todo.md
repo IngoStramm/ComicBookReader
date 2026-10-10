@@ -1,6 +1,6 @@
 # Tarefas: ComicBookReader
 
-Status: 6/30 tarefas concluídas; verificação registrada em docs/build-log.md.
+Status: 7/30 tarefas concluídas; verificação registrada em docs/build-log.md.
 
 Contexto, decisões, comandos V-* e condição comum de conclusão: [plan.md](plan.md). Todos os caminhos são relativos à raiz do projeto. **S** = 1–2 arquivos; **M** = 3–5. T01 é preparação de ambiente com um documento de evidência, sem promessa de duração.
 
@@ -273,15 +273,15 @@ Roteamento: gpt-6.1-sol/high — raiz — Motivo: integrar a evidência do bloco
 
 <a id="t10"></a>
 
-## [ ] T10: Calcular escala de página simples e dupla
+## [x] T10: Calcular escala de página simples e dupla
 
 **Descrição:** Implementar geometria pura da spec, incluindo centralização, offsets, visão completa e validação numérica. Não limitar a escala de leitura pela altura.
 
 **Critérios de aceitação:**
 
-- [ ] Os cinco exemplos PL-02 conferem até 0,001 DIP, incluindo resoluções dobradas.
-- [ ] Paisagem é dupla; retrato/quadrado são simples; override prevalece sem cortar a imagem.
-- [ ] Offsets ficam nos limites e entradas inválidas são rejeitadas; visão completa contém a imagem.
+- [x] Os cinco exemplos PL-02 conferem até 0,001 DIP, incluindo resoluções dobradas.
+- [x] Paisagem é dupla; retrato/quadrado são simples; override prevalece sem cortar a imagem.
+- [x] Offsets ficam nos limites e entradas inválidas são rejeitadas; visão completa contém a imagem.
 
 **Verificação:** [V-CORE](plan.md#v-core); [V-BUILD](plan.md#v-build); usar exemplos da spec como oráculo independente.
 

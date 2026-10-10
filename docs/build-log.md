@@ -25,3 +25,7 @@ RED observado por namespace de contratos ausente; GREEN: três testes reais de i
 ## T06
 
 RED por classes ausentes observado; GREEN: ordenação/índice passaram (5 Core antes de Layout e 2 Integration). Build sem avisos após integrar Layout; números enormes, subpastas, duplicidades e ZIP vazio conferidos.
+
+## T10
+
+Execução antecipada independente após T05. RED observado por Core.Layout ausente; GREEN: 46 testes Core incluindo 41 de layout passaram, build sem avisos. Exemplos de escala, classificação, centros, overview, viewport e entradas inválidas verificados.
