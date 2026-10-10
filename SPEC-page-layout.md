@@ -10,7 +10,7 @@ Manter uma largura confortável de página em arquivos de resoluções diferente
 
 Dimensões são as da imagem após normalizar sua orientação. Com classificação Auto, largura maior que altura significa Spread; retrato ou quadrado significa Single. Essa é a heurística inicial solicitada pelo usuário, não análise dos quadros nem garantia de que toda imagem horizontal representa duas páginas.
 
-Override manual Single/Spread prevalece sobre a heurística e fica salvo por livro/PageKey. Auto retoma a heurística. Não dividir, recortar, duplicar a entrada ou gerar arquivos novos para uma imagem dupla. Inferência por proporção predominante do livro fica para uma evolução posterior, caso as correções manuais indiquem necessidade.
+Single/Spread global prevalece sobre a heurística, conforme o feedback do usuário após o protótipo. Auto retoma a heurística por dimensão de cada imagem. Não dividir, recortar, duplicar a entrada ou gerar arquivos novos para uma imagem dupla. Inferência por proporção predominante do livro fica para uma evolução posterior.
 
 ## Escala e dimensões
 

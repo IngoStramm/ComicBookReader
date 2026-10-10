@@ -18,7 +18,8 @@ Nome público confirmado pelo usuário: **ComicBookReader**. Raiz documental: `C
 | Usuário | Adaptar o tamanho de leitura a diferentes arquivos e scans, reduzindo ajustes repetidos. |
 | Usuário | Considerar paisagem um indício de imagem dupla e compensar sua escala, mantendo a imagem inteira. |
 | Usuário | Oferecer um atalho para ver a imagem completa e retornar ao zoom anterior. |
-| Proposta técnica | C#/.NET 10, WPF, Windows 11 x64, interface em português. |
+| Usuário | Barra manual por atalho, preferências por atalho, passo do Espaço configurável, campos numéricos, classificação global, português (Brasil)/inglês e ícone de HQ. |
+| Proposta técnica | C#/.NET 10, WPF, Windows 11 x64. |
 | Proposta de interação | Page Down/Page Up para navegação; V para visão completa; F11 para tela cheia; atalhos configuráveis. |
 | Proposta de interação | Largura inicial de uma página igual à área de leitura; ajuste manual relativo à largura da tela, salvo por livro. |
 

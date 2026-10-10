@@ -13,9 +13,12 @@ Recuperar preferências e ajustes para que abrir uma HQ não exija configurar no
 | SchemaVersion | 1; validar antes de usar. |
 | PreferredPageWidthRatio | 1, relativo à largura útil do viewport. Faixa configurável 0,25 a 2. |
 | ScrollSpeed | 0,6 alturas úteis do viewport por segundo; faixa 0,1 a 2. |
+| SpaceScrollPercent | Inteiro, padrão 90; faixa de 10 a 100% da altura útil. |
+| Language | `pt-BR` por padrão; opções `pt-BR` e `en`. |
+| PageClassification | Auto por padrão; Auto/Single/Spread global. |
 | KeyBindings | Padrões da spec `reader-ui`, modificáveis sem associar setas à troca de página. |
 | LastFullscreen | true na primeira execução; memorizar a escolha posterior. |
-| Ajustes do livro | WidthRatio opcional e classificação Auto/Single/Spread por PageKey. |
+| Ajustes do livro | WidthRatio opcional; classificações antigas por PageKey preservadas como dados legados, sem prevalecer sobre a escolha global. |
 | Progresso | BookId, PageKey, índice anterior como fallback, posição relativa X/Y de 0 a 1. |
 
 Uma mudança manual do tamanho durante a leitura salva o ajuste daquele livro. Um controle distinto permite alterar o padrão global para livros sem override. Precedência: ajuste do livro → global → default. Não memorizar percentuais de zoom baseados na resolução original do scan.
@@ -39,6 +42,8 @@ public interface IReadingPreferencesStore
 `ReaderPreferences` é um snapshot com versão, defaults e mapa de BookPreferences por BookId. `BookPreferences` contém ajustes, mapa de classificações e LastReadingPosition. Tipos próprios transportam dados validados; não expor objetos JSON ao layout/UI. BookId e PageKey são strings opacas recebidas do consumidor, sem dependência de adapters de arquivos.
 
 Validar números finitos/faixas, versão e atalhos duplicados ao carregar/salvar. Campos ausentes conhecidos recebem default; versão futura incompatível não é sobrescrita. IO não resolvido retorna ReaderException com StorageUnavailable. Cancelamento permanece OperationCanceledException.
+
+F12 alterna a barra e Ctrl+P abre preferências. Ao carregar um perfil antigo que já usa essas teclas em outro comando, manter a atribuição existente e escolher para o novo comando uma combinação livre de Ctrl+Alt+Shift+F1…F24. Conflitos explícitos entre comandos continuam rejeitados. Campos de largura, velocidade e passo na janela são inteiros percentuais, com limites e validação de digitação/colagem; o domínio mantém largura/velocidade proporcionais.
 
 ## Persistência e ciclo de vida
 

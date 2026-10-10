@@ -23,7 +23,9 @@ Revisão local em 10/10/2026: correção, clareza, fronteiras, entradas e recurs
 
 ## Fronteiras e posse
 
-Core não referencia WPF/SharpCompress/SkiaSharp. Arquivos e imagens externos entram pelos adapters. Assinatura ZIP/RAR decide o formato; senha/multivolume são rejeitados. Decodificação/extração ocorrem em background. Imagens inválidas conservam o índice; mensagens de interface usam português sem stack trace.
+A revisão folha adicional de foco/preferências apontou interceptação de Espaço em botão focado e ausência de reabertura pelo mouse: corrigidas com deferência a ButtonBase e botão ☰. Atalhos globais funcionam no seletor, mas setas continuam locais durante edição. A restauração de foco dos botões foi consolidada no dispatcher, respeitando diálogos visíveis. IntegerInput tem provider RangeValue, limites e labels nos dois idiomas. O ícone é original, gerado de formas locais em 16/32/48/256 px; recurso WPF e ApplicationIcon usam o mesmo ICO. A política anterior de atalhos ainda permite Tab; associá-lo a um comando pode competir com a travessia de foco e não é recomendado. Não foi alterada a compatibilidade de perfis antigos para essa questão preexistente.
+
+Core não referencia WPF/SharpCompress/SkiaSharp. Arquivos e imagens externos entram pelos adapters. Assinatura ZIP/RAR decide o formato; senha/multivolume são rejeitados. Decodificação/extração ocorrem em background. Imagens inválidas conservam o índice; mensagens de interface usam o idioma escolhido, sem stack trace.
 
 `PageImage` usa leases independentes. Cache adicional contabiliza stride × altura, mantém somente vizinhas e preserva consumidores após eviction/dispose. Prefetch cede a pedidos explícitos e não publica estado de leitura. Testes de fechamento bruto de ZIP/RAR usam `useCache:false` para preservar o contrato desses adapters; testes distintos cobrem cancelamento, descarte e prioridade do wrapper agora usado pelo aplicativo. Nenhum teste foi removido ou enfraquecido.
 
@@ -33,7 +35,7 @@ Persistência mantém temporário, backup e arquivo corrompido para recuperaçã
 
 ## Evidência de teste e dependências
 
-132 testes Core e 74 Integration passaram após a atualização de teclado, sem skip. Build Release: zero avisos/erros. Format verify passou. Mutação de `image.ByteLength > budgetBytes` para `>=` fez três dos quatro testes de cache falharem; condição restaurada e os quatro passaram. Isso comprova sensibilidade desses testes à fronteira do orçamento, não um mutation score da solução.
+145 testes Core e 75 Integration passaram após a atualização de preferências/interface, sem skip. Build Release: zero avisos/erros. Format verify passou. Mutação de `image.ByteLength > budgetBytes` para `>=` fez três dos quatro testes de cache falharem; condição restaurada e os quatro passaram. Isso comprova sensibilidade desses testes à fronteira do orçamento, não um mutation score da solução.
 
 Cinco lockfiles fixam versões e content hashes. Auditoria NuGet com `list ComicBookReader.slnx package --vulnerable --include-transitive --no-restore` não reportou vulnerabilidades conhecidas nas fontes consultadas em 10/10/2026. Isso não é prova de ausência de vulnerabilidades desconhecidas. Não foi feito upgrade de dependências.
 

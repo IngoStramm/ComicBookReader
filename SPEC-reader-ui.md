@@ -11,7 +11,7 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 - Abrir em tela cheia na primeira execução e recuperar a escolha nas seguintes. F11 alterna janela/tela cheia; Esc sai da tela cheia e fecha um painel/diálogo ativo antes de afetar a leitura.
 - Usar o monitor da janela atual, sem resolução fixa. Área útil é o viewport menos margens propostas de 12 DIPs por lado; o layout recebe essa área já descontada.
 - Fundo escuro neutro, imagem proporcional e controles discretos para abrir arquivo, página atual/total, tamanho de leitura, tipo de página e preferências.
-- Controles temporários sobrepõem a imagem sem recalcular seu tamanho a cada aparição. Diálogos suspendem a rolagem; setas em campos de edição não comandam a página.
+- A barra sobrepõe a imagem sem recalcular seu tamanho. F12 mostra/esconde; movimento do mouse não a revela. Um botão ☰ permite reabrir pelo mouse. Tab/Alt revelam controles para acesso por teclado. Diálogos suspendem a rolagem; setas em campos de edição não comandam a página.
 - Abrir arquivo por Ctrl+O ou arrastar e soltar. Exibir estado de carregamento; um erro de abertura mantém o livro anterior utilizável. Se cancelar a abertura, retornar à leitura anterior.
 - Ao abrir o livro, recuperar última página válida e enquadramento; primeira leitura começa na primeira imagem, na borda superior/esquerda dos eixos com overflow.
 
@@ -22,7 +22,9 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 | Rolar verticalmente | ↑/↓ mantidas | Movimento contínuo dentro da imagem atual. |
 | Rolar horizontalmente | ←/→ mantidas | Movimento contínuo em imagens que ultrapassam a largura. |
 | Próxima/anterior página | Page Down/Page Up | Uma troca por pressão física, ignorando auto-repeat. |
-| Descer ou avançar | Espaço | Descer 90% da altura útil, limitado ao fim; se já estiver no fim, avançar uma página. Ignorar auto-repeat. |
+| Descer ou avançar | Espaço | Descer a porcentagem configurada (padrão 90%), limitado ao fim; se já estiver no fim, avançar uma página. Ignorar auto-repeat. |
+| Alternar barra | F12 | Mostrar/esconder sem depender de mouse ou timer. |
+| Preferências | Ctrl+P | Abrir o diálogo com rolagem suspensa. |
 | Visão completa/restaurar | V | Alternância, uma ação por pressão física. |
 | Tela cheia | F11 | Alternância sem perder a página. |
 | Abrir arquivo | Ctrl+O | Seletor de CBZ/CBR. |
@@ -49,7 +51,7 @@ Comando separado de navegação solicita o índice anterior/seguinte. Primeira e
 
 Cada solicitação tem uma geração. Cancelar a anterior e, mesmo se um decoder não parar imediatamente, descartar resultados/erros cuja geração não seja a atual; liberar o recurso retornado. Durante carregamento, a página mostrada pode permanecer visível com indicador; seus controles de rolagem ficam suspensos para não salvar estado no alvo errado. Somente a imagem correspondente ao alvo atual é apresentada como leitura pronta.
 
-O tamanho manual permanece relativo à largura de uma página e usa a faixa do contrato de preferências; não mostrar uma porcentagem do scan como único controle. Zoom manual preserva o ponto sob o cursor quando houver cursor útil, ou o centro da área de leitura. Classificação oferece Automática/Simples/Dupla e grava override do livro.
+O tamanho manual permanece relativo à largura de uma página e usa a faixa do contrato de preferências; não mostrar uma porcentagem do scan como único controle. Zoom manual preserva o ponto sob o cursor quando houver cursor útil, ou o centro da área de leitura. Classificação oferece Automática/Simples/Dupla global, aplicada a todas as imagens e livros. Botões retornam o foco à leitura após a ação/finalização de diálogos, no dispatcher; Espaço ativa normalmente um botão selecionado pelo teclado. Preferências oferecem idioma pt-BR/en aplicado ao salvar e campos numéricos inteiros com incremento, limites e validação de colagem.
 
 ## Visão completa e restauração
 

@@ -1,6 +1,6 @@
 # Validação da janela
 
-Data: 10/10/2026. Esta página distingue execução automatizada de avaliação humana. A atualização de teclado está disponível em `artifacts/win-x64-keyboard/ComicBookReader.App.exe`.
+Data: 10/10/2026. Esta página distingue execução automatizada de avaliação humana. A atualização de interface/preferências está disponível em `artifacts/win-x64-options/ComicBookReader.App.exe`.
 
 ## Ambiente observado
 
@@ -28,11 +28,18 @@ Após feedback do usuário sobre Espaço, setas laterais e Page Down, a execuç�
 | Espaço por input roteado | Desce 90% da altura; mostra o fim e avança no toque seguinte. |
 | ←/→ com largura 150% | Movem horizontalmente; a borda mantém a página. |
 | Tecla no item do dropdown e fechamento | Não rola durante edição; fechar recupera o foco da área de leitura. |
-| Controles temporários | Ocultam-se após dois segundos; Tab os revela; layout não muda. |
+| Barra manual | F12 alterna; mouse sobre a imagem não mostra a barra; botão ☰ reabre; Tab permite acesso por teclado. Layout não muda. |
 | Duplas com duas resoluções distintas | Mesma largura de leitura. |
 | V/V | Escala e offsets restaurados exatamente. |
 | Navegação concorrente e resize | Último alvo apresentado; offsets limitados. |
 | Dois processos; fechar em overview | Progresso de leitura original restaurado. |
+| Largura padrão e seletor com foco | Botão retorna foco; V funciona logo após. F12 funciona a partir do seletor. |
+| Preferências pelo comando configurado | Modal abre, aplica opções e retorna foco à leitura. |
+| Campos numéricos | Texto/decimal/valor acima do máximo e colagem inválida rejeitados; vazio normalizado. |
+| pt-BR/en | Diálogo e janela traduzidos; captura visual inspecionada para contraste. |
+| Classificação global / passo do Espaço | Aplicados, persistidos e recuperados pelo processo seguinte. |
+
+Evidência de desenvolvimento final em `artifacts/reader-options-final-validation`; pacote final em `artifacts/reader-options-package-validation`. As capturas de preferências pt-BR/en e da barra em inglês acompanham o JSON. Os testes de Core/Storage cobrem 10/45/100% de passo, opções inválidas e perfis legados com F12/Ctrl+P personalizados. A revisão visual corrigiu rótulos que herdavam foreground escuro. Pressão física, suavidade e outro DPI continuam pendentes.
 
 A segunda execução de desenvolvimento registrou 597 intervalos em dez segundos, mediana 16,6617 ms, máximo 43,571 ms e deslocamento 4178,843 DIPs. Isso é cadência de callbacks WPF de uma janela fora da tela; não comprova a percepção visual nem a cadência final do monitor. A captura `reader.png` foi inspecionada: imagem proporcional, margens escuras e controles ocultos na leitura.
 
