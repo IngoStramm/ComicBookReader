@@ -9,6 +9,13 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 $executablePath = [IO.Path]::GetFullPath((Join-Path $projectRoot $Executable))
 $evidenceRoot = [IO.Path]::GetFullPath((Join-Path $projectRoot $EvidenceDirectory))
 [IO.Directory]::CreateDirectory($evidenceRoot) | Out-Null
+$runtimeConfigPath = [IO.Path]::ChangeExtension($executablePath, 'runtimeconfig.json')
+$runtimeConfig = Get-Content -Raw -LiteralPath $runtimeConfigPath | ConvertFrom-Json
+if ($runtimeConfig.runtimeOptions.includedFrameworks) {
+    # Prove the self-contained host uses its own runtime, with no installed runtime fallback.
+    $env:DOTNET_ROOT = Join-Path $evidenceRoot 'no-installed-runtime'
+    $env:DOTNET_ROOT_X64 = $env:DOTNET_ROOT
+}
 Add-Type -AssemblyName System.Drawing
 Add-Type -AssemblyName System.IO.Compression
 $comicPath = Join-Path $evidenceRoot 'synthetic.cbz'
