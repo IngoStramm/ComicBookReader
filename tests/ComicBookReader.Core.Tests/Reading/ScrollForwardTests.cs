@@ -1,5 +1,6 @@
 using ComicBookReader.Core.ComicFiles;
 using ComicBookReader.Core.Layout;
+using ComicBookReader.Core.Preferences;
 using ComicBookReader.Core.Reading;
 using Xunit;
 
@@ -7,6 +8,18 @@ namespace ComicBookReader.Core.Tests.Reading;
 
 public sealed class ScrollForwardTests
 {
+    [Theory]
+    [InlineData(10, 100)]
+    [InlineData(45, 450)]
+    [InlineData(100, 1000)]
+    public async Task ForwardScrollUsesTheConfiguredViewportPercentage(int percent, double distance)
+    {
+        await using var reader = await CreateReader();
+        reader.ApplyPreferences(reader.CapturePreferences() with { SpaceScrollPercent = percent });
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(distance, reader.State.OffsetYDip);
+        Assert.Equal(0, reader.State.PresentedIndex);
+    }
     [Fact]
     public async Task ForwardScrollKeepsOverlapAndShowsTheBottomBeforeChangingPage()
     {

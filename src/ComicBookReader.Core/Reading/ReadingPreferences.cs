@@ -25,9 +25,7 @@ public sealed partial class ReaderController
         ChangeGeometry(() =>
         {
             WidthRatio = State.Book is { } book ? PreferencesResolver.ResolveWidth(profile, book.BookId) : profile.PreferredPageWidthRatio;
-            Classification = State.Book is { } active && State.Pages.Count > 0
-                ? PreferencesResolver.ResolveClassification(profile, active.BookId, State.Pages[State.PresentedIndex].PageKey)
-                : PageClassificationOverride.Auto;
+            Classification = profile.PageClassification;
         }, null, null);
     }
 
@@ -62,12 +60,6 @@ public sealed partial class ReaderController
 
     private void SaveClassificationOverride()
     {
-        if (State.Book is not { } book || State.Pages.Count == 0) return;
-        var settings = GetBookSettings(book.BookId);
-        var classifications = new Dictionary<string, PageClassificationOverride>(settings.Classifications, StringComparer.Ordinal);
-        string key = State.Pages[State.PresentedIndex].PageKey;
-        if (Classification == PageClassificationOverride.Auto) classifications.Remove(key);
-        else classifications[key] = Classification;
-        profile.Books[book.BookId] = settings with { Classifications = classifications };
+        profile = profile with { PageClassification = Classification };
     }
 }

@@ -21,9 +21,7 @@ public static class PreferencesResolver
         ArgumentNullException.ThrowIfNull(preferences);
         ValidateIdentity(bookId, nameof(bookId));
         ValidateIdentity(pageKey, nameof(pageKey));
-        var classification = preferences.Books.TryGetValue(bookId, out var book)
-            && book.Classifications.TryGetValue(pageKey, out var value)
-            ? value : PageClassificationOverride.Auto;
+        var classification = preferences.PageClassification;
         ValidateClassification(classification);
         return classification;
     }
@@ -40,6 +38,10 @@ public static class PreferencesResolver
         ValidateRange(preferences.PreferredPageWidthRatio, .25, 2,
             nameof(ReaderPreferences.PreferredPageWidthRatio));
         ValidateRange(preferences.ScrollSpeed, .1, 2, nameof(ReaderPreferences.ScrollSpeed));
+        ValidateRange(preferences.SpaceScrollPercent, 10, 100, nameof(ReaderPreferences.SpaceScrollPercent));
+        ValidateClassification(preferences.PageClassification);
+        if (preferences.Language is not ("pt-BR" or "en"))
+            throw new ArgumentException("Unsupported language.", nameof(ReaderPreferences.Language));
         if (preferences.Books is null)
             throw new ArgumentException("Books cannot be null.", nameof(preferences));
 
@@ -103,6 +105,14 @@ public static class PreferencesResolver
             if (!commands.TryGetValue(command, out var canonicalCommand) || !suppliedCommands.Add(command))
                 throw new ArgumentException($"Unknown or duplicate key binding command: {command}.", nameof(bindings));
             normalized[canonicalCommand] = NormalizeBinding(binding);
+        }
+        // Add new commands without taking an existing user's shortcut or invalidating an older profile.
+        foreach (string addedCommand in new[] { "ToggleToolbar", "Preferences" })
+        {
+            if (suppliedCommands.Contains(addedCommand)) continue;
+            if (!normalized.Any(pair => pair.Key != addedCommand && pair.Value == normalized[addedCommand])) continue;
+            normalized[addedCommand] = Enumerable.Range(1, 24).Select(number => $"Ctrl+Alt+Shift+F{number}")
+                .First(candidate => !normalized.Values.Contains(candidate, StringComparer.OrdinalIgnoreCase));
         }
         var usedBindings = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var binding in normalized.Values)

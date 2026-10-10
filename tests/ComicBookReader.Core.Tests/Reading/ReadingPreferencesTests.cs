@@ -28,8 +28,12 @@ public sealed class ReadingPreferencesTests
         Assert.Equal(ReaderMode.Reading, restored.State.Mode);
         await restored.OpenAsync("B", TestContext.Current.CancellationToken);
         Assert.Equal(1, restored.WidthRatio);
-        Assert.Equal(PageClassificationOverride.Auto, restored.Classification);
+        Assert.Equal(PageClassificationOverride.Spread, restored.Classification);
         Assert.Equal(0, restored.State.PresentedIndex);
+        await restored.NavigateAsync(1, TestContext.Current.CancellationToken);
+        Assert.Equal(PageClassificationOverride.Spread, restored.Classification);
+        restored.SetClassification(PageClassificationOverride.Single);
+        Assert.Equal(PageClassificationOverride.Single, restored.CapturePreferences().PageClassification);
     }
 
     [Fact]

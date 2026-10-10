@@ -29,7 +29,7 @@ public sealed partial class ReaderController
         if (State.Mode == ReaderMode.Overview) return NavigateAsync(1, cancellationToken);
         if (State.Mode != ReaderMode.Reading || State.Layout is not { } layout) return Task.CompletedTask;
         if (State.OffsetYDip >= layout.MaxOffsetYDip) return NavigateAsync(1, cancellationToken);
-        ScrollBy(0, viewport.HeightDip * .9);
+        ScrollBy(0, viewport.HeightDip * profile.SpaceScrollPercent / 100);
         return Task.CompletedTask;
     }
 

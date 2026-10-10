@@ -25,11 +25,12 @@ public sealed class PreferencesResolverTests
     }
 
     [Fact]
-    public void BookOverridesOnlyItsOwnWidthAndPageClassification()
+    public void BookOverridesWidthButClassificationIsGlobal()
     {
         var preferences = new ReaderPreferences
         {
             PreferredPageWidthRatio = 1.4,
+            PageClassification = PageClassificationOverride.Single,
             Books = new()
             {
                 ["book"] = new BookPreferences
@@ -41,11 +42,11 @@ public sealed class PreferencesResolverTests
         };
         Assert.Equal(.8, PreferencesResolver.ResolveWidth(preferences, "book"));
         Assert.Equal(1.4, PreferencesResolver.ResolveWidth(preferences, "other-book"));
-        Assert.Equal(PageClassificationOverride.Spread,
+        Assert.Equal(PageClassificationOverride.Single,
             PreferencesResolver.ResolveClassification(preferences, "book", "page"));
-        Assert.Equal(PageClassificationOverride.Auto,
+        Assert.Equal(PageClassificationOverride.Single,
             PreferencesResolver.ResolveClassification(preferences, "book", "other-page"));
-        Assert.Equal(PageClassificationOverride.Auto,
+        Assert.Equal(PageClassificationOverride.Single,
             PreferencesResolver.ResolveClassification(preferences, "other-book", "page"));
     }
 
@@ -124,7 +125,7 @@ public sealed class PreferencesResolverTests
         });
         Assert.Equal("Ctrl+Shift+N", preferences.KeyBindings["NextPage"]);
         Assert.Equal("PageUp", preferences.KeyBindings["PreviousPage"]);
-        Assert.Equal(7, preferences.KeyBindings.Count);
+        Assert.Equal(9, preferences.KeyBindings.Count);
     }
 
     [Theory]
@@ -241,7 +242,7 @@ public sealed class PreferencesResolverTests
         input.Books.Clear();
         Assert.Equal("PageDown", snapshot.KeyBindings["NextPage"]);
         Assert.Equal(.8, PreferencesResolver.ResolveWidth(snapshot, "book"));
-        Assert.Equal(PageClassificationOverride.Single,
-            PreferencesResolver.ResolveClassification(snapshot, "book", "page"));
+        Assert.Equal(PageClassificationOverride.Single, snapshot.Books["book"].Classifications["page"]);
+        Assert.Equal(PageClassificationOverride.Auto, PreferencesResolver.ResolveClassification(snapshot, "book", "page"));
     }
 }

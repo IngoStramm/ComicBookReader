@@ -31,6 +31,9 @@ public sealed class PreferencesStoreTests
         {
             PreferredPageWidthRatio = 1.3,
             ScrollSpeed = .8,
+            SpaceScrollPercent = 45,
+            Language = "en",
+            PageClassification = PageClassificationOverride.Single,
             LastFullscreen = false,
             KeyBindings = new() { ["NextPage"] = "Ctrl+N" },
             Books = new()
@@ -47,6 +50,9 @@ public sealed class PreferencesStoreTests
         var actual = await new JsonReadingPreferencesStore(directory.Path).LoadAsync(Token);
         Assert.Equal(1.3, actual.PreferredPageWidthRatio);
         Assert.Equal(.8, actual.ScrollSpeed);
+        Assert.Equal(45, actual.SpaceScrollPercent);
+        Assert.Equal("en", actual.Language);
+        Assert.Equal(PageClassificationOverride.Single, actual.PageClassification);
         Assert.False(actual.LastFullscreen);
         Assert.Equal("Ctrl+N", actual.KeyBindings["NextPage"]);
         Assert.Equal("PageUp", actual.KeyBindings["PreviousPage"]);
@@ -66,9 +72,30 @@ public sealed class PreferencesStoreTests
         Assert.Equal(1, preferences.PreferredPageWidthRatio);
         Assert.Equal(.6, preferences.ScrollSpeed);
         Assert.True(preferences.LastFullscreen);
-        Assert.Equal(7, preferences.KeyBindings.Count);
+        Assert.Equal(9, preferences.KeyBindings.Count);
+        Assert.Equal(90, preferences.SpaceScrollPercent);
+        Assert.Equal("pt-BR", preferences.Language);
+        Assert.Equal(PageClassificationOverride.Auto, preferences.PageClassification);
         Assert.Null(preferences.Books["book"].WidthRatio);
         Assert.Empty(preferences.Books["book"].Classifications);
+    }
+
+    [Fact]
+    public async Task LegacyProfileKeepsProgressAndCustomShortcutsWhenNewCommandsAreAdded()
+    {
+        using var directory = new TemporaryPreferencesDirectory();
+        await File.WriteAllTextAsync(directory.PreferencesPath,
+            """{"SchemaVersion":1,"KeyBindings":{"NextPage":"F12","Open":"Ctrl+P"},"Books":{"book":{"WidthRatio":1.2,"Classifications":{"page":2},"Position":{"PageKey":"page","PageIndex":4,"RelativeX":0.2,"RelativeY":0.8}}}}""", Token);
+        var store = new JsonReadingPreferencesStore(directory.Path);
+        var loaded = await store.LoadAsync(Token);
+        Assert.Null(store.LastWarning);
+        Assert.Equal("F12", loaded.KeyBindings["NextPage"]);
+        Assert.Equal("Ctrl+P", loaded.KeyBindings["Open"]);
+        Assert.Equal(4, loaded.Books["book"].Position!.PageIndex);
+        Assert.Equal(1.2, loaded.Books["book"].WidthRatio);
+        Assert.Equal(PageClassificationOverride.Spread, loaded.Books["book"].Classifications["page"]);
+        Assert.Equal(PageClassificationOverride.Auto, PreferencesResolver.ResolveClassification(loaded, "book", "page"));
+        Assert.Empty(Directory.GetFiles(directory.Path, "*.corrupt-*"));
     }
 
     [Fact]
