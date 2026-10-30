@@ -2,7 +2,9 @@
 
 Atualização 30/10/2026: a 0.2.0 acrescenta Espaço por faixas e leitura direita → esquerda. 246 testes passaram; percurso completo nos dois sentidos e persistência entre processos comprovados também no portátil. Evidência e limites: [reading-order-validation.md](reading-order-validation.md). A matriz histórica abaixo conserva as verificações humanas pendentes.
 
-Atualização local 0.3.0: o instalador registra CBZ/CBR para o usuário atual e pode abrir as Configurações do Windows para a escolha do leitor padrão. A escolha final fica sob controle do Windows; o fluxo ainda precisa de verificação manual em um perfil de instalação isolado antes da publicação.
+Atualização 0.3.0: o instalador registra CBZ/CBR para o usuário atual e pode abrir as Configurações do Windows para a escolha do leitor padrão. A escolha final fica sob controle do Windows. A atualização sobre uma instalação existente não foi validada neste ambiente porque já havia uma instalação em uso.
+
+Atualização 0.4.0: atalhos configuráveis e botões de primeira/última página e miniaturas passaram no smoke test WPF; seleção de miniatura e dicas com atalhos personalizados foram verificadas. Build Release sem warnings, formatação, 173 testes Core e 75 Integration passaram. A janela das miniaturas destaca a página atual com borda amarela de 3 pixels; a percepção visual da cor continua pendente de avaliação humana.
 
 Data: 10/10/2026. 233 testes passaram (158 Core, 75 Integration), build/format/restore bloqueado passaram. Portátil e instalador 0.1.0 estão em `artifacts/distribution`; o pacote anterior `artifacts/win-x64-drag` foi preservado. O checklist não declara concluída a aceitação visual. **Automático** indica evidência de regra/integração ou WPF com eventos roteados; **Parcial** mantém os casos humanos pendentes.
 

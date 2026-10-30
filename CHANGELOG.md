@@ -6,6 +6,7 @@
 
 - Miniaturas das páginas para escolher diretamente onde continuar a leitura.
 - Comandos configuráveis para primeira página, última página e miniaturas, com botões e dicas na barra.
+- A página atual recebe uma borda amarela mais visível na janela de miniaturas.
 
 ## 0.3.0 — 2026-10-30
 

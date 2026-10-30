@@ -2,14 +2,14 @@
 
 Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imagens JPEG/PNG/WebP, rolagem contínua e tamanho de uma página preservado nas imagens duplas.
 
-A versão 0.3.0 está disponível para Windows x64 nos formatos portátil e instalador. Inclui o atalho configurável M para alternar o sentido de leitura e o registro de arquivos CBZ e CBR no Windows.
+A versão 0.4.0 está disponível para Windows x64 nos formatos portátil e instalador. Inclui navegação por miniaturas, atalhos configuráveis para ir à primeira/última página e abrir as miniaturas, além do registro de arquivos CBZ e CBR no Windows.
 
 ## Baixar e compartilhar
 
-Baixe a [versão 0.3.0](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.3.0) para Windows x64:
+Baixe a [versão 0.4.0](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.4.0) para Windows x64:
 
-- [Portátil — ComicBookReader-0.3.0-Portable.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.3.0/ComicBookReader-0.3.0-Portable.exe): abra diretamente. Basta compartilhar esse único arquivo.
-- [Instalador — ComicBookReader-0.3.0-Setup.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.3.0/ComicBookReader-0.3.0-Setup.exe): instala para o usuário atual e oferece abrir as Configurações do Windows para escolher o leitor padrão de CBZ e CBR.
+- [Portátil — ComicBookReader-0.4.0-Portable.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.4.0/ComicBookReader-0.4.0-Portable.exe): abra diretamente. Basta compartilhar esse único arquivo.
+- [Instalador — ComicBookReader-0.4.0-Setup.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.4.0/ComicBookReader-0.4.0-Setup.exe): instala para o usuário atual e oferece abrir as Configurações do Windows para escolher o leitor padrão de CBZ e CBR.
 
 Todas as versões ficam em [Releases](https://github.com/IngoStramm/ComicBookReader/releases), cada uma associada à sua tag. Abra a versão desejada e escolha o arquivo em **Assets**. As mudanças são registradas no [CHANGELOG.md](CHANGELOG.md).
 
@@ -23,6 +23,8 @@ Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou pa
 | --- | --- |
 | ↑/↓ e ←/→ mantidas | Rolar continuamente; as bordas mantêm a mesma página. |
 | Page Down / Page Up | Próxima / anterior, uma troca por pressão. |
+| Ctrl+Home / Ctrl+End | Ir para a primeira / última página. |
+| T | Abrir miniaturas para escolher uma página. |
 | Espaço | Percorrer a faixa horizontal no sentido escolhido; na borda, descer e retornar ao início da faixa seguinte. Após o último trecho, avançar a página. |
 | M | Alternar o sentido de leitura; configurável em Preferências. |
 | F12 / Ctrl+P | Mostrar/esconder a barra / abrir preferências. |
@@ -33,7 +35,8 @@ Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou pa
 | Roda / Shift+roda | Rolar verticalmente / horizontalmente. |
 | Automática / Simples / Dupla | Escolher a classificação global, aplicada a todas as páginas/livros. |
 | Esquerda → direita / Direita → esquerda | Alterar o sentido de leitura diretamente na barra, ao lado do tipo de página. |
-| Preferências | Sentido de leitura, largura, velocidade, passo do Espaço, classificação global, idioma e atalhos. |
+| Primeira página / Última página / Miniaturas | Botões na barra; as dicas mostram os atalhos configurados. A página atual tem borda amarela na janela de miniaturas. |
+| Preferências | Sentido de leitura, largura, velocidade, passo do Espaço, classificação global, idioma e atalhos para todos os comandos. |
 | R / Largura padrão | Remover o ajuste de largura do livro e usar o padrão global. |
 
 A largura é relativa à área de leitura, independentemente da resolução do scan. Paisagem sugere dupla; o ajuste manual corrige ilustrações horizontais. A imagem inteira é preservada. O atalho de visão completa não sobrescreve o progresso de leitura guardado.
