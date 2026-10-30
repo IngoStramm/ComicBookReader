@@ -2,7 +2,7 @@
 
 Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imagens JPEG/PNG/WebP, rolagem contínua e tamanho de uma página preservado nas imagens duplas.
 
-A versão local 0.2.1 está em `artifacts/distribution`, nos formatos portátil e instalador. Inclui percurso por faixas com Espaço e sentido de leitura configurável nas Preferências e na barra; [evidência do percurso](docs/reading-order-validation.md). Os downloads públicos abaixo continuam associados à versão 0.1.0.
+A versão local 0.2.2 está em `artifacts/distribution`, nos formatos portátil e instalador. Inclui percurso por faixas com Espaço e sentido de leitura configurável nas Preferências e na barra, com os menus de seleção corrigidos; [evidência do percurso](docs/reading-order-validation.md). Os downloads públicos abaixo continuam associados à versão 0.1.0.
 
 ## Baixar e compartilhar
 

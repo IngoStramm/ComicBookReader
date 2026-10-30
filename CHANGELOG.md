@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## 0.2.2 — 2026-10-30
+
+### Corrigido
+
+- Menus de tipo de página e sentido de leitura permanecem abertos ao clicar na barra com uma HQ aberta. O retorno de foco não captura mais o clique do botão interno do seletor nem fecha uma lista enquanto ela está em uso.
+- Escolher uma opção ou pressionar Esc fecha a lista e devolve o foco à leitura.
+
 ## 0.2.1 — 2026-10-30
 
 ### Corrigido

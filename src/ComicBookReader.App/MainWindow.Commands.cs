@@ -95,13 +95,17 @@ public partial class MainWindow
         ReturnToReading();
     }
     private void HideToolbarClicked(object sender, RoutedEventArgs e) { overlay.Toggle(); ReturnToReading(); }
-    private void ToolbarButtonClicked(object sender, RoutedEventArgs e) => ReturnToReading();
+    private void ToolbarButtonClicked(object sender, RoutedEventArgs e)
+    {
+        if (e.OriginalSource is Button) ReturnToReading();
+    }
     private void ReturnToReading()
     {
         input.Stop();
         Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input, () =>
         {
-            if (closing || OwnedWindows.Cast<Window>().Any(owned => owned.IsVisible)) return;
+            if (closing || ClassificationChoice.IsDropDownOpen || ReadingDirectionChoice.IsDropDownOpen ||
+                OwnedWindows.Cast<Window>().Any(owned => owned.IsVisible)) return;
             FocusManager.SetFocusedElement(this, Viewport);
             Keyboard.Focus(Viewport);
         });

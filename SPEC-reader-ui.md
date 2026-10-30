@@ -9,6 +9,7 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 ## Janela e controles
 
 - Sentido de leitura também fica acessível no seletor da barra, ao lado do tipo de página. Barra e Preferências usam a mesma escolha global, com aplicação imediata, persistência e tradução pt-BR/en. Fechar o seletor retorna o foco à leitura.
+- Cliques nos botões internos dos seletores não são ações de retorno à leitura. A barra mantém o foco no menu enquanto a lista estiver aberta; selecionar um item ou cancelar com Esc fecha a lista e retorna o foco à página.
 - Abrir em tela cheia na primeira execução e recuperar a escolha nas seguintes. F11 alterna janela/tela cheia; Esc sai da tela cheia e fecha um painel/diálogo ativo antes de afetar a leitura.
 - Usar o monitor da janela atual, sem resolução fixa. Área útil é o viewport menos margens propostas de 12 DIPs por lado; o layout recebe essa área já descontada.
 - Fundo escuro neutro, imagem proporcional e controles discretos para abrir arquivo, página atual/total, tamanho de leitura, tipo de página e preferências.

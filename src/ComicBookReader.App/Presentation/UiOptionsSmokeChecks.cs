@@ -24,6 +24,7 @@ internal static class UiOptionsSmokeChecks
         }
         window.ApplyUserPreferences(profile with { Language = "pt-BR", SpaceScrollPercent = 90, PageClassification = PageClassificationOverride.Auto });
         if (window.Toolbar.Visibility != Visibility.Visible) ReadingSmokeChecks.RaiseKey(window, Key.F12, true);
+        await ToolbarDropdownSmokeChecks.RunAsync(window, output);
         await ReadingDirectionToolbarSmokeChecks.RunAsync(window);
         Capture(window, Path.Combine(output, "toolbar-pt.png"));
         ReadingSmokeChecks.RaiseKey(window.ClassificationChoice, Key.F12, true);
