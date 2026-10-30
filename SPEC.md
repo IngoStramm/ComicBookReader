@@ -14,7 +14,7 @@ Nome público confirmado pelo usuário: **ComicBookReader**. Raiz documental: `C
 | --- | --- |
 | Usuário | Ler habitualmente em tela cheia. |
 | Usuário | Segurar ↑/↓ deve produzir movimento suave. Atingir uma borda mantém a mesma página, inclusive se a seta for pressionada novamente. |
-| Usuário | Setas rolam sem trocar de página; Page Down/Page Up navegam. Após teste do protótipo, Espaço também desce a imagem e avança quando já está no fim. |
+| Usuário | Setas rolam sem trocar de página; Page Down/Page Up navegam. Espaço percorre cada faixa horizontal antes de descer e retornar ao início da próxima, avançando a página após seu último trecho. Sentido global ocidental ou direita para esquerda para mangás. |
 | Usuário | Adaptar o tamanho de leitura a diferentes arquivos e scans, reduzindo ajustes repetidos. |
 | Usuário | Considerar paisagem um indício de imagem dupla e compensar sua escala, mantendo a imagem inteira. |
 | Usuário | Oferecer um atalho para ver a imagem completa e retornar ao zoom anterior. |
@@ -27,7 +27,7 @@ Nome público confirmado pelo usuário: **ComicBookReader**. Raiz documental: `C
 
 Abrir CBZ/CBR por seletor ou arrastar e soltar, ordenar páginas naturalmente, decodificar JPEG/PNG/WebP, navegar, rolar, ajustar o tamanho, corrigir a classificação simples/dupla, consultar visão completa e recuperar preferências/progresso. BMP/GIF/TIFF e animação não são requisitos desta primeira versão.
 
-Biblioteca de coleções, serviços online, PDF/DjVu, extensão do Explorer, impressão, filtros avançados de cor, modo manga e apresentação de duas imagens distintas lado a lado ficam fora deste primeiro escopo. Uma imagem dupla continua sendo uma única página do índice.
+Biblioteca de coleções, serviços online, PDF/DjVu, extensão do Explorer, impressão, filtros avançados de cor e apresentação de duas imagens distintas lado a lado ficam fora deste escopo. Leitura direita para esquerda foi adicionada por solicitação do usuário. Uma imagem dupla continua sendo uma única página do índice.
 
 ## Módulos e documentos
 

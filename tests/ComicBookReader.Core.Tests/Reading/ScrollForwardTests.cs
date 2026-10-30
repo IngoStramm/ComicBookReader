@@ -89,6 +89,25 @@ public sealed class ScrollForwardTests
         Assert.Equal(1, reader.State.PresentedIndex);
     }
 
+    [Theory]
+    [InlineData(10, ReadingDirection.LeftToRight, 10)]
+    [InlineData(45, ReadingDirection.LeftToRight, 45)]
+    [InlineData(100, ReadingDirection.LeftToRight, 100)]
+    [InlineData(10, ReadingDirection.RightToLeft, 90)]
+    [InlineData(45, ReadingDirection.RightToLeft, 55)]
+    [InlineData(100, ReadingDirection.RightToLeft, 0)]
+    public async Task HorizontalStepUsesTheConfiguredWidthPercentage(int percent, ReadingDirection direction, double x)
+    {
+        await using var reader = new ReaderController(new WideOpener(), preferences: new ReaderPreferences
+        { PageClassification = PageClassificationOverride.Spread, SpaceScrollPercent = percent, ReadingDirection = direction });
+        reader.SetViewport(new ViewportSize(100, 80));
+        await reader.OpenAsync("wide", TestContext.Current.CancellationToken);
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(x, reader.State.OffsetXDip);
+        Assert.Equal(0, reader.State.OffsetYDip);
+        Assert.Equal(0, reader.State.PresentedIndex);
+    }
+
     [Fact]
     public async Task RightToLeftStartsAtTheRightAndScansEveryRowBeforeAdvancing()
     {

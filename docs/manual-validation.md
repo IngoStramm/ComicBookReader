@@ -62,7 +62,7 @@ A desinstalação removeu executável, atalhos e registro de desinstalação. Co
 Não houve aprovação visual do movimento, pressão física das teclas, interação humana com o seletor/preferências nem alteração do DPI. Não marcar UI-09/G-02/G-07 como aceitação completa com base nos testes acima.
 
 1. Abrir uma HQ de teste em tela cheia e segurar ↓ por dez segundos; observar trancos. Soltar, alternar foco e abrir o seletor enquanto a tecla estiver pressionada; o movimento deve parar e exigir nova pressão.
-2. Segurar Page Down ou Espaço: apenas uma ação por pressão física. Espaço desce e mostra o trecho final; o próximo toque avança. Pressionar setas nas quatro bordas: nenhuma troca de página. Ajustar largura para mais de 100%, testar ←/→ e repetir depois de fechar o seletor de classificação.
+2. Segurar Page Down ou Espaço: apenas uma ação por pressão física. Em uma imagem com overflow horizontal e vertical, Espaço percorre cada faixa na horizontal antes de descer e se alinhar ao início da próxima; só depois do último trecho inferior avança. Repetir nos dois sentidos em Preferências e conferir retomada após reiniciar. Pressionar setas nas quatro bordas: nenhuma troca de página. Ajustar largura para mais de 100%, testar ←/→ e repetir depois de fechar o seletor de classificação.
 3. Abrir Ctrl+O e cancelar o seletor: conservar a HQ. Arrastar um CBZ e um CBR para abrir pela outra entrada.
 4. Usar Tab para acessar controles e preferências. Em campos, setas editam o controle e não movem a HQ. Testar um atalho duplicado/seta, aplicar um válido e reiniciar.
 5. Ajustar largura/classificação, rolar, consultar V, fechar e reabrir o arquivo. Confirmar legibilidade e recuperação do ponto guardado.

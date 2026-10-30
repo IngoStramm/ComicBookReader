@@ -1,5 +1,7 @@
 # Revisão de implementação
 
+Revisão da 0.2.0, 30/10/2026: [Espaço e sentido de leitura](reading-order-validation.md). Percurso, persistência e input da janela verificados, sem bloqueadores; limites humanos preservados.
+
 Revisão local em 10/10/2026: correção, clareza, fronteiras, entradas e recursos. Não equivale a revisão independente nem aprovação humana para merge/lançamento. A avaliação perceptual e de outro DPI permanece em [manual-validation.md](manual-validation.md).
 
 ## Achados tratados

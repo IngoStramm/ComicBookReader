@@ -2,6 +2,8 @@
 
 Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imagens JPEG/PNG/WebP, rolagem contínua e tamanho de uma página preservado nas imagens duplas.
 
+A versão local 0.2.0 está em `artifacts/distribution`, nos formatos portátil e instalador. Inclui percurso por faixas com Espaço e sentido de leitura configurável; [evidência de validação](docs/reading-order-validation.md). Os downloads públicos abaixo continuam associados à versão 0.1.0.
+
 ## Baixar e compartilhar
 
 Baixe a [versão 0.1.0](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.1.0) para Windows x64:
@@ -21,7 +23,7 @@ Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou pa
 | --- | --- |
 | ↑/↓ e ←/→ mantidas | Rolar continuamente; as bordas mantêm a mesma página. |
 | Page Down / Page Up | Próxima / anterior, uma troca por pressão. |
-| Espaço | Descer a distância configurada (padrão 90% da altura útil); no fim, o próximo toque abre a página seguinte. |
+| Espaço | Percorrer a faixa horizontal no sentido escolhido; na borda, descer e retornar ao início da faixa seguinte. Após o último trecho, avançar a página. |
 | F12 / Ctrl+P | Mostrar/esconder a barra / abrir preferências. |
 | V | Página inteira; repetir restaura o ponto de leitura. |
 | F11 / Esc | Alternar tela cheia / sair da tela cheia. |
@@ -29,12 +31,16 @@ Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou pa
 | Segurar o botão esquerdo e mover o mouse | Arrastar a página em qualquer direção, respeitando suas bordas. |
 | Roda / Shift+roda | Rolar verticalmente / horizontalmente. |
 | Automática / Simples / Dupla | Escolher a classificação global, aplicada a todas as páginas/livros. |
-| Preferências | Largura, velocidade, passo do Espaço, classificação global, idioma e atalhos. |
+| Preferências | Sentido de leitura, largura, velocidade, passo do Espaço, classificação global, idioma e atalhos. |
 | R / Largura padrão | Remover o ajuste de largura do livro e usar o padrão global. |
 
 A largura é relativa à área de leitura, independentemente da resolução do scan. Paisagem sugere dupla; o ajuste manual corrige ilustrações horizontais. A imagem inteira é preservada. O atalho de visão completa não sobrescreve o progresso de leitura guardado.
 
 As setas laterais rolam quando a imagem ultrapassa a largura disponível. Fechar o seletor de classificação ou clicar na imagem devolve o foco à leitura. Espaço ignora repetição automática; se já estiver atribuído a um atalho personalizado, essa configuração tem prioridade. Na visão completa, Espaço avança à página seguinte.
+
+Em Preferências (Ctrl+P), **Sentido de leitura** permite escolher esquerda → direita ou direita → esquerda para mangás. Espaço avança primeiro na horizontal; só ao chegar à borda desce e se alinha ao início da próxima faixa. O passo padrão é 90% da largura ou da altura útil, conforme o eixo, para deixar sobreposição. O último trecho de cada faixa aparece antes de descer, inclusive na parte inferior da imagem. Uma página que cabe inteira avança diretamente; no fim do livro, permanece no último trecho.
+
+Alterar o sentido mantém a altura atual e reposiciona a leitura no início da faixa. Páginas novas começam no topo/esquerda no modo ocidental e no topo/direita no modo mangá. Reabrir uma HQ recupera a posição salva. A preferência é global; a ordem dos arquivos e os comandos Próxima/Anterior permanecem os mesmos.
 
 Os três atalhos de largura são configuráveis em Preferências. O padrão de aumento aceita a tecla `+` com Shift e o `+` numérico; o padrão de diminuição aceita `−` na linha superior e no numérico. Atalhos explícitos têm prioridade e os aliases numéricos só são usados enquanto o comando conserva seu padrão. Se um perfil antigo já usa R, o novo comando recebe uma combinação livre. Durante o arraste, a imagem acompanha o cursor mesmo fora da área de leitura até soltar o botão. Perder foco/captura, mudar tamanho/página ou usar um comando encerra o arraste; ele não troca de página nas bordas. Eixos sem overflow ficam imóveis.
 

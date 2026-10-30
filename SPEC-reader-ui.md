@@ -13,7 +13,7 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 - Fundo escuro neutro, imagem proporcional e controles discretos para abrir arquivo, página atual/total, tamanho de leitura, tipo de página e preferências.
 - A barra sobrepõe a imagem sem recalcular seu tamanho. F12 mostra/esconde; movimento do mouse não a revela. Um botão ☰ permite reabrir pelo mouse. Tab/Alt revelam controles para acesso por teclado. Diálogos suspendem a rolagem; setas em campos de edição não comandam a página.
 - Abrir arquivo por Ctrl+O ou arrastar e soltar. Exibir estado de carregamento; um erro de abertura mantém o livro anterior utilizável. Se cancelar a abertura, retornar à leitura anterior.
-- Ao abrir o livro, recuperar última página válida e enquadramento; primeira leitura começa na primeira imagem, na borda superior/esquerda dos eixos com overflow.
+- Ao abrir o livro, recuperar última página válida e enquadramento; primeira leitura começa na primeira imagem, no topo e na borda inicial do sentido de leitura: esquerda no ocidental, direita no modo mangá.
 
 ## Comandos e padrões propostos
 
@@ -22,7 +22,7 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 | Rolar verticalmente | ↑/↓ mantidas | Movimento contínuo dentro da imagem atual. |
 | Rolar horizontalmente | ←/→ mantidas | Movimento contínuo em imagens que ultrapassam a largura. |
 | Próxima/anterior página | Page Down/Page Up | Uma troca por pressão física, ignorando auto-repeat. |
-| Descer ou avançar | Espaço | Descer a porcentagem configurada (padrão 90%), limitado ao fim; se já estiver no fim, avançar uma página. Ignorar auto-repeat. |
+| Percorrer ou avançar | Espaço | Percorrer horizontalmente no sentido escolhido (padrão 90% da largura útil); na borda, descer o passo configurado da altura útil e retornar ao início da faixa. Após o último trecho da última faixa, avançar uma página. Ignorar auto-repeat. |
 | Alternar barra | F12 | Mostrar/esconder sem depender de mouse ou timer. |
 | Preferências | Ctrl+P | Abrir o diálogo com rolagem suspensa. |
 | Visão completa/restaurar | V | Alternância, uma ação por pressão física. |
@@ -37,7 +37,7 @@ Atalhos são configuráveis e conflitos devem ser apresentados. As setas permane
 
 Aumentar/diminuir e Largura padrão têm campos de atalho nas preferências e dicas na barra. O padrão OemPlus também aceita Shift+OemPlus e Add; OemMinus também aceita Subtract. Uma atribuição explícita à combinação tem prioridade; personalizar ZoomIn/ZoomOut remove seus aliases. O arraste captura o mouse no viewport, usa coordenadas em DIPs e deslocamentos relativos ao último movimento para inverter imediatamente nas bordas. Soltar o botão, perder foco/captura, redimensionar, navegar, abrir livro, abrir diálogo ou usar teclado/roda encerra o gesto. Overview/loading/ausência de overflow não iniciam arraste.
 
-Espaço foi solicitado após avaliação do protótipo. O comando preserva o offset horizontal e mostra o trecho final antes de avançar no próximo toque. Uma página sem overflow vertical avança diretamente; na última página, permanece no fim. Na visão completa, avança à próxima em modo de leitura; durante loading, não interfere no alvo. Uma atribuição personalizada existente a Espaço tem prioridade sobre essa ação padrão, sem migração do perfil. Fechar o dropdown de classificação ou clicar na área de leitura recupera seu foco; teclas dentro dos controles de edição continuam locais ao controle.
+Espaço percorre a imagem por faixas, no sentido global escolhido em Preferências: LeftToRight (padrão ocidental) ou RightToLeft (mangá). Primeiro mostra o trecho horizontal seguinte, limitado à borda e com sobreposição conforme o passo configurado. Somente quando a borda final da faixa já estiver visível, desce e retorna à borda inicial. O último trecho horizontal da última faixa deve aparecer antes de avançar; overflow somente horizontal também precisa ser percorrido. Uma página que cabe inteira avança diretamente; na última página, permanece no trecho final. Alterar o sentido mantém a altura e se alinha ao início da faixa atual, encerrando overview; reabrir mantém o ponto salvo. A direção não inverte o índice nem muda comandos explícitos de navegação. Na visão completa, Espaço avança à próxima em modo de leitura; durante loading, não interfere no alvo. Uma atribuição personalizada existente a Espaço tem prioridade sobre essa ação padrão, sem migração do perfil. Fechar o dropdown de classificação ou clicar na área de leitura recupera seu foco; teclas dentro dos controles de edição continuam locais ao controle.
 
 ## Rolagem contínua
 
@@ -51,7 +51,7 @@ WPF fornece o evento de renderização em [CompositionTarget.Rendering](https://
 
 ## Navegação e carregamento
 
-Comando separado de navegação solicita o índice anterior/seguinte. Primeira e última página são limites; não carregar outro arquivo automaticamente. Ao confirmar uma mudança, encerrar visão completa e aplicar preferência/classificação da nova imagem, começando no topo/esquerda. Não reutilizar posição da imagem anterior.
+Comando separado de navegação solicita o índice anterior/seguinte. Primeira e última página são limites; não carregar outro arquivo automaticamente. Ao confirmar uma mudança, encerrar visão completa e aplicar preferência/classificação da nova imagem, começando no topo e na borda inicial do sentido escolhido. Não reutilizar posição da imagem anterior.
 
 Cada solicitação tem uma geração. Cancelar a anterior e, mesmo se um decoder não parar imediatamente, descartar resultados/erros cuja geração não seja a atual; liberar o recurso retornado. Durante carregamento, a página mostrada pode permanecer visível com indicador; seus controles de rolagem ficam suspensos para não salvar estado no alvo errado. Somente a imagem correspondente ao alvo atual é apresentada como leitura pronta.
 
@@ -94,7 +94,7 @@ rtk proxy "C:\Users\ingos\AppData\Local\ComicBookReader-dev\dotnet-10.0.401\dotn
 | UI-07 | Redimensionar/mudar DPI alternando modo de visão mantém proporção, âncora válida e controles acessíveis. | Unidade e manual Windows 11. |
 | UI-08 | Corrigir a classificação e reabrir o livro recupera a preferência; uma imagem dupla continua sendo um índice. | Integração e manual. |
 | UI-09 | Rolagem real por 10 s em página com overflow é visualmente contínua; não depende de ajustar a taxa de repetição do Windows. | Manual, registrando monitor/DPI e hardware. |
-| UI-10 | Espaço desce com sobreposição, mostra o fim e avança no toque seguinte; respeita a última página e loading. | Unidade e input roteado na janela. |
+| UI-10 | Espaço percorre cada faixa nos dois sentidos, com sobreposição/clamp horizontal e vertical, mostra o trecho inferior final antes de avançar; respeita a última página, perfil antigo e loading. | Unidade, persistência e input roteado na janela. |
 
 Para UI-09, registrar também cadência dos quadros se houver trancos; a aprovação visual não é substituída pelo teste de deslocamento. Testes manuais precisam incluir página dupla, diálogo durante tecla pressionada, troca rápida de páginas e retomada da leitura.
 

@@ -1,5 +1,21 @@
 # Histórico de versões
 
+## 0.2.0 — 2026-10-30
+
+### Alterado
+
+- Espaço percorre as faixas da imagem na horizontal antes de descer e retornar ao início da faixa seguinte. Só avança após o último trecho da última faixa.
+- A distância configurável do Espaço usa a largura visível no eixo horizontal e a altura visível no vertical, mantendo a sobreposição padrão de 10%.
+
+### Adicionado
+
+- Sentido de leitura em Preferências: esquerda para direita (padrão) ou direita para esquerda (mangá), persistido entre sessões.
+- Páginas novas começam no topo e na borda correspondente ao sentido escolhido. Mudar o sentido mantém a altura e retorna ao início da faixa atual; reabrir mantém o ponto salvo.
+
+### Validação
+
+246 testes passaram (171 Core e 75 Integration), incluindo percurso completo nos dois sentidos, bordas, retomada e compatibilidade de perfis antigos. Entrada roteada na janela percorreu todas as faixas antes da troca de página; preferência e leitura recuperadas no segundo processo. Verificação humana de suavidade e outros monitores/DPI continua no roteiro existente.
+
 ## [0.1.0](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.1.0) — 2026-10-10
 
 Primeira versão pública para Windows x64.

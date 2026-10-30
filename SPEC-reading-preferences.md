@@ -13,7 +13,8 @@ Recuperar preferências e ajustes para que abrir uma HQ não exija configurar no
 | SchemaVersion | 1; validar antes de usar. |
 | PreferredPageWidthRatio | 1, relativo à largura útil do viewport. Faixa configurável 0,25 a 2. |
 | ScrollSpeed | 0,6 alturas úteis do viewport por segundo; faixa 0,1 a 2. |
-| SpaceScrollPercent | Inteiro, padrão 90; faixa de 10 a 100% da altura útil. |
+| SpaceScrollPercent | Inteiro, padrão 90; faixa de 10 a 100% da largura útil ao percorrer uma faixa e da altura útil ao descer. |
+| ReadingDirection | LeftToRight por padrão; LeftToRight/RightToLeft global, persistido. Perfis antigos usam LeftToRight; valores desconhecidos são inválidos. |
 | Language | `pt-BR` por padrão; opções `pt-BR` e `en`. |
 | PageClassification | Auto por padrão; Auto/Single/Spread global. |
 | KeyBindings | Padrões da spec `reader-ui`, modificáveis sem associar setas à troca de página. |
