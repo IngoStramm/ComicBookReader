@@ -2,20 +2,20 @@
 
 Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imagens JPEG/PNG/WebP, rolagem contínua e tamanho de uma página preservado nas imagens duplas.
 
-A versão local 0.2.2 está em `artifacts/distribution`, nos formatos portátil e instalador. Inclui percurso por faixas com Espaço e sentido de leitura configurável nas Preferências e na barra, com os menus de seleção corrigidos; [evidência do percurso](docs/reading-order-validation.md). Os downloads públicos abaixo continuam associados à versão 0.1.0.
+A versão 0.2.2 está disponível para Windows x64 nos formatos portátil e instalador. Inclui percurso por faixas com Espaço, sentido de leitura configurável nas Preferências e na barra, e menus de seleção que permanecem abertos durante a escolha. Consulte a [evidência do percurso](docs/reading-order-validation.md) e a [validação dos seletores](docs/dropdown-focus-validation.md).
 
 ## Baixar e compartilhar
 
-Baixe a [versão 0.1.0](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.1.0) para Windows x64:
+Baixe a [versão 0.2.2](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.2.2) para Windows x64:
 
-- [Portátil — ComicBookReader-0.1.0-Portable.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.1.0/ComicBookReader-0.1.0-Portable.exe): abra diretamente. Basta compartilhar esse único arquivo.
-- [Instalador — ComicBookReader-0.1.0-Setup.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.1.0/ComicBookReader-0.1.0-Setup.exe): instalador em português do Brasil e inglês. Instala para o usuário atual, cria um atalho no menu Iniciar, oferece atalho na área de trabalho e permite desinstalar pelas configurações do Windows.
+- [Portátil — ComicBookReader-0.2.2-Portable.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.2.2/ComicBookReader-0.2.2-Portable.exe): abra diretamente. Basta compartilhar esse único arquivo.
+- [Instalador — ComicBookReader-0.2.2-Setup.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.2.2/ComicBookReader-0.2.2-Setup.exe): instalador em português do Brasil e inglês. Instala para o usuário atual, cria um atalho no menu Iniciar, oferece atalho na área de trabalho e permite desinstalar pelas configurações do Windows.
 
 Todas as versões ficam em [Releases](https://github.com/IngoStramm/ComicBookReader/releases), cada uma associada à sua tag. Abra a versão desejada e escolha o arquivo em **Assets**. As mudanças são registradas no [CHANGELOG.md](CHANGELOG.md).
 
 Ambos incluem o .NET e o decoder de imagens; a pessoa não precisa instalar o SDK, baixar bibliotecas nem receber a pasta do projeto. As licenças completas estão no botão **Sobre**. Preferências e progresso ficam em `%LOCALAPPDATA%\ComicBookReader`, são compartilhados entre os dois formatos e permanecem após desinstalar. A versão portátil dispensa instalação, mas usa esse diretório de dados e extrai bibliotecas nativas para o cache temporário do .NET.
 
-Esta é a primeira versão pública. A validação visual de suavidade e de outros monitores/DPI continua no roteiro de avaliação. Builds locais ficam em `artifacts/distribution`; a distribuição local anterior em `artifacts/win-x64-drag` foi preservada.
+A validação visual da suavidade e de outros monitores/DPI continua no roteiro de avaliação. Builds locais ficam em `artifacts/distribution`; a distribuição local anterior em `artifacts/win-x64-drag` foi preservada.
 
 Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou passar seu caminho como argumento ao executável. A primeira execução começa em tela cheia. F12 mostra/esconde a barra; o botão ☰ também a reabre. Mover o mouse sobre a imagem não revela os controles. Tab/Alt permitem acesso pelo teclado sem mudar o tamanho da página.
 
@@ -78,7 +78,7 @@ rtk proxy powershell -NoProfile -File scripts/build-distribution.ps1
 rtk proxy powershell -NoProfile -File scripts/verify-distribution.ps1
 ```
 
-O primeiro comando gera os executáveis, instruções em pt-BR/en e `SHA256SUMS-0.1.0.txt`. O segundo copia somente o executável portátil para uma pasta com espaços, renomeia-o e testa os quatro formatos, conferindo que o runtime e o decoder carregados vêm da distribuição. Também instala/reinstala/desinstala em uma pasta exclusiva da validação, confere atalhos, Registro por usuário e preservação dos dados. Recusa sobrescrever uma instalação ou atalho já existentes. Os instaladores são executados de forma silenciosa; logs e hashes ficam em `artifacts/distribution-validation/<id>`.
+O primeiro comando gera os executáveis, instruções em pt-BR/en e um arquivo `SHA256SUMS-<versão>.txt`. O segundo copia somente o executável portátil para uma pasta com espaços, renomeia-o e testa os quatro formatos, conferindo que o runtime e o decoder carregados vêm da distribuição. Também instala/reinstala/desinstala em uma pasta exclusiva da validação, confere atalhos, Registro por usuário e preservação dos dados. Recusa sobrescrever uma instalação ou atalho já existentes. Os instaladores são executados de forma silenciosa; logs e hashes ficam em `artifacts/distribution-validation/<id>`.
 
 O smoke test usa HQ sintética e fixtures redistribuíveis, preferências isoladas e janela fora da tela. Testa input roteado, renderização, leitura, retomada entre processos e hashes. Não substitui a avaliação visual nem a pressão física de teclas; o roteiro e a evidência estão em [docs/manual-validation.md](docs/manual-validation.md) e [docs/acceptance.md](docs/acceptance.md).
 
