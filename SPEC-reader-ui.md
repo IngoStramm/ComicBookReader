@@ -32,6 +32,7 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 | Abrir arquivo | Ctrl+O | Seletor de CBZ/CBR. |
 | Aumentar/diminuir tamanho | +/−; Ctrl+roda | Ajustar largura preferida do livro; passo inicial proposto de 5%. |
 | Largura padrão | R | Remover o override de largura do livro e usar a preferência global. |
+| Alternar sentido de leitura | M | Inverter entre esquerda→direita e direita→esquerda, preservando a página atual e salvando a preferência global. |
 | Rolar com mouse | Roda; Shift+roda | Vertical/horizontal, sem troca automática de página. |
 | Arrastar a página | Botão esquerdo mantido + movimento | Acompanhar o cursor nos eixos com overflow, sem trocar página nas bordas. |
 

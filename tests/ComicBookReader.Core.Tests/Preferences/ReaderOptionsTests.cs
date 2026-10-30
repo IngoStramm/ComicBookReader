@@ -16,6 +16,7 @@ public sealed class ReaderOptionsTests
         Assert.Equal("F12", profile.KeyBindings["ToggleToolbar"]);
         Assert.Equal("Ctrl+P", profile.KeyBindings["Preferences"]);
         Assert.Equal("R", profile.KeyBindings["ResetWidth"]);
+        Assert.Equal("M", profile.KeyBindings["ToggleReadingDirection"]);
     }
 
     [Theory]

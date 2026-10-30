@@ -63,6 +63,7 @@ internal sealed class UiText(string language)
         ["Close"] = ("Fechar", "Close"),
         ["ResetWidthButton"] = ("Largura _padrão", "_Default width"),
         ["ResetWidth"] = ("Usar o padrão global de largura nesta HQ", "Use the global default width for this comic"),
+        ["ToggleReadingDirection"] = ("Alternar o sentido de leitura", "Toggle reading direction"),
         ["ToggleToolbar"] = ("Mostrar / esconder barra", "Show / hide toolbar"),
         ["ToolbarButton"] = ("_Esconder barra", "_Hide toolbar"),
         ["NoComic"] = ("Nenhuma HQ aberta", "No comic open"),

@@ -41,6 +41,11 @@ public partial class MainWindow
             case "ZoomIn": ChangeWidth(.05); break;
             case "ZoomOut": ChangeWidth(-.05); break;
             case "ResetWidth": Reader.ResetBookWidth(); break;
+            case "ToggleReadingDirection":
+                SetReadingDirection(Reader.ReadingDirection == ReadingDirection.LeftToRight
+                    ? ReadingDirection.RightToLeft
+                    : ReadingDirection.LeftToRight);
+                break;
             case "ToggleToolbar": overlay.Toggle(); ReturnToReading(); break;
             case "Preferences": PreferencesClicked(this, new RoutedEventArgs()); break;
         }
@@ -64,9 +69,14 @@ public partial class MainWindow
     {
         if (!IsInitialized || updatingControls || ReadingDirectionChoice.SelectedIndex < 0 ||
             ReadingDirectionChoice.SelectedIndex == (int)Reader.ReadingDirection) return;
+        SetReadingDirection((ReadingDirection)ReadingDirectionChoice.SelectedIndex);
+    }
+    private void SetReadingDirection(ReadingDirection direction)
+    {
+        if (Reader.ReadingDirection == direction) return;
         input.Stop();
-        Reader.ApplyPreferences(Reader.CapturePreferences() with
-        { ReadingDirection = (ReadingDirection)ReadingDirectionChoice.SelectedIndex });
+        Reader.ApplyPreferences(Reader.CapturePreferences() with { ReadingDirection = direction });
+        UpdateView();
         PersistProgress();
     }
     private void ResetWidthClicked(object sender, RoutedEventArgs e) { Reader.ResetBookWidth(); Viewport.Focus(); }

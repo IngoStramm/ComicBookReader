@@ -44,7 +44,7 @@ public interface IReadingPreferencesStore
 
 Validar números finitos/faixas, versão e atalhos duplicados ao carregar/salvar. Campos ausentes conhecidos recebem default; versão futura incompatível não é sobrescrita. IO não resolvido retorna ReaderException com StorageUnavailable. Cancelamento permanece OperationCanceledException.
 
-F12 alterna a barra, Ctrl+P abre preferências e R restaura a largura padrão. Aumentar/diminuir largura usam OemPlus/OemMinus, com aliases de teclado descritos em reader-ui. Ao carregar um perfil antigo que já usa F12/Ctrl+P/R em outro comando, manter a atribuição existente e escolher para o novo comando uma combinação livre de Ctrl+Alt+Shift+F1…F24. Conflitos explícitos entre comandos continuam rejeitados. Campos de largura, velocidade e passo na janela são inteiros percentuais, com limites e validação de digitação/colagem; o domínio mantém largura/velocidade proporcionais.
+F12 alterna a barra, Ctrl+P abre preferências, R restaura a largura padrão e M alterna o sentido de leitura. Aumentar/diminuir largura usam OemPlus/OemMinus, com aliases de teclado descritos em reader-ui. Ao carregar um perfil antigo que já usa F12/Ctrl+P/R/M em outro comando, manter a atribuição existente e escolher para o novo comando uma combinação livre de Ctrl+Alt+Shift+F1…F24. Conflitos explícitos entre comandos continuam rejeitados. Campos de largura, velocidade e passo na janela são inteiros percentuais, com limites e validação de digitação/colagem; o domínio mantém largura/velocidade proporcionais.
 
 ## Persistência e ciclo de vida
 

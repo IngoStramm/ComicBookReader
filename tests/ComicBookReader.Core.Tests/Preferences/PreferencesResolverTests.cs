@@ -20,6 +20,7 @@ public sealed class PreferencesResolverTests
         Assert.Equal("Ctrl+O", preferences.KeyBindings["Open"]);
         Assert.Equal("OemPlus", preferences.KeyBindings["ZoomIn"]);
         Assert.Equal("OemMinus", preferences.KeyBindings["ZoomOut"]);
+        Assert.Equal("M", preferences.KeyBindings["ToggleReadingDirection"]);
         Assert.Equal(PageClassificationOverride.Auto,
             PreferencesResolver.ResolveClassification(preferences, "new-book", "page"));
     }
@@ -125,7 +126,7 @@ public sealed class PreferencesResolverTests
         });
         Assert.Equal("Ctrl+Shift+N", preferences.KeyBindings["NextPage"]);
         Assert.Equal("PageUp", preferences.KeyBindings["PreviousPage"]);
-        Assert.Equal(10, preferences.KeyBindings.Count);
+        Assert.Equal(11, preferences.KeyBindings.Count);
     }
 
     [Theory]
