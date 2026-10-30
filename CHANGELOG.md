@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## 0.4.0 — 2026-10-30
+
+### Adicionado
+
+- Miniaturas das páginas para escolher diretamente onde continuar a leitura.
+- Comandos configuráveis para primeira página, última página e miniaturas, com botões e dicas na barra.
+
 ## 0.3.0 — 2026-10-30
 
 ### Adicionado

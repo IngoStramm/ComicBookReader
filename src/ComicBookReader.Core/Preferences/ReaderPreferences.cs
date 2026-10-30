@@ -24,7 +24,10 @@ public sealed record ReaderPreferences
         ["ToggleToolbar"] = "F12",
         ["Preferences"] = "Ctrl+P",
         ["ResetWidth"] = "R",
-        ["ToggleReadingDirection"] = "M"
+        ["ToggleReadingDirection"] = "M",
+        ["FirstPage"] = "Ctrl+Home",
+        ["LastPage"] = "Ctrl+End",
+        ["Thumbnails"] = "T"
     };
     public Dictionary<string, BookPreferences> Books { get; init; } = new(StringComparer.Ordinal);
 }

@@ -7,6 +7,17 @@ namespace ComicBookReader.Core.Tests.Reading;
 public sealed class ReaderNavigationTests
 {
     [Fact]
+    public async Task ExtremeNavigationReachesFirstAndLastPages()
+    {
+        await using var reader = new ReaderController(new TestOpener(new TestSession(false)));
+        await reader.OpenAsync("book", TestContext.Current.CancellationToken);
+        await reader.NavigateAsync(int.MaxValue, TestContext.Current.CancellationToken);
+        Assert.Equal(2, reader.State.PresentedIndex);
+        await reader.NavigateAsync(int.MinValue, TestContext.Current.CancellationToken);
+        Assert.Equal(0, reader.State.PresentedIndex);
+    }
+
+    [Fact]
     public async Task CanceledNavigationThatIgnoresTokenKeepsOverviewAndDisposesReturnedPixels()
     {
         var session = new TestSession();

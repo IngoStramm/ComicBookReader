@@ -14,6 +14,37 @@ internal static class UiOptionsSmokeChecks
     public static async Task RunAsync(MainWindow window, string output)
     {
         var profile = window.Reader.CapturePreferences();
+        var navigationKeys = new Dictionary<string, string>(profile.KeyBindings)
+        { ["FirstPage"] = "F6", ["LastPage"] = "F7", ["Thumbnails"] = "F8" };
+        window.ApplyUserPreferences(profile with { KeyBindings = navigationKeys });
+        Require(window.FirstPageButton.ToolTip.ToString()!.Contains("F6") &&
+            window.LastPageButton.ToolTip.ToString()!.Contains("F7") &&
+            window.ThumbnailsButton.ToolTip.ToString()!.Contains("F8"), "Navigation tooltips did not reflect shortcuts.");
+        ReadingSmokeChecks.RaiseKey(window, Key.F7, true);
+        await WaitForAsync(() => window.Reader.State.PresentedIndex == window.Reader.State.Pages.Count - 1 &&
+            window.Reader.State.Mode == Core.Reading.ReaderMode.Reading, "Last page shortcut failed.");
+        Exception? thumbnailFailure = null;
+        _ = window.Dispatcher.BeginInvoke(async () =>
+        {
+            var dialog = Application.Current.Windows.OfType<ThumbnailWindow>().Single();
+            try
+            {
+                var panel = (WrapPanel)((ScrollViewer)dialog.Content).Content;
+                var button = (Button)panel.Children[1];
+                var image = (Image)((StackPanel)button.Content).Children[0];
+                await WaitForAsync(() => image.Source is not null, "Thumbnail did not load.");
+                button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+            }
+            catch (Exception ex) { thumbnailFailure = ex; dialog.Close(); }
+        });
+        ReadingSmokeChecks.RaiseKey(window, Key.F8, true);
+        if (thumbnailFailure is not null) throw thumbnailFailure;
+        await WaitForAsync(() => window.Reader.State.PresentedIndex == 1 &&
+            window.Reader.State.Mode == Core.Reading.ReaderMode.Reading, "Selecting a thumbnail did not navigate.");
+        ReadingSmokeChecks.RaiseKey(window, Key.F6, true);
+        await WaitForAsync(() => window.Reader.State.PresentedIndex == 0 &&
+            window.Reader.State.Mode == Core.Reading.ReaderMode.Reading, "First page shortcut failed.");
+        window.ApplyUserPreferences(window.Reader.CapturePreferences() with { KeyBindings = profile.KeyBindings });
         string expectedFile = Path.Combine(output, "expected-options.json");
         if (File.Exists(expectedFile))
         {

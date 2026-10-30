@@ -24,6 +24,8 @@ Oferecer leitura em tela cheia com rolagem contínua e controlada, navegação s
 | Rolar verticalmente | ↑/↓ mantidas | Movimento contínuo dentro da imagem atual. |
 | Rolar horizontalmente | ←/→ mantidas | Movimento contínuo em imagens que ultrapassam a largura. |
 | Próxima/anterior página | Page Down/Page Up | Uma troca por pressão física, ignorando auto-repeat. |
+| Primeira/última página | Ctrl+Home/Ctrl+End | Ir diretamente à primeira ou última página da HQ. |
+| Miniaturas | T | Exibir as páginas em miniatura e navegar ao selecionar uma delas; Esc fecha o painel. |
 | Percorrer ou avançar | Espaço | Percorrer horizontalmente no sentido escolhido (padrão 90% da largura útil); na borda, descer o passo configurado da altura útil e retornar ao início da faixa. Após o último trecho da última faixa, avançar uma página. Ignorar auto-repeat. |
 | Alternar barra | F12 | Mostrar/esconder sem depender de mouse ou timer. |
 | Preferências | Ctrl+P | Abrir o diálogo com rolagem suspensa. |

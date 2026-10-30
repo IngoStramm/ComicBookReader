@@ -109,7 +109,7 @@ public static class PreferencesResolver
             normalized[canonicalCommand] = NormalizeBinding(binding);
         }
         // Add new commands without taking an existing user's shortcut or invalidating an older profile.
-        foreach (string addedCommand in new[] { "ToggleToolbar", "Preferences", "ResetWidth", "ToggleReadingDirection" })
+        foreach (string addedCommand in new[] { "ToggleToolbar", "Preferences", "ResetWidth", "ToggleReadingDirection", "FirstPage", "LastPage", "Thumbnails" })
         {
             if (suppliedCommands.Contains(addedCommand)) continue;
             if (!normalized.Any(pair => pair.Key != addedCommand && pair.Value == normalized[addedCommand])) continue;

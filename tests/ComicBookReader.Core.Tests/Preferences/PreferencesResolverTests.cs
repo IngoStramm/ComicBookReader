@@ -126,7 +126,7 @@ public sealed class PreferencesResolverTests
         });
         Assert.Equal("Ctrl+Shift+N", preferences.KeyBindings["NextPage"]);
         Assert.Equal("PageUp", preferences.KeyBindings["PreviousPage"]);
-        Assert.Equal(11, preferences.KeyBindings.Count);
+        Assert.Equal(14, preferences.KeyBindings.Count);
     }
 
     [Theory]

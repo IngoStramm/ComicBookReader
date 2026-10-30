@@ -29,6 +29,9 @@ public partial class MainWindow
         {
             case "NextPage": await NavigateAsync(1); break;
             case "PreviousPage": await NavigateAsync(-1); break;
+            case "FirstPage": await NavigateAsync(int.MinValue); break;
+            case "LastPage": await NavigateAsync(int.MaxValue); break;
+            case "Thumbnails": await ShowThumbnailsAsync(); break;
             case "ScrollForward":
                 PersistProgress();
                 await saves.FlushAsync();
@@ -54,6 +57,19 @@ public partial class MainWindow
     private async Task NavigateAsync(int delta) { PersistProgress(); await saves.FlushAsync(); await Reader.NavigateAsync(delta); }
     private async void PreviousClicked(object sender, RoutedEventArgs e) { await NavigateAsync(-1); ReturnToReading(); }
     private async void NextClicked(object sender, RoutedEventArgs e) { await NavigateAsync(1); ReturnToReading(); }
+    private async void FirstPageClicked(object sender, RoutedEventArgs e) { await NavigateAsync(int.MinValue); ReturnToReading(); }
+    private async void LastPageClicked(object sender, RoutedEventArgs e) { await NavigateAsync(int.MaxValue); ReturnToReading(); }
+    private async void ThumbnailsClicked(object sender, RoutedEventArgs e) { await ShowThumbnailsAsync(); ReturnToReading(); }
+    private async Task ShowThumbnailsAsync()
+    {
+        var state = Reader.State;
+        if (state.Book is null || state.Pages.Count == 0) return;
+        input.Stop();
+        var dialog = new ThumbnailWindow(state.Book, state.Pages, state.PresentedIndex, text) { Owner = this };
+        if (dialog.ShowDialog() == true && dialog.SelectedPage is int index && Reader.State.Book?.BookId == state.Book.BookId)
+            await NavigateAsync(index - Reader.State.TargetIndex);
+        ReturnToReading();
+    }
     private void OverviewClicked(object sender, RoutedEventArgs e) { Reader.ToggleOverview(); Viewport.Focus(); }
     private void SmallerClicked(object sender, RoutedEventArgs e) => ChangeWidth(-.05);
     private void LargerClicked(object sender, RoutedEventArgs e) => ChangeWidth(.05);

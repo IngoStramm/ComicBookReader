@@ -17,6 +17,9 @@ public sealed class ReaderOptionsTests
         Assert.Equal("Ctrl+P", profile.KeyBindings["Preferences"]);
         Assert.Equal("R", profile.KeyBindings["ResetWidth"]);
         Assert.Equal("M", profile.KeyBindings["ToggleReadingDirection"]);
+        Assert.Equal("Ctrl+Home", profile.KeyBindings["FirstPage"]);
+        Assert.Equal("Ctrl+End", profile.KeyBindings["LastPage"]);
+        Assert.Equal("T", profile.KeyBindings["Thumbnails"]);
     }
 
     [Theory]
@@ -71,6 +74,22 @@ public sealed class ReaderOptionsTests
         Assert.Equal("Add", profile.KeyBindings["ZoomIn"]);
         Assert.Equal("Subtract", profile.KeyBindings["ZoomOut"]);
         Assert.NotEqual("R", profile.KeyBindings["ResetWidth"]);
+        Assert.Equal(profile.KeyBindings.Count, profile.KeyBindings.Values.Distinct().Count());
+    }
+
+    [Fact]
+    public void NavigationShortcutsDoNotReplaceOlderCustomBindings()
+    {
+        var profile = PreferencesResolver.Validate(new ReaderPreferences
+        {
+            KeyBindings = new() { ["NextPage"] = "Ctrl+Home", ["PreviousPage"] = "Ctrl+End", ["Overview"] = "T" }
+        });
+        Assert.Equal("Ctrl+Home", profile.KeyBindings["NextPage"]);
+        Assert.Equal("Ctrl+End", profile.KeyBindings["PreviousPage"]);
+        Assert.Equal("T", profile.KeyBindings["Overview"]);
+        Assert.NotEqual("Ctrl+Home", profile.KeyBindings["FirstPage"]);
+        Assert.NotEqual("Ctrl+End", profile.KeyBindings["LastPage"]);
+        Assert.NotEqual("T", profile.KeyBindings["Thumbnails"]);
         Assert.Equal(profile.KeyBindings.Count, profile.KeyBindings.Values.Distinct().Count());
     }
 }

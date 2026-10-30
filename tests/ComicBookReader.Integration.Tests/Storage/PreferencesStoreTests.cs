@@ -77,7 +77,7 @@ public sealed class PreferencesStoreTests
         Assert.Equal(1, preferences.PreferredPageWidthRatio);
         Assert.Equal(.6, preferences.ScrollSpeed);
         Assert.True(preferences.LastFullscreen);
-        Assert.Equal(11, preferences.KeyBindings.Count);
+        Assert.Equal(14, preferences.KeyBindings.Count);
         Assert.Equal("R", preferences.KeyBindings["ResetWidth"]);
         Assert.Equal(90, preferences.SpaceScrollPercent);
         Assert.Equal(ReadingDirection.LeftToRight, preferences.ReadingDirection);

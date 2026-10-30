@@ -46,6 +46,8 @@ Validar números finitos/faixas, versão e atalhos duplicados ao carregar/salvar
 
 F12 alterna a barra, Ctrl+P abre preferências, R restaura a largura padrão e M alterna o sentido de leitura. Aumentar/diminuir largura usam OemPlus/OemMinus, com aliases de teclado descritos em reader-ui. Ao carregar um perfil antigo que já usa F12/Ctrl+P/R/M em outro comando, manter a atribuição existente e escolher para o novo comando uma combinação livre de Ctrl+Alt+Shift+F1…F24. Conflitos explícitos entre comandos continuam rejeitados. Campos de largura, velocidade e passo na janela são inteiros percentuais, com limites e validação de digitação/colagem; o domínio mantém largura/velocidade proporcionais.
 
+Primeira página, última página e miniaturas usam Ctrl+Home, Ctrl+End e T por padrão e são configuráveis. Se um perfil anterior já utiliza uma dessas combinações, sua atribuição é preservada e o novo comando recebe uma combinação livre.
+
 ## Persistência e ciclo de vida
 
 Guardar `preferences.json` em `%LOCALAPPDATA%\ComicBookReader`, identificado pelo nome público escolhido. Usar System.Text.Json do .NET 10. A memória da sessão continua funcionando se o arquivo não puder ser escrito; apresentar uma mensagem discreta de que as alterações não serão salvas.

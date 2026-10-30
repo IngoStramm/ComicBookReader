@@ -29,9 +29,12 @@
     <Border x:Name="Toolbar" Background="#ED24282C" VerticalAlignment="Top" Margin="12" Padding="8">
       <WrapPanel>
         <Button Content="{DynamicResource OpenButton}" Click="OpenClicked" ToolTip="{DynamicResource OpenTip}" />
+        <Button x:Name="FirstPageButton" Content="|‹" Click="FirstPageClicked" ToolTip="{DynamicResource FirstPageTip}" AutomationProperties.Name="{DynamicResource FirstPage}" />
         <Button Content="‹" Click="PreviousClicked" ToolTip="{DynamicResource PreviousPageTip}" AutomationProperties.Name="{DynamicResource PreviousPage}" />
         <TextBlock x:Name="PageLabel" Text="Nenhuma HQ aberta" VerticalAlignment="Center" Margin="12,0" />
         <Button Content="›" Click="NextClicked" ToolTip="{DynamicResource NextPageTip}" AutomationProperties.Name="{DynamicResource NextPage}" />
+        <Button x:Name="LastPageButton" Content="›|" Click="LastPageClicked" ToolTip="{DynamicResource LastPageTip}" AutomationProperties.Name="{DynamicResource LastPage}" />
+        <Button x:Name="ThumbnailsButton" Content="▦" Click="ThumbnailsClicked" ToolTip="{DynamicResource ThumbnailsTip}" AutomationProperties.Name="{DynamicResource Thumbnails}" />
         <Button Content="{DynamicResource OverviewButton}" Click="OverviewClicked" ToolTip="{DynamicResource OverviewTip}" />
         <Button Content="−" Click="SmallerClicked" ToolTip="{DynamicResource ZoomOutTip}" AutomationProperties.Name="{DynamicResource ZoomOut}" />
         <TextBlock x:Name="WidthLabel" Text="Largura: 100%" VerticalAlignment="Center" Margin="6,0" />
