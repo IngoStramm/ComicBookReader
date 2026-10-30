@@ -2,14 +2,14 @@
 
 Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imagens JPEG/PNG/WebP, rolagem contínua e tamanho de uma página preservado nas imagens duplas.
 
-A versão 0.2.2 está disponível para Windows x64 nos formatos portátil e instalador. Inclui percurso por faixas com Espaço, sentido de leitura configurável nas Preferências e na barra, e menus de seleção que permanecem abertos durante a escolha. Consulte a [evidência do percurso](docs/reading-order-validation.md) e a [validação dos seletores](docs/dropdown-focus-validation.md).
+A versão 0.3.0 está disponível para Windows x64 nos formatos portátil e instalador. Inclui o atalho configurável M para alternar o sentido de leitura e o registro de arquivos CBZ e CBR no Windows.
 
 ## Baixar e compartilhar
 
-Baixe a [versão 0.2.2](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.2.2) para Windows x64:
+Baixe a [versão 0.3.0](https://github.com/IngoStramm/ComicBookReader/releases/tag/v0.3.0) para Windows x64:
 
-- [Portátil — ComicBookReader-0.2.2-Portable.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.2.2/ComicBookReader-0.2.2-Portable.exe): abra diretamente. Basta compartilhar esse único arquivo.
-- [Instalador — ComicBookReader-0.2.2-Setup.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.2.2/ComicBookReader-0.2.2-Setup.exe): instalador em português do Brasil e inglês. Instala para o usuário atual, cria um atalho no menu Iniciar, oferece atalho na área de trabalho e permite desinstalar pelas configurações do Windows.
+- [Portátil — ComicBookReader-0.3.0-Portable.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.3.0/ComicBookReader-0.3.0-Portable.exe): abra diretamente. Basta compartilhar esse único arquivo.
+- [Instalador — ComicBookReader-0.3.0-Setup.exe](https://github.com/IngoStramm/ComicBookReader/releases/download/v0.3.0/ComicBookReader-0.3.0-Setup.exe): instala para o usuário atual e oferece abrir as Configurações do Windows para escolher o leitor padrão de CBZ e CBR.
 
 Todas as versões ficam em [Releases](https://github.com/IngoStramm/ComicBookReader/releases), cada uma associada à sua tag. Abra a versão desejada e escolha o arquivo em **Assets**. As mudanças são registradas no [CHANGELOG.md](CHANGELOG.md).
 
@@ -24,6 +24,7 @@ Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou pa
 | ↑/↓ e ←/→ mantidas | Rolar continuamente; as bordas mantêm a mesma página. |
 | Page Down / Page Up | Próxima / anterior, uma troca por pressão. |
 | Espaço | Percorrer a faixa horizontal no sentido escolhido; na borda, descer e retornar ao início da faixa seguinte. Após o último trecho, avançar a página. |
+| M | Alternar o sentido de leitura; configurável em Preferências. |
 | F12 / Ctrl+P | Mostrar/esconder a barra / abrir preferências. |
 | V | Página inteira; repetir restaura o ponto de leitura. |
 | F11 / Esc | Alternar tela cheia / sair da tela cheia. |
