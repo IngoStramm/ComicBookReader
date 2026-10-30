@@ -21,7 +21,7 @@ public sealed class ScrollForwardTests
         Assert.Equal(0, reader.State.PresentedIndex);
     }
     [Fact]
-    public async Task ForwardScrollKeepsOverlapAndShowsTheBottomBeforeChangingPage()
+    public async Task ForwardScrollFinishesTheRowBeforeDescendingAndTheBottomBeforeChangingPage()
     {
         await using var reader = await CreateReader();
         reader.SetWidthRatio(1.5);
@@ -29,19 +29,64 @@ public sealed class ScrollForwardTests
         double x = reader.State.OffsetXDip;
         reader.PressDirection(ScrollDirection.Right);
         await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(0, reader.State.OffsetYDip);
+        Assert.Equal(reader.State.Layout!.MaxOffsetXDip, reader.State.OffsetXDip);
+        Assert.True(reader.State.OffsetXDip > x);
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
         Assert.Equal(900, reader.State.OffsetYDip);
-        Assert.Equal(x, reader.State.OffsetXDip);
+        Assert.Equal(0, reader.State.OffsetXDip);
         Assert.Equal(0, reader.State.PresentedIndex);
         Assert.False(reader.HasActiveDirections);
 
-        reader.ScrollBy(0, reader.State.Layout!.MaxOffsetYDip - reader.State.OffsetYDip - 100);
+        reader.ScrollBy(double.MaxValue, reader.State.Layout!.MaxOffsetYDip - reader.State.OffsetYDip - 100);
         await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
         Assert.Equal(reader.State.Layout.MaxOffsetYDip, reader.State.OffsetYDip);
         Assert.Equal(0, reader.State.PresentedIndex);
+        Assert.Equal(0, reader.State.OffsetXDip);
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(0, reader.State.PresentedIndex);
+        Assert.Equal(reader.State.Layout.MaxOffsetXDip, reader.State.OffsetXDip);
         await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
         Assert.Equal(1, reader.State.PresentedIndex);
         Assert.Equal(0, reader.State.OffsetXDip);
         Assert.Equal(0, reader.State.OffsetYDip);
+    }
+
+    [Fact]
+    public async Task WidePageIsReadAcrossEachRowBeforeDescendingOrAdvancing()
+    {
+        await using var reader = new ReaderController(new WideOpener(), preferences: new ReaderPreferences { PageClassification = PageClassificationOverride.Spread });
+        reader.SetViewport(new ViewportSize(100, 80));
+        await reader.OpenAsync("wide", TestContext.Current.CancellationToken);
+        Assert.Equal(100, reader.State.Layout!.MaxOffsetXDip);
+        Assert.Equal(120, reader.State.Layout.MaxOffsetYDip);
+        (double X, double Y)[] expected = [(90, 0), (100, 0), (0, 72), (90, 72), (100, 72), (0, 120), (90, 120), (100, 120)];
+        foreach (var point in expected)
+        {
+            await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+            Assert.Equal(point.X, reader.State.OffsetXDip);
+            Assert.Equal(point.Y, reader.State.OffsetYDip);
+            Assert.Equal(0, reader.State.PresentedIndex);
+        }
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(1, reader.State.PresentedIndex);
+        Assert.Equal(0, reader.State.OffsetXDip);
+        Assert.Equal(0, reader.State.OffsetYDip);
+    }
+
+    [Fact]
+    public async Task HorizontalOnlyOverflowMustBeReadBeforeAdvancing()
+    {
+        await using var reader = new ReaderController(new WideOpener(), preferences: new ReaderPreferences { PageClassification = PageClassificationOverride.Spread });
+        reader.SetViewport(new ViewportSize(100, 300));
+        await reader.OpenAsync("wide", TestContext.Current.CancellationToken);
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(90, reader.State.OffsetXDip);
+        Assert.Equal(0, reader.State.PresentedIndex);
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(100, reader.State.OffsetXDip);
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(1, reader.State.PresentedIndex);
     }
 
     [Fact]
@@ -92,6 +137,20 @@ public sealed class ScrollForwardTests
         public IReadOnlyList<PageInfo> Pages { get; } = [new(0, "0", "0.png"), new(1, "1", "1.png")];
         public ValueTask<PageImage> ReadPageAsync(int index, CancellationToken cancellationToken)
             => ValueTask.FromResult(new PageImage(new PixelSize(10, 40), 40, new byte[1600]));
+        public ValueTask DisposeAsync() => ValueTask.CompletedTask;
+    }
+
+    private sealed class WideOpener : IComicOpener
+    {
+        public Task<IComicSession> OpenAsync(string path, CancellationToken cancellationToken,
+            IProgress<ComicOpenProgress>? progress = null) => Task.FromResult<IComicSession>(new WideSession());
+    }
+    private sealed class WideSession : IComicSession
+    {
+        public BookInfo Book { get; } = new("wide", "wide", 1, DateTime.UnixEpoch);
+        public IReadOnlyList<PageInfo> Pages { get; } = [new(0, "0", "0.png"), new(1, "1", "1.png")];
+        public ValueTask<PageImage> ReadPageAsync(int index, CancellationToken cancellationToken)
+            => ValueTask.FromResult(new PageImage(new PixelSize(200, 200), 800, new byte[160000]));
         public ValueTask DisposeAsync() => ValueTask.CompletedTask;
     }
 }

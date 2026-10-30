@@ -28,8 +28,10 @@ public sealed partial class ReaderController
         Deactivate();
         if (State.Mode == ReaderMode.Overview) return NavigateAsync(1, cancellationToken);
         if (State.Mode != ReaderMode.Reading || State.Layout is not { } layout) return Task.CompletedTask;
-        if (State.OffsetYDip >= layout.MaxOffsetYDip) return NavigateAsync(1, cancellationToken);
-        ScrollBy(0, viewport.HeightDip * profile.SpaceScrollPercent / 100);
+        double step = profile.SpaceScrollPercent / 100d;
+        if (State.OffsetXDip < layout.MaxOffsetXDip) ScrollBy(viewport.WidthDip * step, 0);
+        else if (State.OffsetYDip < layout.MaxOffsetYDip) ScrollBy(-State.OffsetXDip, viewport.HeightDip * step);
+        else return NavigateAsync(1, cancellationToken);
         return Task.CompletedTask;
     }
 
