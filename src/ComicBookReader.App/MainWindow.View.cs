@@ -22,6 +22,7 @@ public partial class MainWindow
         updatingControls = true;
         ClassificationChoice.SelectedIndex = (int)Reader.Classification;
         ReadingDirectionChoice.SelectedIndex = (int)Reader.ReadingDirection;
+        ReadingDirectionChoice.ToolTip = $"{text["ReadingDirection"]} ({input.Bindings["ToggleReadingDirection"]})";
         WidthLabel.Text = $"{text["Width"]}: {Reader.WidthRatio.ToString("P0", text.Culture)}";
         updatingControls = false;
         if (!ReferenceEquals(presented, state.Image))
