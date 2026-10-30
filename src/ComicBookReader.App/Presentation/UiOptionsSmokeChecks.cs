@@ -24,6 +24,8 @@ internal static class UiOptionsSmokeChecks
         }
         window.ApplyUserPreferences(profile with { Language = "pt-BR", SpaceScrollPercent = 90, PageClassification = PageClassificationOverride.Auto });
         if (window.Toolbar.Visibility != Visibility.Visible) ReadingSmokeChecks.RaiseKey(window, Key.F12, true);
+        await ReadingDirectionToolbarSmokeChecks.RunAsync(window);
+        Capture(window, Path.Combine(output, "toolbar-pt.png"));
         ReadingSmokeChecks.RaiseKey(window.ClassificationChoice, Key.F12, true);
         Require(window.Toolbar.Visibility == Visibility.Collapsed, "Toolbar shortcut failed while the selector had focus.");
         Require(window.ToolbarRevealButton.Visibility == Visibility.Visible, "Hidden toolbar has no mouse-accessible toggle.");
@@ -112,6 +114,8 @@ internal static class UiOptionsSmokeChecks
             saved.ReadingDirection == ReadingDirection.RightToLeft,
             "Applying preferences lost a reader option.");
         Require((string)window.Resources["PreferencesButton"] == "_Preferences…" &&
+            window.ReadingDirectionChoice.SelectedIndex == (int)ReadingDirection.RightToLeft &&
+            ((ComboBoxItem)window.ReadingDirectionChoice.Items[1]).Content.ToString() == "Right → left (manga)" &&
             (string)((ComboBoxItem)window.ClassificationChoice.Items[1]).Content == "Single" && window.WidthLabel.Text.StartsWith("Width", StringComparison.Ordinal),
             "Applying English did not translate the reading window.");
         Capture(window, Path.Combine(output, "toolbar-en.png"));
@@ -137,6 +141,7 @@ internal static class UiOptionsSmokeChecks
 
     private static void Capture(Window window, string path)
     {
+        window.UpdateLayout();
         var bitmap = new System.Windows.Media.Imaging.RenderTargetBitmap((int)window.ActualWidth, (int)window.ActualHeight, 96, 96, PixelFormats.Pbgra32);
         bitmap.Render(window);
         var encoder = new System.Windows.Media.Imaging.PngBitmapEncoder();

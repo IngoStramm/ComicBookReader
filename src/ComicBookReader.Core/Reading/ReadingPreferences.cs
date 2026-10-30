@@ -6,6 +6,7 @@ namespace ComicBookReader.Core.Reading;
 public sealed partial class ReaderController
 {
     private ReaderPreferences profile = PreferencesResolver.Validate(preferences ?? new ReaderPreferences());
+    public ReadingDirection ReadingDirection => profile.ReadingDirection;
 
     public ReaderPreferences CapturePreferences()
     {

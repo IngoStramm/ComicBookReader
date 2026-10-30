@@ -21,6 +21,7 @@ public partial class MainWindow
         var state = Reader.State;
         updatingControls = true;
         ClassificationChoice.SelectedIndex = (int)Reader.Classification;
+        ReadingDirectionChoice.SelectedIndex = (int)Reader.ReadingDirection;
         WidthLabel.Text = $"{text["Width"]}: {Reader.WidthRatio.ToString("P0", text.Culture)}";
         updatingControls = false;
         if (!ReferenceEquals(presented, state.Image))

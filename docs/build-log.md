@@ -1,5 +1,7 @@
 # Registro de construção
 
+Atualização 30/10/2026, versão local 0.2.1: seletor de sentido de leitura adicionado à barra, sincronizado com Preferências, traduzido e persistido. 246 testes e smoke WPF/portátil passaram; detalhamento em [reading-order-validation.md](reading-order-validation.md#seletor-na-barra--021).
+
 Atualização 30/10/2026: Espaço por faixas, sentido direita → esquerda, 246 testes e distribuição local 0.2.0. Evidência: [reading-order-validation.md](reading-order-validation.md).
 
 Plano autorizado pelo comando `$build`. Registros abaixo contêm verificações executadas; nenhum teste manual é inferido de build ou cálculo.

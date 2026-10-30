@@ -59,7 +59,16 @@ public partial class MainWindow
         if (!updatingControls && ClassificationChoice is not null)
             Reader.SetClassification((PageClassificationOverride)ClassificationChoice.SelectedIndex);
     }
-    private void ClassificationClosed(object? sender, EventArgs e) => ReturnToReading();
+    private void ReadingSelectorClosed(object? sender, EventArgs e) => ReturnToReading();
+    private void ReadingDirectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (!IsInitialized || updatingControls || ReadingDirectionChoice.SelectedIndex < 0 ||
+            ReadingDirectionChoice.SelectedIndex == (int)Reader.ReadingDirection) return;
+        input.Stop();
+        Reader.ApplyPreferences(Reader.CapturePreferences() with
+        { ReadingDirection = (ReadingDirection)ReadingDirectionChoice.SelectedIndex });
+        PersistProgress();
+    }
     private void ResetWidthClicked(object sender, RoutedEventArgs e) { Reader.ResetBookWidth(); Viewport.Focus(); }
     private void PreferencesClicked(object sender, RoutedEventArgs e)
     {

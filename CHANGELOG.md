@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## 0.2.1 — 2026-10-30
+
+### Corrigido
+
+- Sentido de leitura agora está disponível diretamente na barra, ao lado do tipo de página. O seletor permanece sincronizado com as Preferências, aplica a mudança imediatamente e salva a escolha.
+- Fechar o seletor devolve o foco à leitura. As opções são traduzidas para português e inglês e cabem na largura mínima da janela.
+
 ## 0.2.0 — 2026-10-30
 
 ### Alterado

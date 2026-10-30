@@ -37,11 +37,18 @@
         <TextBlock x:Name="WidthLabel" Text="Largura: 100%" VerticalAlignment="Center" Margin="6,0" />
         <Button Content="+" Click="LargerClicked" ToolTip="{DynamicResource ZoomInTip}" AutomationProperties.Name="{DynamicResource ZoomIn}" />
         <ComboBox x:Name="ClassificationChoice" SelectedIndex="0" SelectionChanged="ClassificationChanged"
-                  DropDownClosed="ClassificationClosed"
+                  DropDownClosed="ReadingSelectorClosed"
                   Margin="8,0" MinWidth="110" VerticalContentAlignment="Center" Foreground="#151719" AutomationProperties.Name="{DynamicResource Classification}" ToolTip="{DynamicResource Classification}">
           <ComboBoxItem Content="{DynamicResource Auto}" />
           <ComboBoxItem Content="{DynamicResource Single}" />
           <ComboBoxItem Content="{DynamicResource Spread}" />
+        </ComboBox>
+        <ComboBox x:Name="ReadingDirectionChoice" SelectedIndex="0" SelectionChanged="ReadingDirectionChanged"
+                  DropDownClosed="ReadingSelectorClosed" Margin="8,0" MinWidth="220"
+                  VerticalContentAlignment="Center" Foreground="#151719"
+                  AutomationProperties.Name="{DynamicResource ReadingDirection}" ToolTip="{DynamicResource ReadingDirection}">
+          <ComboBoxItem Content="{DynamicResource LeftToRight}" />
+          <ComboBoxItem Content="{DynamicResource RightToLeft}" />
         </ComboBox>
         <Button Content="{DynamicResource FullscreenButton}" Click="FullscreenClicked" ToolTip="{DynamicResource FullscreenTip}" />
         <Button Content="{DynamicResource PreferencesButton}" Click="PreferencesClicked" ToolTip="{DynamicResource PreferencesTip}" />

@@ -51,6 +51,7 @@ public partial class MainWindow : Window
         PageDrag = new ReaderDrag(this, Viewport, Reader, input.Stop);
         ApplyLanguage((preferences ?? new ReaderPreferences()).Language);
         Reader.ApplyPreferences(preferences ?? new ReaderPreferences());
+        UpdateView();
         Toolbar.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ToolbarButtonClicked));
         saves.SaveStatusChanged += SaveStatusChanged;
         PreviewMouseWheel += MouseWheelChanged;

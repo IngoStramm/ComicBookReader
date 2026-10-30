@@ -2,7 +2,7 @@
 
 Leitor local de HQs para Windows x64: CBZ e CBR (RAR4, RAR5 e RAR sólido), imagens JPEG/PNG/WebP, rolagem contínua e tamanho de uma página preservado nas imagens duplas.
 
-A versão local 0.2.0 está em `artifacts/distribution`, nos formatos portátil e instalador. Inclui percurso por faixas com Espaço e sentido de leitura configurável; [evidência de validação](docs/reading-order-validation.md). Os downloads públicos abaixo continuam associados à versão 0.1.0.
+A versão local 0.2.1 está em `artifacts/distribution`, nos formatos portátil e instalador. Inclui percurso por faixas com Espaço e sentido de leitura configurável nas Preferências e na barra; [evidência do percurso](docs/reading-order-validation.md). Os downloads públicos abaixo continuam associados à versão 0.1.0.
 
 ## Baixar e compartilhar
 
@@ -31,6 +31,7 @@ Ctrl+O abre uma HQ; também é possível arrastar um arquivo para a janela ou pa
 | Segurar o botão esquerdo e mover o mouse | Arrastar a página em qualquer direção, respeitando suas bordas. |
 | Roda / Shift+roda | Rolar verticalmente / horizontalmente. |
 | Automática / Simples / Dupla | Escolher a classificação global, aplicada a todas as páginas/livros. |
+| Esquerda → direita / Direita → esquerda | Alterar o sentido de leitura diretamente na barra, ao lado do tipo de página. |
 | Preferências | Sentido de leitura, largura, velocidade, passo do Espaço, classificação global, idioma e atalhos. |
 | R / Largura padrão | Remover o ajuste de largura do livro e usar o padrão global. |
 
