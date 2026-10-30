@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## 0.3.0 — 2026-10-30
+
+### Adicionado
+
+- O instalador registra CBZ e CBR como formatos aceitos e oferece abrir as Configurações do Windows para escolher o ComicBookReader como padrão.
+- A escolha do aplicativo padrão é confirmada no Windows; a instalação não substitui silenciosamente a preferência atual.
+
 ## 0.2.2 — 2026-10-30
 
 ### Corrigido

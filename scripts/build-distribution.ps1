@@ -45,13 +45,13 @@ ComicBookReader $version - Windows x64
 
 Português (Brasil)
 Portátil: abra ComicBookReader-$version-Portable.exe. Basta compartilhar este arquivo.
-Instalador: abra ComicBookReader-$version-Setup.exe. Instala para seu usuário, com atalho no menu Iniciar, opção de atalho na área de trabalho e desinstalação.
+Instalador: abra ComicBookReader-$version-Setup.exe. Instala para seu usuário, com atalho no menu Iniciar, opção de atalho na área de trabalho e desinstalação. Na instalação, você pode abrir as Configurações do Windows para escolher o ComicBookReader como padrão para arquivos .cbz e .cbr.
 O .NET está incluído. Licenças completas: botão Sobre na barra do leitor.
 Preferências e progresso são mantidos em %LOCALAPPDATA%\ComicBookReader, inclusive ao desinstalar.
 
 English
 Portable: run ComicBookReader-$version-Portable.exe. Only this file needs to be shared.
-Installer: run ComicBookReader-$version-Setup.exe. Installs for your user, with a Start menu shortcut, optional desktop shortcut and uninstaller.
+Installer: run ComicBookReader-$version-Setup.exe. Installs for your user, with a Start menu shortcut, optional desktop shortcut and uninstaller. During setup, you can open Windows Settings to choose ComicBookReader as the default for .cbz and .cbr files.
 .NET is included. Full third-party licenses: About button in the reader toolbar.
 Preferences and reading progress remain in %LOCALAPPDATA%\ComicBookReader, including after uninstall.
 "@

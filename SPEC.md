@@ -19,6 +19,7 @@ Nome público confirmado pelo usuário: **ComicBookReader**. Raiz documental: `C
 | Usuário | Considerar paisagem um indício de imagem dupla e compensar sua escala, mantendo a imagem inteira. |
 | Usuário | Oferecer um atalho para ver a imagem completa e retornar ao zoom anterior. |
 | Usuário | Barra manual por atalho, preferências por atalho, passo do Espaço configurável, campos numéricos, classificação global, português (Brasil)/inglês e ícone de HQ. |
+| Usuário | Registrar CBZ/CBR como formatos aceitos pelo instalador e oferecer a escolha do leitor padrão pelo fluxo de Configurações do Windows. Não alterar a escolha padrão do sistema sem confirmação do usuário. |
 | Proposta técnica | C#/.NET 10, WPF, Windows 11 x64. |
 | Proposta de interação | Page Down/Page Up para navegação; V para visão completa; F11 para tela cheia; atalhos configuráveis. |
 | Proposta de interação | Largura inicial de uma página igual à área de leitura; ajuste manual relativo à largura da tela, salvo por livro. |

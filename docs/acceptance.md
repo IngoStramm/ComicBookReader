@@ -2,6 +2,8 @@
 
 Atualização 30/10/2026: a 0.2.0 acrescenta Espaço por faixas e leitura direita → esquerda. 246 testes passaram; percurso completo nos dois sentidos e persistência entre processos comprovados também no portátil. Evidência e limites: [reading-order-validation.md](reading-order-validation.md). A matriz histórica abaixo conserva as verificações humanas pendentes.
 
+Atualização local 0.3.0: o instalador registra CBZ/CBR para o usuário atual e pode abrir as Configurações do Windows para a escolha do leitor padrão. A escolha final fica sob controle do Windows; o fluxo ainda precisa de verificação manual em um perfil de instalação isolado antes da publicação.
+
 Data: 10/10/2026. 233 testes passaram (158 Core, 75 Integration), build/format/restore bloqueado passaram. Portátil e instalador 0.1.0 estão em `artifacts/distribution`; o pacote anterior `artifacts/win-x64-drag` foi preservado. O checklist não declara concluída a aceitação visual. **Automático** indica evidência de regra/integração ou WPF com eventos roteados; **Parcial** mantém os casos humanos pendentes.
 
 Nomes de testes abaixo identificam classes reais nos projetos `tests/ComicBookReader.Core.Tests` e `tests/ComicBookReader.Integration.Tests`. Execução da janela, ambiente e limites da evidência: [manual-validation.md](manual-validation.md). Achados: [review.md](review.md).
@@ -45,7 +47,7 @@ Nomes de testes abaixo identificam classes reais nos projetos `tests/ComicBookRe
 | G-06 | Parcial | Reinício real recupera leitura; editar bindings e reiniciar ainda humano. |
 | G-07 | Parcial | Resize e DIPs a 96 DPI comprovados; mudança real de DPI/monitor pendente. |
 | G-08 | Automático | Geração tardia, cancelamento ignorado pelo decoder e navegação concorrente. |
-| G-09 | Automático | Hashes preservados, acesso somente leitura; sem escrita no CDisplayEx/Registro. |
+| G-09 | Automático | Hashes preservados e HQs somente para leitura; a aplicação não modifica o CDisplayEx. O instalador 0.3.0 registra somente os ProgIDs/Open With e capacidades próprios em HKCU para CBZ/CBR. |
 | Distribuição portátil | Automático | EXE sozinho/renomeado em caminho com espaços, CBZ/RAR4/RAR5/sólido e retomada, runtime incluído. |
 | Instalador por usuário | Automático | Instalação em pt-BR, reinstalação em inglês, HKCU/atalhos conferidos e execução real da aplicação. |
 | Desinstalação | Automático | Remove itens instalados e preserva preferências e conteúdo adicional do usuário. |

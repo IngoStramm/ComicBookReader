@@ -5,9 +5,9 @@
     <UseWPF>true</UseWPF>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <ApplicationIcon>Assets/comic-reader.ico</ApplicationIcon>
-    <Version>0.2.2</Version>
-    <FileVersion>0.2.2.0</FileVersion>
-    <AssemblyVersion>0.2.2.0</AssemblyVersion>
+    <Version>0.3.0</Version>
+    <FileVersion>0.3.0.0</FileVersion>
+    <AssemblyVersion>0.3.0.0</AssemblyVersion>
     <EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
     <PublishSingleFile Condition="'$(BuildPortable)' == 'true'">true</PublishSingleFile>
     <ThirdPartyLicensesFile Condition="'$(ThirdPartyLicensesFile)' == ''">$(MSBuildThisFileDirectory)../../THIRD-PARTY-NOTICES.md</ThirdPartyLicensesFile>
