@@ -38,6 +38,8 @@ internal sealed class ThumbnailWindow : Window
                 ToolTip = pages[i].EntryName,
                 BorderThickness = new Thickness(i == selected ? 3 : 1)
             };
+            if (i == selected)
+                button.BorderBrush = new SolidColorBrush(Color.FromRgb(255, 193, 7));
             button.Click += (_, _) => { SelectedPage = index; DialogResult = true; };
             images.Add(image); labels.Add(label); panel.Children.Add(button);
         }
