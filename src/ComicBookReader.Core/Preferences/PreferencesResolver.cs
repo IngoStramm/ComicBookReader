@@ -39,6 +39,8 @@ public static class PreferencesResolver
             nameof(ReaderPreferences.PreferredPageWidthRatio));
         ValidateRange(preferences.ScrollSpeed, .1, 2, nameof(ReaderPreferences.ScrollSpeed));
         ValidateRange(preferences.SpaceScrollPercent, 10, 100, nameof(ReaderPreferences.SpaceScrollPercent));
+        if (!Enum.IsDefined(preferences.ReadingDirection))
+            throw new ArgumentException("Unknown reading direction.", nameof(ReaderPreferences.ReadingDirection));
         ValidateClassification(preferences.PageClassification);
         if (preferences.Language is not ("pt-BR" or "en"))
             throw new ArgumentException("Unsupported language.", nameof(ReaderPreferences.Language));

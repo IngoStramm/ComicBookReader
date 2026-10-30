@@ -90,6 +90,74 @@ public sealed class ScrollForwardTests
     }
 
     [Fact]
+    public async Task RightToLeftStartsAtTheRightAndScansEveryRowBeforeAdvancing()
+    {
+        await using var reader = new ReaderController(new WideOpener(), preferences: new ReaderPreferences
+        { PageClassification = PageClassificationOverride.Spread, ReadingDirection = ReadingDirection.RightToLeft });
+        reader.SetViewport(new ViewportSize(100, 80));
+        await reader.OpenAsync("wide", TestContext.Current.CancellationToken);
+        Assert.Equal(100, reader.State.OffsetXDip);
+        (double X, double Y)[] expected = [(10, 0), (0, 0), (100, 72), (10, 72), (0, 72), (100, 120), (10, 120), (0, 120)];
+        foreach (var point in expected)
+        {
+            await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+            Assert.Equal(point.X, reader.State.OffsetXDip);
+            Assert.Equal(point.Y, reader.State.OffsetYDip);
+            Assert.Equal(0, reader.State.PresentedIndex);
+        }
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(1, reader.State.PresentedIndex);
+        Assert.Equal(100, reader.State.OffsetXDip);
+        Assert.Equal(0, reader.State.OffsetYDip);
+        reader.ScrollBy(-double.MaxValue, double.MaxValue);
+        var last = reader.State;
+        await reader.ScrollForwardAsync(TestContext.Current.CancellationToken);
+        Assert.Equal(last, reader.State);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task ChangingDirectionAlignsTheCurrentRowAndOverviewKeepsTheReadingPoint(bool overview)
+    {
+        await using var reader = new ReaderController(new WideOpener(), preferences: new ReaderPreferences
+        { PageClassification = PageClassificationOverride.Spread });
+        reader.SetViewport(new ViewportSize(100, 80));
+        await reader.OpenAsync("wide", TestContext.Current.CancellationToken);
+        reader.ScrollBy(25, 45);
+        if (overview) reader.ToggleOverview();
+        reader.ApplyPreferences(reader.CapturePreferences() with { ReadingDirection = ReadingDirection.RightToLeft });
+        Assert.Equal(ReaderMode.Reading, reader.State.Mode);
+        Assert.Equal(100, reader.State.OffsetXDip);
+        Assert.Equal(45, reader.State.OffsetYDip);
+        reader.ToggleOverview();
+        reader.ToggleOverview();
+        Assert.Equal(100, reader.State.OffsetXDip);
+        Assert.Equal(45, reader.State.OffsetYDip);
+        reader.ApplyPreferences(reader.CapturePreferences() with { ReadingDirection = ReadingDirection.LeftToRight });
+        Assert.Equal(0, reader.State.OffsetXDip);
+        Assert.Equal(45, reader.State.OffsetYDip);
+    }
+
+    [Fact]
+    public async Task RightToLeftReopenKeepsTheSavedPointInsteadOfResettingToTheRight()
+    {
+        var options = new ReaderPreferences { PageClassification = PageClassificationOverride.Spread, ReadingDirection = ReadingDirection.RightToLeft };
+        await using var first = new ReaderController(new WideOpener(), preferences: options);
+        first.SetViewport(new ViewportSize(100, 80));
+        await first.OpenAsync("wide", TestContext.Current.CancellationToken);
+        first.ScrollBy(-75, 60);
+        await using var restored = new ReaderController(new WideOpener(), preferences: first.CapturePreferences());
+        restored.SetViewport(new ViewportSize(100, 80));
+        await restored.OpenAsync("wide", TestContext.Current.CancellationToken);
+        Assert.Equal(25, restored.State.OffsetXDip);
+        Assert.Equal(60, restored.State.OffsetYDip);
+        await restored.NavigateAsync(1, TestContext.Current.CancellationToken);
+        Assert.Equal(100, restored.State.OffsetXDip);
+        Assert.Equal(0, restored.State.OffsetYDip);
+    }
+
+    [Fact]
     public async Task PageThatFitsAdvancesAndTheLastPageRemainsAtTheBottom()
     {
         await using var reader = await CreateReader();

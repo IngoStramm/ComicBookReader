@@ -10,6 +10,7 @@ public sealed class ReaderOptionsTests
     {
         var profile = PreferencesResolver.Validate(new ReaderPreferences());
         Assert.Equal(90, profile.SpaceScrollPercent);
+        Assert.Equal(ReadingDirection.LeftToRight, profile.ReadingDirection);
         Assert.Equal("pt-BR", profile.Language);
         Assert.Equal(PageClassificationOverride.Auto, profile.PageClassification);
         Assert.Equal("F12", profile.KeyBindings["ToggleToolbar"]);
@@ -39,6 +40,10 @@ public sealed class ReaderOptionsTests
     [Fact]
     public void InvalidGlobalClassificationIsRejected() =>
         Assert.Throws<ArgumentException>(() => PreferencesResolver.Validate(new ReaderPreferences { PageClassification = (PageClassificationOverride)99 }));
+
+    [Fact]
+    public void InvalidReadingDirectionIsRejected() =>
+        Assert.Throws<ArgumentException>(() => PreferencesResolver.Validate(new ReaderPreferences { ReadingDirection = (ReadingDirection)99 }));
 
     [Fact]
     public void AddedShortcutDefaultsDoNotInvalidateExistingCustomBindings()

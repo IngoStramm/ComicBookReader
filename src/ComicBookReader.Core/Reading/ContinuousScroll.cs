@@ -1,3 +1,6 @@
+using ComicBookReader.Core.Layout;
+using ComicBookReader.Core.Preferences;
+
 namespace ComicBookReader.Core.Reading;
 
 public enum ScrollDirection { Up, Down, Left, Right }
@@ -29,11 +32,17 @@ public sealed partial class ReaderController
         if (State.Mode == ReaderMode.Overview) return NavigateAsync(1, cancellationToken);
         if (State.Mode != ReaderMode.Reading || State.Layout is not { } layout) return Task.CompletedTask;
         double step = profile.SpaceScrollPercent / 100d;
-        if (State.OffsetXDip < layout.MaxOffsetXDip) ScrollBy(viewport.WidthDip * step, 0);
-        else if (State.OffsetYDip < layout.MaxOffsetYDip) ScrollBy(-State.OffsetXDip, viewport.HeightDip * step);
+        bool rightToLeft = profile.ReadingDirection == ReadingDirection.RightToLeft;
+        bool hasMoreHorizontally = rightToLeft ? State.OffsetXDip > 0 : State.OffsetXDip < layout.MaxOffsetXDip;
+        if (hasMoreHorizontally) ScrollBy((rightToLeft ? -1 : 1) * viewport.WidthDip * step, 0);
+        else if (State.OffsetYDip < layout.MaxOffsetYDip)
+            ScrollBy(ReadingStartX(layout) - State.OffsetXDip, viewport.HeightDip * step);
         else return NavigateAsync(1, cancellationToken);
         return Task.CompletedTask;
     }
+
+    private double ReadingStartX(PageLayout layout) =>
+        profile.ReadingDirection == ReadingDirection.RightToLeft ? layout.MaxOffsetXDip : 0;
 
     public void AdvanceFrame(double elapsedSeconds)
     {

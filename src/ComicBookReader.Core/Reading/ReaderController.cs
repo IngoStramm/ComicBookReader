@@ -64,7 +64,7 @@ public sealed partial class ReaderController(IComicOpener opener, IPageLayoutCal
                 ResolvePageSettings(candidate, index);
                 var layout = ReadingLayout(image);
                 var position = GetBookSettings(candidate.Book.BookId).Position;
-                var offsets = position is null ? (X: 0d, Y: 0d) : PreferencesResolver.RestorePosition(position, layout.MaxOffsetXDip, layout.MaxOffsetYDip);
+                var offsets = position is null ? (X: ReadingStartX(layout), Y: 0d) : PreferencesResolver.RestorePosition(position, layout.MaxOffsetXDip, layout.MaxOffsetYDip);
                 State = new ReaderState
                 {
                     Mode = ReaderMode.Reading,

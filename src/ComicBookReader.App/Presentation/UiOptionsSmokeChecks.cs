@@ -19,7 +19,8 @@ internal static class UiOptionsSmokeChecks
         {
             var expected = JsonSerializer.Deserialize<ReaderPreferences>(await File.ReadAllTextAsync(expectedFile))!;
             Require(profile.Language == expected.Language && profile.SpaceScrollPercent == expected.SpaceScrollPercent &&
-                profile.PageClassification == expected.PageClassification, "Restart lost global reader options.");
+                profile.PageClassification == expected.PageClassification && profile.ReadingDirection == expected.ReadingDirection,
+                "Restart lost global reader options.");
         }
         window.ApplyUserPreferences(profile with { Language = "pt-BR", SpaceScrollPercent = 90, PageClassification = PageClassificationOverride.Auto });
         if (window.Toolbar.Visibility != Visibility.Visible) ReadingSmokeChecks.RaiseKey(window, Key.F12, true);
@@ -91,6 +92,9 @@ internal static class UiOptionsSmokeChecks
                 dialog.WidthInput.Editor.Text = "";
                 Require(dialog.WidthInput.Value is >= 25 and <= 200, "Empty integer field did not restore a valid value.");
                 dialog.SpaceInput.Value = 45;
+                Require(dialog.ReadingDirectionChoice.SelectedIndex == (int)profile.ReadingDirection,
+                    "Preferences did not display the saved reading direction.");
+                dialog.ReadingDirectionChoice.SelectedIndex = (int)ReadingDirection.RightToLeft;
                 dialog.LanguageChoice.SelectedIndex = 1;
                 dialog.ClassificationChoice.SelectedIndex = (int)PageClassificationOverride.Single;
                 Capture(dialog, Path.Combine(output, "preferences-pt.png"));
@@ -104,7 +108,8 @@ internal static class UiOptionsSmokeChecks
         Require(opened, "Preferences shortcut was not routed.");
         await WaitForAsync(() => FocusManager.GetFocusedElement(window) == window.Viewport, "Preferences did not restore reading focus.");
         var saved = window.Reader.CapturePreferences();
-        Require(saved.Language == "en" && saved.SpaceScrollPercent == 45 && saved.PageClassification == PageClassificationOverride.Single,
+        Require(saved.Language == "en" && saved.SpaceScrollPercent == 45 && saved.PageClassification == PageClassificationOverride.Single &&
+            saved.ReadingDirection == ReadingDirection.RightToLeft,
             "Applying preferences lost a reader option.");
         Require((string)window.Resources["PreferencesButton"] == "_Preferences…" &&
             (string)((ComboBoxItem)window.ClassificationChoice.Items[1]).Content == "Single" && window.WidthLabel.Text.StartsWith("Width", StringComparison.Ordinal),

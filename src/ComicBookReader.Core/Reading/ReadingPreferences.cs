@@ -20,13 +20,14 @@ public sealed partial class ReaderController
     public void ApplyPreferences(ReaderPreferences value)
     {
         var validated = PreferencesResolver.Validate(value);
+        bool directionChanged = validated.ReadingDirection != profile.ReadingDirection;
         profile = validated;
         SetScrollSpeed(validated.ScrollSpeed);
         ChangeGeometry(() =>
         {
             WidthRatio = State.Book is { } book ? PreferencesResolver.ResolveWidth(profile, book.BookId) : profile.PreferredPageWidthRatio;
             Classification = profile.PageClassification;
-        }, null, null);
+        }, null, null, directionChanged);
     }
 
     private BookPreferences GetBookSettings(string bookId) => profile.Books.GetValueOrDefault(bookId) ?? new BookPreferences();

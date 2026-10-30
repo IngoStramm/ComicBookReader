@@ -17,6 +17,7 @@ public sealed class PreferencesWindow : Window
     internal IntegerInput SpaceInput { get; }
     internal ComboBox LanguageChoice { get; }
     internal ComboBox ClassificationChoice { get; }
+    internal ComboBox ReadingDirectionChoice { get; }
     internal Button ApplyButton { get; }
     public ReaderPreferences? Result { get; private set; }
 
@@ -48,6 +49,7 @@ public sealed class PreferencesWindow : Window
         var panel = new StackPanel();
         root.Children.Add(new ScrollViewer { Content = panel, VerticalScrollBarVisibility = ScrollBarVisibility.Auto });
         LanguageChoice = AddChoice(panel, text["Language"], ["Português (Brasil)", "English"], original.Language == "en" ? 1 : 0);
+        ReadingDirectionChoice = AddChoice(panel, text["ReadingDirection"], [text["LeftToRight"], text["RightToLeft"]], (int)original.ReadingDirection);
         WidthInput = AddNumber(panel, "DefaultWidth", (int)Math.Round(original.PreferredPageWidthRatio * 100), 25, 200);
         SpeedInput = AddNumber(panel, "ScrollSpeed", (int)Math.Round(original.ScrollSpeed * 100), 10, 200);
         SpaceInput = AddNumber(panel, "SpaceDistance", original.SpaceScrollPercent, 10, 100);
@@ -102,6 +104,7 @@ public sealed class PreferencesWindow : Window
                 PreferredPageWidthRatio = WidthInput.Value / 100d,
                 ScrollSpeed = SpeedInput.Value / 100d,
                 SpaceScrollPercent = SpaceInput.Value,
+                ReadingDirection = (ReadingDirection)ReadingDirectionChoice.SelectedIndex,
                 Language = LanguageChoice.SelectedIndex == 1 ? "en" : "pt-BR",
                 PageClassification = (PageClassificationOverride)ClassificationChoice.SelectedIndex,
                 KeyBindings = keys.ToDictionary(x => x.Key, x => x.Value.Text)

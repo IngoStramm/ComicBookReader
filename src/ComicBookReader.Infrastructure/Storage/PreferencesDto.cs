@@ -18,6 +18,7 @@ internal sealed class PreferencesDto
     public double PreferredPageWidthRatio { get; set; } = 1;
     public double ScrollSpeed { get; set; } = .6;
     public int SpaceScrollPercent { get; set; } = 90;
+    public ReadingDirection ReadingDirection { get; set; } = ReadingDirection.LeftToRight;
     public string Language { get; set; } = "pt-BR";
     public PageClassificationOverride PageClassification { get; set; } = PageClassificationOverride.Auto;
     public bool LastFullscreen { get; set; } = true;
@@ -32,6 +33,7 @@ internal sealed class PreferencesDto
             PreferredPageWidthRatio = preferences.PreferredPageWidthRatio,
             ScrollSpeed = preferences.ScrollSpeed,
             SpaceScrollPercent = preferences.SpaceScrollPercent,
+            ReadingDirection = preferences.ReadingDirection,
             Language = preferences.Language,
             PageClassification = preferences.PageClassification,
             LastFullscreen = preferences.LastFullscreen,
@@ -88,6 +90,7 @@ internal sealed class PreferencesDto
                 PreferredPageWidthRatio = dto.PreferredPageWidthRatio,
                 ScrollSpeed = dto.ScrollSpeed,
                 SpaceScrollPercent = dto.SpaceScrollPercent,
+                ReadingDirection = dto.ReadingDirection,
                 Language = dto.Language,
                 PageClassification = dto.PageClassification,
                 LastFullscreen = dto.LastFullscreen,

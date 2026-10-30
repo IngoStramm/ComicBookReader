@@ -37,13 +37,14 @@ public sealed partial class ReaderController
                 previous = State.Image;
                 overview = null;
                 ResolvePageSettings(currentSession, target);
+                var layout = ReadingLayout(image);
                 State = State with
                 {
                     Mode = ReaderMode.Reading,
                     Image = image,
-                    Layout = ReadingLayout(image),
+                    Layout = layout,
                     PresentedIndex = target,
-                    OffsetXDip = 0,
+                    OffsetXDip = ReadingStartX(layout),
                     OffsetYDip = 0
                 };
                 image = null;

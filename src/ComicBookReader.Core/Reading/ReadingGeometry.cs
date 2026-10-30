@@ -56,7 +56,7 @@ public sealed partial class ReaderController
         ChangeGeometry(() => { Classification = classification; SaveClassificationOverride(); }, null, null);
     }
 
-    private void ChangeGeometry(Action change, double? anchorX, double? anchorY)
+    private void ChangeGeometry(Action change, double? anchorX, double? anchorY, bool resetHorizontal = false)
     {
         if (anchorX is { } x && !double.IsFinite(x) || anchorY is { } y && !double.IsFinite(y))
             throw new ArgumentOutOfRangeException(nameof(anchorX));
@@ -68,6 +68,7 @@ public sealed partial class ReaderController
         if (saved is null || State.Image is null) return;
         State = State with { Mode = ReaderMode.Reading };
         Reframe(saved.Layout, saved.X, saved.Y, saved.Viewport, anchorX, anchorY);
+        if (resetHorizontal) State = State with { OffsetXDip = ReadingStartX(State.Layout!) };
         Changed?.Invoke();
     }
 

@@ -32,6 +32,7 @@ public sealed class PreferencesStoreTests
             PreferredPageWidthRatio = 1.3,
             ScrollSpeed = .8,
             SpaceScrollPercent = 45,
+            ReadingDirection = ReadingDirection.RightToLeft,
             Language = "en",
             PageClassification = PageClassificationOverride.Single,
             LastFullscreen = false,
@@ -51,6 +52,7 @@ public sealed class PreferencesStoreTests
         Assert.Equal(1.3, actual.PreferredPageWidthRatio);
         Assert.Equal(.8, actual.ScrollSpeed);
         Assert.Equal(45, actual.SpaceScrollPercent);
+        Assert.Equal(ReadingDirection.RightToLeft, actual.ReadingDirection);
         Assert.Equal("en", actual.Language);
         Assert.Equal(PageClassificationOverride.Single, actual.PageClassification);
         Assert.False(actual.LastFullscreen);
@@ -78,6 +80,7 @@ public sealed class PreferencesStoreTests
         Assert.Equal(10, preferences.KeyBindings.Count);
         Assert.Equal("R", preferences.KeyBindings["ResetWidth"]);
         Assert.Equal(90, preferences.SpaceScrollPercent);
+        Assert.Equal(ReadingDirection.LeftToRight, preferences.ReadingDirection);
         Assert.Equal("pt-BR", preferences.Language);
         Assert.Equal(PageClassificationOverride.Auto, preferences.PageClassification);
         Assert.Null(preferences.Books["book"].WidthRatio);

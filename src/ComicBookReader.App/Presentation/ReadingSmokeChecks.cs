@@ -31,6 +31,7 @@ internal static class ReadingSmokeChecks
         var reader = window.Reader;
         var expectedFile = Path.Combine(output, "expected-reopen.json");
         await reader.NavigateAsync(-100);
+        reader.ApplyPreferences(reader.CapturePreferences() with { ReadingDirection = ReadingDirection.LeftToRight });
         reader.SetClassification(PageClassificationOverride.Auto);
         await Task.Delay(2300);
         var toolbarLayout = reader.State.Layout;
@@ -156,6 +157,7 @@ internal static class ReadingSmokeChecks
         await reader.NavigateAsync(1);
         Require(Math.Abs(reader.State.Layout!.DisplayWidthDip - pageWidth) < .001,
             "Higher resolution spread changed the reading width.");
+        await SpaceReadingSmokeChecks.RunAsync(window);
         await Task.WhenAll(reader.NavigateAsync(-1), reader.NavigateAsync(1));
         Require(reader.State.PresentedIndex == 2, "Rapid navigation published an obsolete target.");
         window.Width = 800;
@@ -176,6 +178,7 @@ internal static class ReadingSmokeChecks
             RoutedArrowScrollAndRelease = true,
             PageNavigationKeysPassed = true,
             SpaceScrollAndAdvancePassed = true,
+            SpaceReadsAllRowsInBothDirections = true,
             HorizontalArrowsAndSelectorFocusPassed = true,
             FocusLossStopsScroll = true,
             EdgeKeepsPage = true,
